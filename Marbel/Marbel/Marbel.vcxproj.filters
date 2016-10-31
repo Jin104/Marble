@@ -38,5 +38,8 @@
     <ClCompile Include="Graphics.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Local.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Local.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>

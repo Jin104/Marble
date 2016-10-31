@@ -16,5 +16,15 @@ void gotoxy(int x, int y) {
 void gotoxytext(int x, int y, char *string) {
 	COORD Pos = { x,y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
-	puts("");
+	puts(string);
+}
+
+void cursor_view(char s)      // 0넣으면숨기기, 1넣으면보이기
+{
+	HANDLE hConsole;
+	CONSOLE_CURSOR_INFO ConsoleCursor;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	ConsoleCursor.bVisible = s;
+	ConsoleCursor.dwSize = 2;
+	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
 }
