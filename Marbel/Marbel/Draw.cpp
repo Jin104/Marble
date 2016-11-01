@@ -1,85 +1,148 @@
 #include "graphics.h"
 #include "draw.h"
+#include "local.h"
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <conio.h>
+#include <Windows.h>
 
 void GameDice() {
 	int dice, dice2;
 
-	//gotoxytext(20, 5, "주사위를 돌려주세요  ☞ Enter ☜r");
-	//getchar();
-
+	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
 	srand(time(NULL));
-	dice = rand() % 6 + 1;
-	dice2 = rand() % 6 + 1;
-
-	gotoxy(20, 8);
-	//printf("주사위의 값 : %d + %d = %d 입니다.", dice, dice2, dice + dice2);
-
-	gotoxy(0, 3);
-	DiceShape(dice);
-	gotoxy(0, 10);
-	DiceShape(dice2);
-
+	while (1) {
+		Sleep(50);
+		dice = rand() % 6 + 1;
+		dice2 = rand() % 6 + 1;
+		DiceShape(dice);
+		DiceShape2(dice2);
+		if (kbhit()) {
+			getchar();
+			break;
+		}
+	}
+	gotoxy(48, 22);
+	printf("주사위의 값 : %d + %d = %d 입니다", dice, dice2, dice + dice2);
 }
+
 void DiceShape(int dice) {
 
 	if (dice == 1) {
-		puts("  ┏━━━━━┓");
-		puts("  ┃          ┃");
-		puts("  ┃          ┃");
-		puts("  ┃    ●    ┃");
-		puts("  ┃          ┃");
-		puts("  ┃          ┃");
-		puts("  ┗━━━━━┛");
+		gotoxy(45, 12); printf("  ┏━━━━━┓");
+		gotoxy(45, 13); printf("  ┃          ┃");
+		gotoxy(45, 14); printf("  ┃          ┃");
+		gotoxy(45, 15); printf("  ┃    ●    ┃");
+		gotoxy(45, 16); printf("  ┃          ┃");
+		gotoxy(45, 17); printf("  ┃          ┃");
+		gotoxy(45, 18); printf("  ┗━━━━━┛");
 	}
 	if (dice == 2) {
-		puts("  ┏━━━━━┓");
-		puts("  ┃          ┃");
-		puts("  ┃    ●    ┃");
-		puts("  ┃          ┃");
-		puts("  ┃    ●    ┃");
-		puts("  ┃          ┃");
-		puts("  ┗━━━━━┛");
+		gotoxy(45, 12); printf("  ┏━━━━━┓");
+		gotoxy(45, 13); printf("  ┃          ┃");
+		gotoxy(45, 14); printf("  ┃    ●    ┃");
+		gotoxy(45, 15); printf("  ┃          ┃");
+		gotoxy(45, 16); printf("  ┃    ●    ┃");
+		gotoxy(45, 17); printf("  ┃          ┃");
+		gotoxy(45, 18); printf("  ┗━━━━━┛");
 	}
 	if (dice == 3) {
-		puts("  ┏━━━━━┓");
-		puts("  ┃          ┃");
-		puts("  ┃    ●    ┃");
-		puts("  ┃          ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃          ┃");
-		puts("  ┗━━━━━┛");
+		gotoxy(45, 12); printf("  ┏━━━━━┓");
+		gotoxy(45, 13); printf("  ┃          ┃");
+		gotoxy(45, 14); printf("  ┃    ●    ┃");
+		gotoxy(45, 15); printf("  ┃          ┃");
+		gotoxy(45, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 17); printf("  ┃          ┃");
+		gotoxy(45, 18); printf("  ┗━━━━━┛");
 	}
 	if (dice == 4) {
-		puts("  ┏━━━━━┓");
-		puts("  ┃          ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃          ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃          ┃");
-		puts("  ┗━━━━━┛");
+		gotoxy(45, 12); printf("  ┏━━━━━┓");
+		gotoxy(45, 13); printf("  ┃          ┃");
+		gotoxy(45, 14); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 15); printf("  ┃          ┃");
+		gotoxy(45, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 17); printf("  ┃          ┃");
+		gotoxy(45, 18); printf("  ┗━━━━━┛");
 	}
 	if (dice == 5) {
-		puts("  ┏━━━━━┓");
-		puts("  ┃          ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃    ●    ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃          ┃");
-		puts("  ┗━━━━━┛");
+		gotoxy(45, 12); printf("  ┏━━━━━┓");
+		gotoxy(45, 13); printf("  ┃          ┃");
+		gotoxy(45, 14); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 15); printf("  ┃    ●    ┃");
+		gotoxy(45, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 17); printf("  ┃          ┃");
+		gotoxy(45, 18); printf("  ┗━━━━━┛");
 	}
 	if (dice == 6) {
-		puts("  ┏━━━━━┓");
-		puts("  ┃          ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃ ●    ● ┃");
-		puts("  ┃          ┃");
-		puts("  ┗━━━━━┛");
+		gotoxy(45, 12); printf("  ┏━━━━━┓");
+		gotoxy(45, 13); printf("  ┃          ┃");
+		gotoxy(45, 14); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 15); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(45, 17); printf("  ┃          ┃");
+		gotoxy(45, 18); printf("  ┗━━━━━┛");
 	}
 }
+
+void DiceShape2(int dice2) {
+
+	if (dice2 == 1) {
+		gotoxy(65, 12); printf("  ┏━━━━━┓");
+		gotoxy(65, 13); printf("  ┃          ┃");
+		gotoxy(65, 14); printf("  ┃          ┃");
+		gotoxy(65, 15); printf("  ┃    ●    ┃");
+		gotoxy(65, 16); printf("  ┃          ┃");
+		gotoxy(65, 17); printf("  ┃          ┃");
+		gotoxy(65, 18); printf("  ┗━━━━━┛");
+	}
+	if (dice2 == 2) {
+		gotoxy(65, 12); printf("  ┏━━━━━┓");
+		gotoxy(65, 13); printf("  ┃          ┃");
+		gotoxy(65, 14); printf("  ┃    ●    ┃");
+		gotoxy(65, 15); printf("  ┃          ┃");
+		gotoxy(65, 16); printf("  ┃    ●    ┃");
+		gotoxy(65, 17); printf("  ┃          ┃");
+		gotoxy(65, 18); printf("  ┗━━━━━┛");
+	}
+	if (dice2 == 3) {
+		gotoxy(65, 12); printf("  ┏━━━━━┓");
+		gotoxy(65, 13); printf("  ┃          ┃");
+		gotoxy(65, 14); printf("  ┃    ●    ┃");
+		gotoxy(65, 15); printf("  ┃          ┃");
+		gotoxy(65, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 17); printf("  ┃          ┃");
+		gotoxy(65, 18); printf("  ┗━━━━━┛");
+	}
+	if (dice2 == 4) {
+		gotoxy(65, 12); printf("  ┏━━━━━┓");
+		gotoxy(65, 13); printf("  ┃          ┃");
+		gotoxy(65, 14); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 15); printf("  ┃          ┃");
+		gotoxy(65, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 17); printf("  ┃          ┃");
+		gotoxy(65, 18); printf("  ┗━━━━━┛");
+	}
+	if (dice2 == 5) {
+		gotoxy(65, 12); printf("  ┏━━━━━┓");
+		gotoxy(65, 13); printf("  ┃          ┃");
+		gotoxy(65, 14); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 15); printf("  ┃    ●    ┃");
+		gotoxy(65, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 17); printf("  ┃          ┃");
+		gotoxy(65, 18); printf("  ┗━━━━━┛");
+	}
+	if (dice2 == 6) {
+		gotoxy(65, 12); printf("  ┏━━━━━┓");
+		gotoxy(65, 13); printf("  ┃          ┃");
+		gotoxy(65, 14); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 15); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 16); printf("  ┃ ●    ● ┃");
+		gotoxy(65, 17); printf("  ┃          ┃");
+		gotoxy(65, 18); printf("  ┗━━━━━┛");
+	}
+}
+
 
 void Explain() {
 
@@ -143,19 +206,53 @@ void GameBoard() {
 			gotoxytext(i, j, "━");
 		}
 	}
+
+	int i = 0;
+	for (int j = 42; j > 5; j -= 5) {
+		gotoxy(19, j); printf("%s", localName[i]);
+		i++;
+	}
+	for (int j = 19; j < 105; j += 10) {
+		gotoxy(j, 2); printf("%s", localName[i]);
+		i++;
+	}
+	for (int j = 7; j < 47; j += 5) {
+		gotoxy(99, j); printf("%s", localName[i]);
+		i++;
+	}
+	for (int j = 89; j > 22; j -= 10) {
+		gotoxy(j, 42); printf("%s", localName[i]);
+		i++;
+	}
 }
 
 //Player
 void DrawPlayer() {
 
-	gotoxytext(1, 30, "┏━━━━━━┓");
+	gotoxytext(29, 7, "┏━━━━━━━━━━━━┓");
+	gotoxytext(29, 8, "┃                        ┃");
+	gotoxytext(29, 9, "┃                        ┃");
+	gotoxytext(29, 10, "┃                        ┃");
+	gotoxytext(29, 11, "┗━━━━━━━━━━━━┛");
 
+	gotoxytext(40, 8, "님");
+	gotoxytext(31, 10, "보유마블: ");
+
+	gotoxytext(69, 36, "┏━━━━━━━━━━━━┓");
+	gotoxytext(69, 37, "┃                        ┃");
+	gotoxytext(69, 38, "┃                        ┃");
+	gotoxytext(69, 39, "┃                        ┃");
+	gotoxytext(69, 40, "┗━━━━━━━━━━━━┛");
+
+	gotoxytext(80, 37, "님");
+	gotoxytext(71, 39, "보유마블: ");
 }
 
 
 void DrawMap() {
+	system("mode con: cols=130 lines=48");
 	GameBoard();
-	GameDice();
 	DrawPlayer();
+	GameDice();
 	system("pause>null");
 }

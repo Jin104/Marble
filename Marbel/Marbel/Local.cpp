@@ -1,55 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "local.h"
 
-typedef struct _Local {
-	int localNum;
-	char color[10];
-	char localName[10];
-	int hotel;	//호텔 건설 가격 = 인수비용
-	int landmark;	//랜드마크 건설 가격
-	struct _Local *next;
-}Local;
+char *localName[boardNum] = {
+	"시작",
+	"방콕","보너스겜","베이징",
+	"독도","타이페이","두바이","카이로",
+	"무인도","발리",
+	"도쿄","시드니",
+	"포츈카드",
+	"퀘백","하와이","상파울로",
+	"올림픽","프라하","푸켓","베를린",
+	"포츈카드","모스크바","제네바","로마",
+	"세계여행","타히티","런던","파리",
+	"포츈카드","뉴욕","국세청","서울"
+};
 
-typedef struct _Node {
-	Local *data;
-	_Node *next;
-}Node;
+int localPrice[boardNum] = {
+	0,
+	27,0,29,
+	11,57,57,58,
+	0,11,
+	85,85,
+	0,
+	113,11,115,
+	0,142,11,143,
+	0,170,171,171,
+	0,11,198,200,
+	0,228,0,230
+};
 
-typedef struct _LinkedList {
-	Local *head;
-	Local *tail;
-}LinkedList;
+char *localColor[boardNum] = {
+	"없음",
+	"연두색","없음","연두색",
+	"시안색","초록색","초록색","초록색",
+	"없음","시안색",
+	"하늘색","하늘색",
+	"없음",
+	"파란색","시안색","파란색",
+	"없음","분홍색","시안색","분홍색",
+	"없음","보라색","보라색","보라색",
+	"없음","타히티","주황색","주황색",
+	"없음","빨간색","없음","빨간색"
 
-LinkedList *creatList() {
-	LinkedList *list;
-	list = (LinkedList*)malloc(sizeof(LinkedList));
-	list->head = NULL;
-	list->tail = NULL;
-	return list;
-}
-
-Local *NewLocal(int num, char *color, char *name, int hotel, int landmark) {
-	Local *local = (Local*)malloc(sizeof(Local));
-	local->localNum = num;
-	strcpy(local->color, color);
-	strcpy(local->localName, name);
-	local->hotel = hotel;
-	local->landmark = landmark;
-
-	return local;
-}
-
-Node *NewNode(Local *data) {
-	Node *node = (Node*)malloc(sizeof(Node));
-	node->data = data;
-	node->next = NULL;
-	return node;
-}
-
-void HangNode(LinkedList *list, Node *node) {
-
-	if (list->head == NULL) {
-		//list->head = node;
-	}
-}
+};
