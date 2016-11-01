@@ -143,11 +143,6 @@ void DiceShape2(int dice2) {
 	}
 }
 
-
-void Explain() {
-
-}
-
 //World Map
 void GameBoard() {
 	
@@ -250,7 +245,6 @@ void DrawPlayer() {
 
 
 void DrawMap() {
-	system("mode con: cols=130 lines=48");
 	GameBoard();
 	DrawPlayer();
 	GameDice();
