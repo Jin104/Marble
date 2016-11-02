@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "start.h"
 #include "graphics.h"
+#include "draw.h"
 
 void main() {
 

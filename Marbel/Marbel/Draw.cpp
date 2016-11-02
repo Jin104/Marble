@@ -7,7 +7,7 @@
 #include <conio.h>
 #include <Windows.h>
 
-void GameDice() {
+int GameDice() {
 	int dice, dice2;
 
 	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
@@ -23,8 +23,45 @@ void GameDice() {
 			break;
 		}
 	}
-	gotoxy(48, 22);
+	/*gotoxy(48, 22);
 	printf("주사위의 값 : %d + %d = %d 입니다", dice, dice2, dice + dice2);
+	getchar();
+	gotoxy(48, 22);
+	printf("                                 ");*/
+
+	if (dice != dice2) {
+		return dice + dice2;
+	}
+	else {
+		return -1;
+	}
+/*
+	if (dice == dice2) {
+		Double(dice, dice2);
+	}
+	return dice + dice2;*/
+}
+
+void Double() {
+	int count = 0;
+
+	gotoxy(48, 24);
+	printf("더블입니다 한번 더 돌려주세요!");
+	getchar();
+	gotoxy(48, 24);
+	printf("                                  ");
+	GameDice();
+
+	count++;
+	if (count == 3) {
+		gotoxy(48, 24);
+		printf("너무 앞서갔네요..무인도로 가세요");
+		getchar();
+		gotoxy(48, 24);
+		printf("                                  ");
+		return;
+	}
+
 }
 
 void DiceShape(int dice) {
@@ -143,6 +180,7 @@ void DiceShape2(int dice2) {
 	}
 }
 
+
 //World Map
 void GameBoard() {
 	
@@ -243,10 +281,21 @@ void DrawPlayer() {
 	gotoxytext(71, 39, "보유마블: ");
 }
 
+//
+//void DrawMap() {
+//	GameBoard();
+//	DrawPlayer();
+//	GameDice();
+//	system("pause>null");
+//}
 
-void DrawMap() {
-	GameBoard();
-	DrawPlayer();
-	GameDice();
-	system("pause>null");
+void Loading() {
+
+
 }
+
+void Explain() {
+
+
+}
+

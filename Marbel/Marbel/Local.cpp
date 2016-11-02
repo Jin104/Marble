@@ -45,3 +45,30 @@ char *localColor[boardNum] = {
 	"橈擠","說除儀","橈擠","說除儀"
 
 };
+
+int localX[boardNum] = {
+	21,21,21,21,21,21,21,21,21,
+	31,41,51,61,71,81,91,101,
+	101,101,101,101,101,101,101,101,
+	91,81,71,61,51,41,31
+};
+
+int localY[boardNum] = {
+	44,39,34,29,24,19,14,9,4,
+	4,4,4,4,4,4,4,4,
+	9,14,19,24,29,34,39,44,
+	44,44,44,44,44,44,44
+};
+
+//void makeLocal() {
+//
+//	Local local[32];
+//
+//	for (int i = 0; i < boardNum; i++) {
+//		strcpy(local[i].localName, localName[i]);
+//		strcpy(local[i].localColor, localColor[i]);
+//		local[i].localPrice = localPrice[i];
+//		local[i].x = localX[i];
+//		local[i].y = localY[i];
+//	}
+//}
