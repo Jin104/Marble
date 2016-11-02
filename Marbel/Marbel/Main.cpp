@@ -1,13 +1,11 @@
-#include <stdio.h>
-#include <conio.h>
-#include <Windows.h>
 #include "start.h"
-#include "graphics.h"
 #include "draw.h"
 
 void main() {
 
 	cursor_view(0);
+
+	//Loading();
 
 	int select;
 	int num = 1, truth = 1;

@@ -3,9 +3,9 @@
 #define boardNum 32
 
 typedef struct {
-	char localName[10];
-	char localColor[10];
-	int localPrice;
+	char name[10];
+	char color[10];
+	int price;
 	int x;
 	int y;
 

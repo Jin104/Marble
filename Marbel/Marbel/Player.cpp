@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "player.h"
-#include "local.h"
 
 
 LinkedList *NewList() {

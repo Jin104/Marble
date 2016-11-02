@@ -1,42 +1,79 @@
-#include "graphics.h"
 #include "draw.h"
-#include <stdio.h>
-#include <conio.h>
-#include <Windows.h>
 #include "player.h"
 #include "start.h"
-#include "local.h"
-
-int turn = 0;
+#include <time.h>
 
 Local local[32];
 Player player[2];
+
 void StartGame() {
 	
 	for (int i = 0; i < boardNum; i++) {
-		strcpy(local[i].localName, localName[i]);
-		strcpy(local[i].localColor, localColor[i]);
-		local[i].localPrice = localPrice[i];
+		strcpy(local[i].name, localName[i]);
+		strcpy(local[i].color, localColor[i]);
+		local[i].price = localPrice[i];
 		local[i].x = localX[i];
 		local[i].y = localY[i];
 	}
 
-	printf("플레이어1의 이름을 입력해주세요 : ");
-	scanf("%s", player[0].name);
-	printf("플레이어2의 이름을 입력해주세요 : ");
-	scanf("%s", player[1].name);
+	playerTurn();
 
 	system("mode con: cols=130 lines=48");
 
 	GameBoard();
 	DrawPlayer();
-	
 	initPlayerCoord();
 
+	//while (1) {
+	//	for (int i = 0; i < 2; i++) {
+	//		gotoxy(70, 25);
+	//		printf("%s님의 차례입니다!", player[i].name);
+	//		int n = GameDice();
+	//		movePlayer(n, i);
+	//	}
+	//}
+
 	while (1) {
-		int i = GameDice();
-		movePlayer(i,turn);
-		system("pause>null");
+
+		for (int i = 0; i < 2; i++) {
+			Dice d;
+			int doubleCount = 0;
+			gotoxy(70, 25);
+			printf("%s님의 차례입니다!", player[i].name);
+
+			d = GameDice();
+			if (d.dice1 != d.dice2) {
+				movePlayer(d.sum, i);
+			}
+			else {
+				movePlayer(d.sum, i);
+				DoubleDice();
+
+				d = GameDice();
+				if (d.dice1 != d.dice2) {
+					movePlayer(d.sum, i);
+				}
+				else {
+					movePlayer(d.sum, i);
+					DoubleDice();
+
+					d = GameDice();
+					if(d.dice1==d.dice2){
+						gotoxy(48, 24);
+						printf("너무 앞서갔네요..무인도로 가세요");
+						player[i].playerBoard = 9;
+						Sleep(500);
+						//getchar();
+						gotoxy(48, 24);
+						printf("                                  ");
+						break;
+					}
+					else {
+						movePlayer(d.sum, i);
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -53,9 +90,16 @@ void initPlayerCoord() {
 	printf("◆");
 }
 
+int moveCount = 0;
 void movePlayer(int i, int turn) {
+		
 	gotoxy(player[turn].playerX, player[turn].playerY);
 	printf("  ");
+	if (moveCount > 0) {
+		gotoxy(player[turn].playerX + 2, player[turn].playerY);
+		printf("  ");
+	}
+	moveCount++;
 	player[turn].playerBoard += i;
 	if (player[turn].playerBoard > 31) {
 		player[turn].playerBoard -= 32;
@@ -65,9 +109,35 @@ void movePlayer(int i, int turn) {
 	gotoxy(player[turn].playerX, player[turn].playerY);
 	if (turn == 0) {
 		printf("◇");
-		turn = 1;
 		return;
 	}
+	gotoxy(player[turn].playerX + 2, player[turn].playerY);
 	printf("◆");
+
 }
 
+void playerTurn() {
+
+	printf("플레이어1의 이름을 입력해주세요 : ");
+	scanf("%s", player[0].name);
+	printf("플레이어2의 이름을 입력해주세요 : ");
+	scanf("%s", player[1].name);
+
+	printf("순서를 정합니다.\n");
+	getchar();
+	system("cls");
+
+	srand(time(NULL));
+	int n = rand() % 2;
+
+	player[0].turn = n;
+	player[1].turn = 1 - n;
+
+	if (player[1].turn == 0) {
+		Player tmp = player[0];
+		player[0] = player[1];
+		player[1] = tmp;
+	}
+	printf("%s님이 첫번째 차례네요.\n제일 먼저 시작하세요\n", player[0].name);
+	getchar();
+}

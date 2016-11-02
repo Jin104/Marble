@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="buildEvent.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="local.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="start.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BuildEvent.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Local.cpp" />

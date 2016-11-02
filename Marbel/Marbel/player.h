@@ -1,5 +1,6 @@
 #pragma once
 
+#include "local.h"
 //typedef Node *Link;	//반환할 노드의 위치 정보
 
 typedef struct _Node {
