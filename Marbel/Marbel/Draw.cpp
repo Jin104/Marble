@@ -6,7 +6,9 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <Windows.h>
+#include "start.h"
 
+int doubleCount = 0;
 int GameDice() {
 	int dice, dice2;
 
@@ -23,26 +25,23 @@ int GameDice() {
 			break;
 		}
 	}
-	/*gotoxy(48, 22);
-	printf("주사위의 값 : %d + %d = %d 입니다", dice, dice2, dice + dice2);
-	getchar();
 	gotoxy(48, 22);
-	printf("                                 ");*/
+	printf("주사위의 값 : %d + %d = %d 입니다", dice, dice2, dice + dice2);
 
-	if (dice != dice2) {
-		return dice + dice2;
-	}
-	else {
-		return -1;
-	}
-/*
 	if (dice == dice2) {
-		Double(dice, dice2);
+		gotoxy(48, 24);
+		printf("더블입니다 한번 더 돌려주세요!");
+		getchar();
+		gotoxy(48, 24);
+		printf("                                  ");
+		movePlayer(dice + dice2, 0);
+		return GameDice();
 	}
-	return dice + dice2;*/
+
+	return dice + dice2;
 }
 
-void Double() {
+int Double(int dice, int dice2) {
 	int count = 0;
 
 	gotoxy(48, 24);
@@ -50,7 +49,6 @@ void Double() {
 	getchar();
 	gotoxy(48, 24);
 	printf("                                  ");
-	GameDice();
 
 	count++;
 	if (count == 3) {
@@ -59,9 +57,8 @@ void Double() {
 		getchar();
 		gotoxy(48, 24);
 		printf("                                  ");
-		return;
 	}
-
+	return 0;
 }
 
 void DiceShape(int dice) {

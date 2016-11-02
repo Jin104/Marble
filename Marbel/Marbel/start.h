@@ -13,4 +13,5 @@ typedef struct _Player {
 }Player;
 
 void StartGame();
-void movePlayer(int i);
+void initPlayerCoord();
+void movePlayer(int i, int turn);

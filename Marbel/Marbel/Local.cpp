@@ -59,16 +59,3 @@ int localY[boardNum] = {
 	9,14,19,24,29,34,39,44,
 	44,44,44,44,44,44,44
 };
-
-//void makeLocal() {
-//
-//	Local local[32];
-//
-//	for (int i = 0; i < boardNum; i++) {
-//		strcpy(local[i].localName, localName[i]);
-//		strcpy(local[i].localColor, localColor[i]);
-//		local[i].localPrice = localPrice[i];
-//		local[i].x = localX[i];
-//		local[i].y = localY[i];
-//	}
-//}
