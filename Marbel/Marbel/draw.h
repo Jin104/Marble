@@ -8,7 +8,7 @@ typedef struct {
 	int sum;
 }Dice;
 
-Dice GameDice();
+Dice GameDice(int i);
 void DoubleDice();
 void GameBoard();
 void DiceShape(int dice);

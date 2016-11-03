@@ -4,10 +4,14 @@
 #include <time.h>
 #include <stdlib.h>
 
+
+extern Player player[2];
+
 int doubleCount = 0;
 int turnCount = 0;
 
-Dice GameDice() {
+Dice GameDice(int i) {
+	
 	Dice d;
 	gotoxy(48, 22);
 	printf("                                     ");
@@ -16,8 +20,8 @@ Dice GameDice() {
 	srand(time(NULL));
 	while (1) {
 		Sleep(50);
-		d.dice1 = rand() % 6 + 1;
-		d.dice2 = rand() % 6 + 1;
+		d.dice1 = rand() % 2 + 1;
+		d.dice2 = rand() % 2 + 1;
 		d.sum = d.dice1 + d.dice2;
 		DiceShape(d.dice1);
 		DiceShape2(d.dice2);
@@ -89,6 +93,8 @@ void DoubleDice() {
 	//getchar();
 	gotoxy(48, 24);
 	printf("                                  ");
+
+
 }
 
 void DiceShape(int dice) {

@@ -1,6 +1,5 @@
 #include "start.h"
 #include "draw.h"
-
 void main() {
 
 	cursor_view(0);
