@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <Windows.h>
+#include <time.h>
 
 #define COL GetStdHandle(STD_OUTPUT_HANDLE)
 #define BLUE_GREEN SetConsoleTextAttribute(COL, 0x003);

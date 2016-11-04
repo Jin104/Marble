@@ -1,7 +1,6 @@
 #include "draw.h"
 #include "local.h"
 #include "start.h"
-#include <time.h>
 #include <stdlib.h>
 
 
@@ -20,8 +19,8 @@ Dice GameDice(int i) {
 	srand(time(NULL));
 	while (1) {
 		Sleep(50);
-		d.dice1 = rand() % 2 + 1;
-		d.dice2 = rand() % 2 + 1;
+		d.dice1 = 2;// rand() % 6 + 1;
+		d.dice2 = 1;// rand() % 6 + 1;
 		d.sum = d.dice1 + d.dice2;
 		DiceShape(d.dice1);
 		DiceShape2(d.dice2);
@@ -93,8 +92,6 @@ void DoubleDice() {
 	//getchar();
 	gotoxy(48, 24);
 	printf("                                  ");
-
-
 }
 
 void DiceShape(int dice) {
@@ -412,3 +409,22 @@ void Explain() {
 
 }
 
+void clrText() {
+	for (int i = 29; i < 35; i++) {
+		gotoxytext(29, i, "                                                                    ");
+	}
+}
+
+void PlayerState() {
+	gotoxy(42, 10); printf("             ");
+	gotoxy(82, 39); printf("             ");
+	gotoxy(42, 10); printf("%d", player[0].marble);
+	gotoxy(82, 39); printf("%d", player[1].marble);
+}
+
+void clrList() {
+	for (int i = 0; i < 35; i++) {
+		gotoxytext(110, i, "                    ");
+	}
+
+}

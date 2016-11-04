@@ -1,69 +1,123 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "player.h"
+#include "draw.h"
 
 
 LinkedList *NewList() {
+
 	LinkedList *list = (LinkedList*)malloc(sizeof(LinkedList));
-	list->head = NewNode("");
-	list->tail = NewNode("");
+	//list->head = NULL;
+	//list->tail = list->head->next;
 
 	list->head->next = list->tail;
 	list->tail->prev = list->head;
+
 
 	list->size = 0;
 
 	return list;
 }
 
-
-Node *NewNode(char *local) {
+Node *NewNode(char *local, int price, int num) {
 	Node *node = (Node*)malloc(sizeof(Node));
 	strcpy(node->local, local);
-	node->next = 0;
-	node->prev = 0;
+	node->price = price;
+	node->num = num;
+	node->next = NULL;
 	return node;
 }
 
-void insert(LinkedList *list, Node *pos, char *local) {
-	Node *node = NewNode(local);
-	HangNode(node, pos);
+void HangNode(LinkedList *list, Node *node) {
+
+	if (list->head == NULL) {
+		list->head = node;
+		list->tail = node;
+		list->size++;
+		return;
+	}
+	
+	Node *pos = list->head;
+
+	while (pos->next != NULL) {
+		pos = pos->next;
+	}
+
+	node->prev = pos;
+	node->next = pos->next;
+
+	pos->next = node;
+	pos->next->prev = node;
+
 	list->size++;
+
+	//while (pos->next != NULL && pos->num < node->num) {
+	//	pos = pos->next;
+	//}
+	//if (list->head == pos) {
+	//	node->next = pos;
+	//	pos->prev = node;
+	//	list->head = node;
+	//}/*
+	//else if (pos->next == NULL) {
+	//	node->prev = pos->prev;
+	//	pos->prev->next = node;
+	//	list->tail = node;
+	//
+	//}*/
+	//else {
+	//	node->prev = pos;
+	//	node->next = pos->next;
+	//	pos->next = node;
+	//	pos->next->prev = node;
+	//}
 }
 
-void HangNode(Node *now, Node *pos) {
-	now->prev = pos->prev;
-	now->next = pos;
+void deletNode(LinkedList *list, char *local) {
+	Node *node = FindNode(list, local);
+	
+	if (node == NULL) {		//존재x
+		return;
+	}
 
-	pos->prev->next = now;
-	pos->prev = now;
-}
+	gotoxy(110, 15);
+	printf("%s", node->local);
 
-void PushBack(LinkedList *list, char *local) {
-	insert(list, list->tail, local);
-}
+	if (node->next == NULL) {
+		list->head = NULL;
+		return;
+	}
 
-void Erase(LinkedList *list, Node *pos) {
-	DisconnectNode(pos);
-	free(pos);
+	/*if (node->prev == NULL) {
+		node->next = NULL;
+		return;
+	}*/
+	node->prev->next = node->next;
+	node->next->prev = node->prev;
+		
+	free(node);
 	list->size--;
 }
 
-void DisconnectNode(Node *pos) {
-	if (pos == NULL) {
-		return;
-	}
-	pos->prev->next = pos->next;
-	pos->next->prev = pos->prev;
-}
-
-void printList(LinkedList *list) {
+void PrintList(LinkedList *list) {
 	Node *prev, *pos;
 	prev = pos = list->head;
+	int i = 1;
 	while (pos != NULL) {
-		printf("%s ", pos->local);
+		gotoxy(110, i);
+		printf("%d %s %d\n", pos->num, pos->local,pos->price/2);
 		pos = pos->next;
+		i++;
+	}
+}
+
+void PrintList2(LinkedList *list) {
+	Node *prev, *pos;
+	prev = pos = list->head;
+	int i = 20;
+	while (pos != NULL) {
+		gotoxy(110, i);
+		printf("%d %s %d", pos->num, pos->local, pos->price);
+		pos = pos->next;
+		i++;
 	}
 }
 
@@ -78,6 +132,11 @@ Node *FindNode(LinkedList *list, char *local) {
 			temp = temp->next;
 		}
 	}
-	printf("존재하지 않습니다.\n");
-	return temp;
+	//printf("존재하지 않습니다.\n");
+	return NULL;
+}
+
+void modifiNode(LinkedList *list, char *local, int price) {
+	Node *node = FindNode(list, local);
+	node->price = price;
 }

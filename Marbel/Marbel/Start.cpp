@@ -1,66 +1,79 @@
 #include "draw.h"
 #include "player.h"
 #include "start.h"
-#include <time.h>
+#include "buildEvent.h"
 
 Local local[32];
 Player player[2];
+
+LinkedList *list1 = NewList();
+LinkedList *list2 = NewList();
 
 void StartGame() {
 
 	playerTurn();
 
 	system("mode con: cols=130 lines=48");
+	
 	GameBoard();
 	DrawPlayer();
 	initLocal();
 	initPlayerCoord();
 
+
 	while (1) {
 		int doubleCnt = 0;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) {		//플레이어 1,2 번갈아서 하는거
 			Dice d;
-			gotoxy(70, 25);
+			gotoxy(73, 8);
 			printf("%s님의 차례입니다!", player[i].name);
-			d = GameDice(i);
-			movePlayer(d.sum, i);
 
-			/*switch (player[i].board)
+			switch (player[i].state)		//플레이어에 상태를 받아서 그곳에대한 이벤트를 발생
 			{
-			default:
+			case 1:
 				break;
-			}*/
+			case 2:
+				//IslandEvent(i);
+				break;
+			case 3:
+				WorldTourEvent(i);
+			default:
+				d = GameDice(i);				//주사위 처음 굴리기
+				movePlayer(d.sum, i);		//이동
+				buildBuilding(i, player[i].board);
 
-			if (d.dice1 == d.dice2) {
+				break;
+			}
 
+			/*if (d.dice1 == d.dice2) {
+				doubleCnt++;
 				if (doubleCnt > 1) {
 					gotoxy(48, 24);
-					printf("너무 앞서갔네요..무인도로 가세요");
+					printf("%d 너무 앞서갔네요..무인도로 가세요",doubleCnt);
 					player[i].board = 9;
 					Sleep(500);
-					//getchar();
 					gotoxy(48, 24);
 					printf("                                  ");
 					doubleCnt = 0;
 				}
 				else {
 					DoubleDice();
-					doubleCnt++;
 					i--;
 				}
 
 			}
 			else {
 				doubleCnt = 0;
-			}
+			}*/
 		}
 	}
 }
+
 void initLocal() {
 	for (int i = 0; i < boardNum; i++) {
 		strcpy(local[i].name, localName[i]);
 		strcpy(local[i].color, localColor[i]);
-		local[i].price = localPrice[i];
+		local[i].price = localPrice[i][0];
 		local[i].x = localX[i];
 		local[i].y = localY[i];
 	}
@@ -75,33 +88,33 @@ void initPlayerCoord() {
 	gotoxy(82, 39); printf("%d", player[1].marble);
 	gotoxy(player[0].playerX, player[0].playerY);
 	printf("◇");
-	gotoxy(player[1].playerX + 2, player[1].playerY);
+	player[1].playerX = player[0].playerX + 2;
+	gotoxy(player[1].playerX, player[1].playerY);
 	printf("◆");
 }
 
-int moveCount = 0;
 void movePlayer(int i, int turn) {
+		
+	for (int j = 0; j < i; j++) {
+		gotoxytext(player[turn].playerX, player[turn].playerY, "  ");
+		player[turn].board++;
 
-	gotoxy(player[turn].playerX, player[turn].playerY);
-	printf("  ");
-	if (moveCount > 0) {
-		gotoxy(player[turn].playerX + 2, player[turn].playerY);
-		printf("  ");
+		if (player[turn].board > 31) {
+			player[turn].board -= 32;
+			player[turn].turn++;
+		}
+
+		player[turn].playerX = local[player[turn].board].x + (turn * 2);
+		player[turn].playerY = local[player[turn].board].y;
+		gotoxy(player[turn].playerX, player[turn].playerY);
+		if (turn == 0) {
+			printf("◇");
+		}
+		else {
+			printf("◆");
+		}
+		Sleep(150);
 	}
-	moveCount++;
-	player[turn].board += i;
-	if (player[turn].board > 31) {
-		player[turn].board -= 32;
-	}
-	player[turn].playerX = local[player[turn].board].x;
-	player[turn].playerY = local[player[turn].board].y;
-	gotoxy(player[turn].playerX, player[turn].playerY);
-	if (turn == 0) {
-		printf("◇");
-		return;
-	}
-	gotoxy(player[turn].playerX + 2, player[turn].playerY);
-	printf("◆");
 
 }
 
@@ -128,5 +141,5 @@ void playerTurn() {
 		player[1] = tmp;
 	}
 	printf("%s님이 첫번째 차례네요.\n제일 먼저 시작하세요\n", player[0].name);
-	getchar();
+	Sleep(300);
 }

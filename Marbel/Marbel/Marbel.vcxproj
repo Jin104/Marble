@@ -149,15 +149,18 @@
     <ClInclude Include="graphics.h" />
     <ClInclude Include="local.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="specialLocal.h" />
     <ClInclude Include="start.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuildEvent.cpp" />
     <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Local.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SpecialLocal.cpp" />
     <ClCompile Include="Start.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
