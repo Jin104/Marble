@@ -1,6 +1,9 @@
 #pragma once
 
 #include "specialLocal.h"
+#include "fortuneCard.h"
+#include "gameOver.h"
+
 void buildBuilding(int turn, int board);
 
 
@@ -9,8 +12,4 @@ void buildBuilding(int turn, int board);
 
 void BuildRandmark(int turn, int board);
 void Takeover(int turn, int board);
-void PayMarble(int turn, int price);
 
-
-void Bankrupt(int turn, int price);
-int SellBuilding(int turn, int price);

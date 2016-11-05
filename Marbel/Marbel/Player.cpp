@@ -5,14 +5,11 @@
 LinkedList *NewList() {
 
 	LinkedList *list = (LinkedList*)malloc(sizeof(LinkedList));
-	//list->head = NULL;
-	//list->tail = list->head->next;
-
-	list->head->next = list->tail;
-	list->tail->prev = list->head;
-
-
+	list->head = NULL;
+	list->tail = NULL;
+	
 	list->size = 0;
+	list->size2 = 0;
 
 	return list;
 }
@@ -23,12 +20,13 @@ Node *NewNode(char *local, int price, int num) {
 	node->price = price;
 	node->num = num;
 	node->next = NULL;
+	node->prev = NULL;
 	return node;
 }
 
 void HangNode(LinkedList *list, Node *node) {
 
-	if (list->head == NULL) {
+	if (list->head == NULL) {	//비어있을때
 		list->head = node;
 		list->tail = node;
 		list->size++;
@@ -36,63 +34,58 @@ void HangNode(LinkedList *list, Node *node) {
 	}
 	
 	Node *pos = list->head;
-
-	while (pos->next != NULL) {
+	
+	while (pos != NULL && pos->num < node->num) {
 		pos = pos->next;
 	}
+	if (pos) {
+		if (list->head == pos) {		//맨앞에 매달때
+			node->next = list->head;
+			list->head->prev = node;
+			list->head = node;
+		}
+		else {							//중간에 매달때
+			node->prev = pos->prev;
+			node->next = pos;
+			pos->prev->next = node;
+			pos->prev = node;
 
-	node->prev = pos;
-	node->next = pos->next;
-
-	pos->next = node;
-	pos->next->prev = node;
+		}
+	}else{								//맨뒤에 매달때
+		list->tail->next = node;
+		node->prev = list->tail;
+		list->tail = node;	
+	}
 
 	list->size++;
 
-	//while (pos->next != NULL && pos->num < node->num) {
-	//	pos = pos->next;
-	//}
-	//if (list->head == pos) {
-	//	node->next = pos;
-	//	pos->prev = node;
-	//	list->head = node;
-	//}/*
-	//else if (pos->next == NULL) {
-	//	node->prev = pos->prev;
-	//	pos->prev->next = node;
-	//	list->tail = node;
-	//
-	//}*/
-	//else {
-	//	node->prev = pos;
-	//	node->next = pos->next;
-	//	pos->next = node;
-	//	pos->next->prev = node;
-	//}
 }
 
 void deletNode(LinkedList *list, char *local) {
+
 	Node *node = FindNode(list, local);
 	
-	if (node == NULL) {		//존재x
+	if (node == NULL) {		//해당노드가 없을때
 		return;
 	}
 
 	gotoxy(110, 15);
 	printf("%s", node->local);
 
-	if (node->next == NULL) {
-		list->head = NULL;
-		return;
+	if (node->prev != NULL) {
+		node->prev->next = node->next;
+	}
+	else{
+		list->head = list->head->next;
 	}
 
-	/*if (node->prev == NULL) {
-		node->next = NULL;
-		return;
-	}*/
-	node->prev->next = node->next;
-	node->next->prev = node->prev;
-		
+	if (node->next != NULL) {
+		node->next->prev = node->prev;
+	}
+	else {
+		list->tail = list->tail->prev;
+	}
+
 	free(node);
 	list->size--;
 }
@@ -103,12 +96,13 @@ void PrintList(LinkedList *list) {
 	int i = 1;
 	while (pos != NULL) {
 		gotoxy(110, i);
-		printf("%d %s %d\n", pos->num, pos->local,pos->price/2);
+		printf("%d %s %d\n", pos->num, pos->local,pos->price);
 		pos = pos->next;
 		i++;
 	}
 }
 
+//테스트용
 void PrintList2(LinkedList *list) {
 	Node *prev, *pos;
 	prev = pos = list->head;
@@ -125,18 +119,21 @@ Node *FindNode(LinkedList *list, char *local) {
 	Node *temp;
 	temp = list->head;
 	while (temp != NULL) {
-		if (strcmp(temp->local, local) == 0) {
+		if (strcmp(temp->local, local) == 0) {		//노드를 발견하면
+			gotoxy(110, 15);
+			printf("%s", temp->local);
 			return temp;
 		}
 		else {
 			temp = temp->next;
 		}
 	}
-	//printf("존재하지 않습니다.\n");
 	return NULL;
 }
 
 void modifiNode(LinkedList *list, char *local, int price) {
 	Node *node = FindNode(list, local);
 	node->price = price;
+	list->size2++;
 }
+

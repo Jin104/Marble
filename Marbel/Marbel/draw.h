@@ -20,3 +20,4 @@ void Loading();
 void clrText();
 void PlayerState();
 void clrList();
+void clrCard();

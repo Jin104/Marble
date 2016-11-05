@@ -19,8 +19,8 @@ Dice GameDice(int i) {
 	srand(time(NULL));
 	while (1) {
 		Sleep(50);
-		d.dice1 = 2;// rand() % 6 + 1;
-		d.dice2 = 1;// rand() % 6 + 1;
+		d.dice1 = rand() % 6 + 1;
+		d.dice2 = rand() % 6 + 1;
 		d.sum = d.dice1 + d.dice2;
 		DiceShape(d.dice1);
 		DiceShape2(d.dice2);
@@ -35,55 +35,6 @@ Dice GameDice(int i) {
 	//getchar();
 	return d;
 }
-
-//int GameDice() {
-//	int dice, dice2;
-//	gotoxy(48, 22);
-//	printf("                                     ");
-//	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
-//	turnCount++;
-//	srand(time(NULL));
-//	while (1) {
-//		Sleep(50);
-//		dice = rand() % 6 + 1;
-//		dice2 = rand() % 6 + 1;
-//		DiceShape(dice);
-//		DiceShape2(dice2);
-//		if (kbhit()) {
-//			getchar();
-//			break;
-//		}
-//	}
-//	gotoxy(48, 22);
-//	printf("주사위의 값 : %d + %d = %d 입니다", dice, dice2, dice + dice2);
-//	Sleep(500);
-//	//getchar();
-//	if (dice == dice2) {
-//		if (doubleCount == 2) {
-//			gotoxy(48, 24);
-//			printf("너무 앞서갔네요..무인도로 가세요");
-//			Sleep(500);
-//			//getchar();
-//			gotoxy(48, 24);
-//			printf("                                  ");
-//			doubleCount = 0;
-//			return 0;
-//		}else{
-//			doubleCount = 1;
-//		}
-//		turnCount--;
-//		gotoxy(48, 24);
-//		printf("더블입니다 한번 더 돌려주세요!");
-//		Sleep(500);
-//		//getchar();
-//		gotoxy(48, 24);
-//		printf("                                  ");
-//		movePlayer(dice + dice2, turnCount%2);
-//		return GameDice();
-//	}
-//
-//	return dice + dice2;
-//}
 
 void DoubleDice() {
 	gotoxy(48, 24);
@@ -271,19 +222,19 @@ void GameBoard() {
 
 	int i = 0;
 	for (int j = 42; j > 5; j -= 5) {
-		gotoxy(19, j); printf("%s", localName[i]);
+		gotoxy(19, j); printf("%8s", localName[i]);
 		i++;
 	}
 	for (int j = 19; j < 105; j += 10) {
-		gotoxy(j, 2); printf("%s", localName[i]);
+		gotoxy(j, 2); printf("%8s", localName[i]);
 		i++;
 	}
 	for (int j = 7; j < 47; j += 5) {
-		gotoxy(99, j); printf("%s", localName[i]);
+		gotoxy(99, j); printf("%8s", localName[i]);
 		i++;
 	}
 	for (int j = 89; j > 22; j -= 10) {
-		gotoxy(j, 42); printf("%s", localName[i]);
+		gotoxy(j, 42); printf("%8s", localName[i]);
 		i++;
 	}
 }
@@ -399,7 +350,7 @@ void Loading() {
 	gotoxy(75, 32); printf("▶");
 	Sleep(200);
 	ORIGINAL
-	system("cls");
+	//system("cls");
 
 
 }
@@ -409,11 +360,7 @@ void Explain() {
 
 }
 
-void clrText() {
-	for (int i = 29; i < 35; i++) {
-		gotoxytext(29, i, "                                                                    ");
-	}
-}
+
 
 void PlayerState() {
 	gotoxy(42, 10); printf("             ");
@@ -422,9 +369,38 @@ void PlayerState() {
 	gotoxy(82, 39); printf("%d", player[1].marble);
 }
 
+void clrText() {
+	for (int i = 29; i < 36; i++) {
+		gotoxytext(29, i, "                                                                    ");
+	}
+}
+
 void clrList() {
-	for (int i = 0; i < 35; i++) {
-		gotoxytext(110, i, "                    ");
+	for (int i = 0; i < 40; i++) {
+		gotoxytext(110, i, "                       ");
 	}
 
+}
+
+void clrCard() {
+
+	gotoxy(112, 16); printf("                ");
+	gotoxy(112, 17); printf("                ");
+	gotoxy(112, 18); printf("                ");
+	gotoxy(112, 19); printf("                ");
+	gotoxy(112, 20); printf("                ");
+	gotoxy(112, 21); printf("                ");
+	gotoxy(112, 22); printf("                ");
+	gotoxy(112, 23); printf("                ");
+	gotoxy(112, 24); printf("                ");
+	gotoxy(112, 25); printf("                ");
+
+}
+
+
+
+void set(int turn) {
+	if (player[turn].turn == 0) {
+		settextcolor(888888, 123123);
+	}
 }
