@@ -1,5 +1,5 @@
-#include "player.h"
-#include "draw.h"
+#include "Player.h"
+#include "Draw.h"
 
 
 LinkedList *NewList() {

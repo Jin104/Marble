@@ -19,6 +19,12 @@ void gotoxytext(int x, int y, char *string) {
 	puts(string);
 }
 
+void gotoxyint(int x, int y, int string) {
+	COORD Pos = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+	printf("%d", string);
+}
+
 void cursor_view(char s)      // 0넣으면숨기기, 1넣으면보이기
 {
 	HANDLE hConsole;
@@ -27,4 +33,9 @@ void cursor_view(char s)      // 0넣으면숨기기, 1넣으면보이기
 	ConsoleCursor.bVisible = s;
 	ConsoleCursor.dwSize = 2;
 	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
+}
+
+void SetColor(int color, int bkcolor) {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), bkcolor);
 }

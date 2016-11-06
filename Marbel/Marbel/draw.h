@@ -21,3 +21,5 @@ void clrText();
 void PlayerState();
 void clrList();
 void clrCard();
+
+void Menu();

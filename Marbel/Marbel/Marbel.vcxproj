@@ -144,15 +144,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="buildEvent.h" />
-    <ClInclude Include="draw.h" />
-    <ClInclude Include="fortuneCard.h" />
-    <ClInclude Include="gameOver.h" />
-    <ClInclude Include="graphics.h" />
-    <ClInclude Include="local.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="specialLocal.h" />
-    <ClInclude Include="start.h" />
+    <ClInclude Include="BuildEvent.h" />
+    <ClInclude Include="Draw.h" />
+    <ClInclude Include="FortuneCard.h" />
+    <ClInclude Include="GameOver.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Local.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="SpecialLocal.h" />
+    <ClInclude Include="Start.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuildEvent.cpp" />
@@ -161,7 +161,7 @@
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Local.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Program.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpecialLocal.cpp" />
     <ClCompile Include="Start.cpp" />

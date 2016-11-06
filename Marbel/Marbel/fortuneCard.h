@@ -13,6 +13,6 @@ void GoStart(int turn);
 void GoIsland(int turn);
 void HoldOlympic(int turn);
 
-//void ChangeLocal(int turn);
+
 void CompelSale(int turn);
 int DoAngel(int turn, int price);
