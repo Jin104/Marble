@@ -4,6 +4,7 @@
 #define TURN2 1
 
 typedef struct _Player{
+
 	int turn = 0;
 	int board=0;
 	int playerX=21;
