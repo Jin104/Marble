@@ -6,7 +6,6 @@
 typedef struct _Player{
 	int turn = 0;
 	int board=0;
-
 	int playerX=21;
 	int playerY=45;
 	char name[10];
