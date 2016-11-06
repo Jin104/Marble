@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="buildEvent.h" />
     <ClInclude Include="draw.h" />
+    <ClInclude Include="fortuneCard.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="local.h" />
     <ClInclude Include="player.h" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="BuildEvent.cpp" />
     <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="FortuneCard.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Local.cpp" />
     <ClCompile Include="Main.cpp" />
