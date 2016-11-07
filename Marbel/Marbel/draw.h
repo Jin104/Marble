@@ -17,3 +17,9 @@ void DrawPlayer();
 
 void Explain();
 void Loading();
+void clrText();
+void PlayerState();
+void clrList();
+void clrCard();
+
+void Menu();

@@ -1,14 +1,9 @@
-#include "draw.h"
-#include "local.h"
-#include "start.h"
-#include <time.h>
+#include "Start.h"
+#include "Player.h"
 #include <stdlib.h>
 
 
 extern Player player[2];
-
-int doubleCount = 0;
-int turnCount = 0;
 
 Dice GameDice(int i) {
 	
@@ -16,85 +11,33 @@ Dice GameDice(int i) {
 	gotoxy(48, 22);
 	printf("                                     ");
 	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
-	turnCount++;
 	srand(time(NULL));
 	while (1) {
-		Sleep(50);
-		d.dice1 = rand() % 2 + 1;
-		d.dice2 = rand() % 2 + 1;
+		Sleep(100);
+		d.dice1 = rand() % 6 + 1;
+		d.dice2 = rand() % 6 + 1;
 		d.sum = d.dice1 + d.dice2;
 		DiceShape(d.dice1);
 		DiceShape2(d.dice2);
 		if (kbhit()) {
-			getchar();
+			getch();
 			break;
 		}
 	}
 	gotoxy(48, 22);
-	printf("주사위의 값 : %d + %d = %d 입니다", d.dice1, d.dice2, d.sum);
+	printf("주사위의 값은 %d 입니다", d.sum);
 	Sleep(500);
-	//getchar();
+	gotoxy(48, 20);
+	printf("                                     ");
 	return d;
 }
-
-//int GameDice() {
-//	int dice, dice2;
-//	gotoxy(48, 22);
-//	printf("                                     ");
-//	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
-//	turnCount++;
-//	srand(time(NULL));
-//	while (1) {
-//		Sleep(50);
-//		dice = rand() % 6 + 1;
-//		dice2 = rand() % 6 + 1;
-//		DiceShape(dice);
-//		DiceShape2(dice2);
-//		if (kbhit()) {
-//			getchar();
-//			break;
-//		}
-//	}
-//	gotoxy(48, 22);
-//	printf("주사위의 값 : %d + %d = %d 입니다", dice, dice2, dice + dice2);
-//	Sleep(500);
-//	//getchar();
-//	if (dice == dice2) {
-//		if (doubleCount == 2) {
-//			gotoxy(48, 24);
-//			printf("너무 앞서갔네요..무인도로 가세요");
-//			Sleep(500);
-//			//getchar();
-//			gotoxy(48, 24);
-//			printf("                                  ");
-//			doubleCount = 0;
-//			return 0;
-//		}else{
-//			doubleCount = 1;
-//		}
-//		turnCount--;
-//		gotoxy(48, 24);
-//		printf("더블입니다 한번 더 돌려주세요!");
-//		Sleep(500);
-//		//getchar();
-//		gotoxy(48, 24);
-//		printf("                                  ");
-//		movePlayer(dice + dice2, turnCount%2);
-//		return GameDice();
-//	}
-//
-//	return dice + dice2;
-//}
 
 void DoubleDice() {
 	gotoxy(48, 24);
 	printf("더블입니다 한번 더 돌려주세요!");
 	Sleep(500);
-	//getchar();
 	gotoxy(48, 24);
 	printf("                                  ");
-
-
 }
 
 void DiceShape(int dice) {
@@ -213,7 +156,7 @@ void DiceShape2(int dice2) {
 	}
 }
 
-//World Map
+/*게임판 그려줌*/
 void GameBoard() {
 	
 	//외부 테두리
@@ -272,26 +215,123 @@ void GameBoard() {
 		}
 	}
 
-	int i = 0;
+	/*int i = 0;
 	for (int j = 42; j > 5; j -= 5) {
-		gotoxy(19, j); printf("%s", localName[i]);
+		gotoxy(19, j); printf("%8s", localName[i]);
 		i++;
 	}
 	for (int j = 19; j < 105; j += 10) {
-		gotoxy(j, 2); printf("%s", localName[i]);
+		gotoxy(j, 2); printf("%8s", localName[i]);
 		i++;
 	}
 	for (int j = 7; j < 47; j += 5) {
-		gotoxy(99, j); printf("%s", localName[i]);
+		gotoxy(99, j); printf("%8s", localName[i]);
 		i++;
 	}
 	for (int j = 89; j > 22; j -= 10) {
-		gotoxy(j, 42); printf("%s", localName[i]);
+		gotoxy(j, 42); printf("%8s", localName[i]);
+		i++;
+	}*/
+
+	int i = 0;
+	for (int j = 42; j > 5; j -= 5) {
+		gotoxy(19, j); printf("%8s", localName[i]);
+		if (i == 0 || i == 2) {
+			settextcolor(0, 10);
+		}
+		else if (i == 1) {
+			settextcolor(0x0007, 007700);
+		}
+		else if (i == 3) {
+			settextcolor(0, 3);
+		}
+		else if (i == 4 || i == 5 || i == 6) {
+			settextcolor(0, 2);
+		}
 		i++;
 	}
+	settextcolor(0x0007, 007700);
+	for (int j = 19; j < 105; j += 10) {
+		gotoxy(j, 2); printf("%8s", localName[i]);
+		if (i == 8) {
+			settextcolor(0, 3);
+		}
+		else if (i == 9 || i == 10) {
+			settextcolor(0, 9);
+		}
+		else if (i == 11) {
+			settextcolor(0x0007, 007700);
+		}
+		else if (i == 12 || i == 14) {
+			settextcolor(0, 1);
+		}
+		else if (i == 13) {
+			settextcolor(0, 3);
+		}
+		else if (i == 15) {
+			settextcolor(0x0007, 007700);
+		}
+		else if (i == 16) {
+			settextcolor(0, 13);
+		}
+		i++;
+	}
+	for (int j = 7; j < 47; j += 5) {
+		gotoxy(99, j); printf("%8s", localName[i]);
+		if (i == 17) {
+			settextcolor(0, 3);
+		}
+		else if (i == 18) {
+			settextcolor(0, 13);
+		}
+		else if (i == 19) {
+			settextcolor(0x0007, 007700);
+		}
+		else if (i == 20 || i == 21 || i == 22) {
+			settextcolor(0, 5);
+		}
+		else if (i == 23) {
+			settextcolor(0x0007, 007700);
+		}
+		i++;
+	}
+	settextcolor(0x0007, 007700);
+	for (int j = 89; j > 22; j -= 10) {
+		if (i == 25) {
+			settextcolor(0, 3);
+		}
+		else if (i == 26 || i == 27) {
+			settextcolor(0, 12);
+		}
+		else if (i == 28) {
+			settextcolor(0x0007, 007700);
+		}
+		else if (i == 29) {
+			settextcolor(0, 4);
+		}
+		else if (i == 30) {
+			settextcolor(0x0007, 007700);
+		}
+		else if (i == 31) {
+			settextcolor(0, 4);
+		}
+		gotoxy(j, 42); printf("%8s", localName[i]);
+		settextcolor(0x0007, 007700);
+		i++;
+	}
+
+	gotoxytext(32, 24, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+	for (int i = 25; i<35; i++) {
+		gotoxytext(32, i, "┃");
+		gotoxytext(92, i, "┃");
+	}
+	gotoxytext(32, 35, "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+
+
 }
 
-//Player
+
+/*플레이어정보판 그려줌*/
 void DrawPlayer() {
 
 	gotoxytext(29, 7, "┏━━━━━━━━━━━━┓");
@@ -300,7 +340,7 @@ void DrawPlayer() {
 	gotoxytext(29, 10, "┃                        ┃");
 	gotoxytext(29, 11, "┗━━━━━━━━━━━━┛");
 
-	gotoxytext(40, 8, "님");
+	//gotoxytext(40, 8, "님");
 	gotoxytext(31, 10, "보유마블: ");
 
 	gotoxytext(69, 36, "┏━━━━━━━━━━━━┓");
@@ -309,14 +349,14 @@ void DrawPlayer() {
 	gotoxytext(69, 39, "┃                        ┃");
 	gotoxytext(69, 40, "┗━━━━━━━━━━━━┛");
 
-	gotoxytext(80, 37, "님");
+	//gotoxytext(80, 37, "님");
 	gotoxytext(71, 39, "보유마블: ");
 }
 
 void Loading() {
 
 	system("mode con:cols=130 lines=48");
-	gotoxy(25, 10); BLUE_GREEN printf("┏━━━━━┓");
+	gotoxy(25, 10); DARK_SKY_BLUE printf("┏━━━━━┓");
 	gotoxy(25, 11); printf("┃ ┏━━┓ ┃");
 	gotoxy(25, 12); printf("┃ ┃    ┃ ┃");
 	gotoxy(25, 13); printf("┃ ┗━━┛ ┃");
@@ -401,14 +441,97 @@ void Loading() {
 	Sleep(200);
 	gotoxy(75, 32); printf("▶");
 	Sleep(200);
-	ORIGINAL
-	system("cls");
+	GRAY
+	//clrText();
+	//system("cls");
 
+
+}
+
+void Menu() {
+
+	clrText();
+
+	settextcolor(0x0007, 000000);
+	gotoxytext(50, 28, "☞");
+
+	settextcolor(0, 3);
+	gotoxytext(55, 28, "[1] 게임 시작");
+	settextcolor(0x0007, 000000);
+	gotoxytext(55, 30, "[2] 게임 설명");
+	//gotoxytext(55, 32, "[3] 게임 종료");
 
 }
 
 void Explain() {
 
+	int select;
+	gotoxy(20, 5); DARK_SKY_BLUE 
+	printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━┳━━┳━━┓");
+	for (int i = 6; i<42; i++) {
+		gotoxytext(20, i, "┃");
+		gotoxytext(106, i, "┃");
+	}
+	gotoxy(25, 7); printf("게임 시작은 Enter를 눌러주세요!");
+	gotoxy(91, 7); printf("━"); gotoxy(96, 6); printf("┏┓"); gotoxy(96, 7); printf("┗┛"); gotoxy(103, 7); printf("Ⅹ");
+	gotoxy(88, 6); printf("┃"); gotoxy(94, 6); printf("┃"); gotoxy(100, 6); printf("┃");
+	gotoxy(88, 7); printf("┃"); gotoxy(94, 7); printf("┃"); gotoxy(100, 7); printf("┃");
+	gotoxy(20, 8); printf("┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━┻━━┻━━┫");
+	gotoxy(20, 42); printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+	GRAY
+		gotoxy(25, 11); printf("[1] 게임 시작하기를 선택하면 게임이 시작");
+	gotoxy(25, 13); printf("[2] 플레이어는 2명으로 제한, 카드선택으로 순서를 결정");
+	gotoxy(25, 15); printf("[3] 주사위를 굴려 나온 만큼 전진, 도착한 도시에 호텔 지을 수 있음");
+	gotoxy(25, 16); printf("[4] 호텔을 지은 자신의 지역에 도착 시 랜드 마크 건설");
+	gotoxy(27, 17); printf("  또는 출발지점으로 가면 자신의 지역 한 곳에 건물 건설 가능");
+	gotoxy(25, 20); printf("[5] 다른 플레이어의 지역에 도착했을 시 통행료 지불과 지역 & 건물 인수 가능");
+	gotoxy(27, 21); printf("   ☞ 단, 랜드 마크나 관광지는 인수 불가능");
+	gotoxy(25, 23); printf("[6] 행운 카드에 도착 시, 나오는 카드 내용을 수행");
+	gotoxy(25, 25); printf("[7] 세계여행에 도착 시, 비용을 지불하고 다음 턴에 원하는 지역으로 이동 가능");
+	gotoxy(25, 26); printf("[8] 무인도에 도착 시, 주사위 더블이 나오거나, 돈을 지불해야 탈출 가능!");
+	gotoxy(27, 27); printf("  탈출을 못했을 경우 상대방으로 턴이 넘어 감. 최대 3회!");
+	gotoxy(25, 30); printf("[9] 올림픽에 도착 시, 자신의 땅 한곳의 통행료를 2배로 상승");
+	gotoxy(25, 32); printf("[10] 승리 조건 : 라인독점, 트리플 독점, 관광지 독점, 상대방 파산");
+	gotoxy(25, 34); printf("    ☞ 라인 독점 ─ 한 줄에 있는 지역을 모두 차지");
+	gotoxy(25, 35); printf("    ☞ 트리플 독점 ─ 3가지 컬러의 모든 지역을 차지");
+	gotoxy(25, 36); printf("    ☞ 관광지 독점 ─ 5개의 관광지를 모두 차지");
+	gotoxy(25, 37); printf("    ☞ 파산 ─ 상대방의 보유마블 부족");
+
+	if (select = _getch()) {
+		system("cls");
+		StartGame();
+	}
 
 }
 
+/*플레이어의 마블상태를 그려줌*/
+void PlayerState() {
+	gotoxy(42, 10); printf("             ");
+	gotoxy(82, 39); printf("             ");
+	gotoxy(42, 10); printf("%d", player[0].marble);
+	gotoxy(82, 39); printf("%d", player[1].marble);
+}
+
+/*텍스트화면 지우기*/
+void clrText() {
+	for (int i = 25; i < 35; i++) {
+		gotoxytext(34, i, "                                                         ");
+	}
+}
+
+/*보유리스트 지우기*/
+void clrList() {
+	for (int i = 0; i < 40; i++) {
+		gotoxytext(110, i, "                       ");
+	}
+
+}
+
+/*카드 지우기*/
+void clrCard() {
+
+	for (int i = 16; i < 26; i++) {
+		gotoxy(112, i); printf("                ");
+	}
+
+}

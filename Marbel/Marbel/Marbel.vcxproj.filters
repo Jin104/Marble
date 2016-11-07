@@ -15,32 +15,35 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="graphics.h">
+    <ClInclude Include="BuildEvent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="draw.h">
+    <ClInclude Include="Draw.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="start.h">
+    <ClInclude Include="FortuneCard.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="local.h">
+    <ClInclude Include="GameOver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
+    <ClInclude Include="Graphics.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="buildEvent.h">
+    <ClInclude Include="Local.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="fortuneCard.h">
+    <ClInclude Include="Player.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecialLocal.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Start.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Draw.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -59,7 +62,16 @@
     <ClCompile Include="BuildEvent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SpecialLocal.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
     <ClCompile Include="FortuneCard.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
