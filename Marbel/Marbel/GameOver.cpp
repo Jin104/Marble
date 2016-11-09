@@ -147,11 +147,44 @@ void TouristMonop(int turn) {
 }
 
 void ColorMonop(int turn) {
-	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0;
+
+	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점 수
 	int color = 0;
-	
-	//local[1].state
-}
+
+	if ((local[1].state == turn || local[1].state == turn + 2) && (local[3].state == turn || local[3].state == turn + 2)) {
+		cnt1++; //방콕 베이징
+	}
+	if ((local[5].state == turn || local[5].state == turn + 2) && (local[6].state == turn || local[6].state == turn + 2) && (local[7].state == turn || local[7].state == turn + 2)) {
+		cnt2++; //타이페이 두바이 카이로
+	}
+	if ((local[10].state == turn || local[10].state == turn + 2) && (local[11].state == turn || local[11].state == turn + 2)) {
+		cnt3++; //도쿄 시드니
+	}
+	if ((local[13].state == turn || local[13].state == turn + 2) && (local[15].state == turn || local[15].state == turn + 2)) {
+		cnt4++; //퀘백 상파울로
+	}
+	if ((local[17].state == turn || local[17].state == turn + 2) && (local[19].state == turn || local[19].state == turn + 2)) {
+		cnt5++; //프라하 베를린
+	}
+	if ((local[21].state == turn || local[21].state == turn + 2) && (local[22].state == turn || local[22].state == turn + 2) && (local[23].state == turn || local[23].state == turn + 2)) {
+		cnt6++; //모스크바 제네바 로마
+	}
+	if ((local[26].state == turn || local[26].state == turn + 2) && (local[27].state == turn || local[27].state == turn + 2)) {
+		cnt7++; //런던 파리
+	}
+	if ((local[29].state == turn || local[29].state == turn + 2) && (local[31].state == turn || local[31].state == turn + 2)) {
+		cnt8++; //뉴욕 서울
+	}
+
+	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt6 + cnt7 + cnt8;
+	if (color >= 3) { //컬러독점 3개
+			clrText();
+			gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
+			gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
+			gotoxy(42, 31);
+			exit(1);
+		}
+	}
 
 void LineMonop(int turn) {
 

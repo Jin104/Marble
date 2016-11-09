@@ -130,6 +130,7 @@ void BuildingEvent(int turn, int board) {
 				else {
 					player[turn].marble -= price;
 				}
+				
 				Takeover(turn, board);
 
 				Sleep(500);
@@ -149,7 +150,7 @@ void BuildingEvent(int turn, int board) {
 					toll = toll * 2;
 					local[board].olystate = 0;
 				}
-
+				Sleep(500);
 				printf("통행료는 %d마블 입니다.", toll);
 				
 				int price = toll;
@@ -300,16 +301,31 @@ void BuildRandmark(int turn, int board) {
 
 void Takeover(int turn, int board) {
 	
-	int answer;
+	int select;
+	Sleep(1000);
 	if (player[turn].marble > localPrice[board][0]) {   //인수할 돈이 있을때
 		gotoxy(37, 27);
 		printf("인수하시겠습니까? 인수료는 %d입니다.\n", localPrice[board][0]);
 		gotoxy(37, 28);
 		printf("1) YES  2) NO  (선택) ▶ ");
-		answer = _getch() - 48;
-		gotoxy(73, 28); printf("%d", answer);
-		if (answer == 1) {
+
+		gotoxy(70, 28);
+		cursor_view(1);
+
+		do {
+			select = _getch() - 48;
+			gotoxyint(70, 28, select);
+			gotoxytext(70, 28, "      ");
+
+		} while (select != 1 && select != 2);
+		cursor_view(0);
+		gotoxyint(70, 28, select);
+		clrText();
+
+		if (select == 1) {
+			Sleep(500);
 			gotoxytext(37, 30, "인수를 완료했습니다.\n");
+			clrText();
 			player[turn].marble -= localPrice[board][0];   //보유마블 감소
 			player[1 - turn].marble += localPrice[board][0];
 			local[board].state = turn;   //지역의 상태 변경
@@ -332,5 +348,6 @@ void Takeover(int turn, int board) {
 	else {
 		gotoxy(37, 30);
 		printf("인수할 돈이 부족합니다.\n");
+		clrText();
 	}
 }

@@ -154,12 +154,12 @@ int IslandEvent(int i) {
 	cursor_view(1);
 	do {
 		select = _getch() - 48;
-		gotoxyint(70, 28, select);
-		gotoxytext(70, 28, "      ");
+		gotoxyint(80, 28, select);
+		gotoxytext(80, 28, "      ");
 
 	} while (select != 1 && select != 2);
 	cursor_view(0);
-	gotoxyint(70, 28, select);
+	gotoxyint(80, 28, select);
 
 
 	if (select == 1) {

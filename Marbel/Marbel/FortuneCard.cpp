@@ -22,7 +22,7 @@ void FortuneCard(int turn) {
 
 	/*1부터 7까지 랜덤한 수 생성*/
 	srand(time(NULL));
-	int n = rand() % 7 + 1;
+	int n = 1;// rand() % 7 + 1;
 
 	/*나온수에따라 이벤트발생*/
 	switch (n)
@@ -276,6 +276,7 @@ void CompelSale(int turn) {
 /*천사카드 실행*/
 int DoAngel(int turn, int price) {
 	int select;
+	Sleep(500);
 	if (player[turn].card == 1) {
 		gotoxytext(37, 27, "통행료 반값 할인 카드가 보관되어있습니다.");
 	}
@@ -296,13 +297,14 @@ int DoAngel(int turn, int price) {
 	} while (select != 1 && select != 2);
 	cursor_view(0);
 	gotoxyint(70, 29, select);
-
+	clrText();
 	if (select == 1) {
 		gotoxytext(37, 32, "카드를 사용합니다.");
 		if (player[turn].card == 1) {
 			price = price / 2;
 		}
 		player[turn].card = 0;
+		clrText();
 		return price;
 	}
 	else {
