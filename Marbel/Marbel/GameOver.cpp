@@ -16,7 +16,7 @@ int SellBuilding(int turn, int price) {
 		list = list2;
 
 	char name[10];
-	
+
 	/*지불금액이 플레이어의 보유마블보다 큰경우*/
 	while (price > player[turn].marble) {
 
@@ -73,13 +73,13 @@ void Bankrupt(int turn, int price) {
 		list = list1;
 	else
 		list = list2;
-	
+
 	int select;
 	gotoxytext(37, 27, "통행료가 부족합니다.\n");
 	gotoxy(37, 28);
 	printf("1) 매각  2) 파산  (선택) ☞ ");
 
-	gotoxy(73, 28);
+	gotoxy(70, 28);
 	cursor_view(1);
 	do {
 		select = _getch() - 48;
@@ -88,7 +88,7 @@ void Bankrupt(int turn, int price) {
 
 	} while (select != 1 && select != 2);
 	cursor_view(0);
-	gotoxyint(70, 29, select);
+	gotoxyint(70, 28, select);
 
 	if (select == 1) {
 		if (SellBuilding(turn, price) == -1) {
@@ -98,7 +98,7 @@ void Bankrupt(int turn, int price) {
 			clrText();
 			gotoxy(45, 30);
 			printf("%s님의 파산승리!", player[1 - turn].name);
-			
+
 			gotoxytext(37, 33, "Enter키를 누르면 게임이 종료됩니다!");
 			getch();
 			system("pause>null");
@@ -110,76 +110,48 @@ void Bankrupt(int turn, int price) {
 	}
 	else {
 		clrText();
-		gotoxytext(37, 27, "이런! 상대방의 파산승리로 패배 ! GAME OVER..");
+		gotoxytext(37, 27, "파산!!");
+
+		Sleep(700);
+		clrText();
+		gotoxy(45, 30);
+		printf("%s님의 파산승리!", player[1 - turn].name);
+
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
-		gotoxy(37, 31);
+		getch();
+		system("pause>null");
 		exit(1);
 	}
 }
 
+/*관광지독점 승리*/
 void TouristMonop(int turn) {
 	int cnt = 0;
+
+	/*지역의 상태가 관광지면 cnt증가*/
 	for (int i = 0; i < boardNum; i++) {
-		if (local[i].state == 4) {
+		if (local[i].state == turn + 4) {
 			cnt++;
 		}
 	}
 	if (cnt == 5) {
 		clrText();
-		gotoxy(37, 27); printf("축하합니다! %s님의 관광지독점 승리!", player[turn].name);
+		gotoxy(37, 27);
+		printf("축하합니다! %s님의 관광지독점 승리!", player[turn].name);
+
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
-		gotoxy(37, 31);
+		getch();
+		system("pause>null");
 		exit(1);
 	}
 }
 
-void LineMonop(int turn) {
-
-	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0;
-	for (int i = 1; i < 8; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
-			cnt1++;
-		}
-	}
-
-	for (int i = 9; i < 16; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
-			cnt2++;
-		}
-	}
-
-	for (int i = 17; i < 24; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
-			cnt3++;
-		}
-	}
-
-	for (int i = 25; i < 32; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
-			cnt4++;
-		}
-	}
-	if (cnt1 == 6 || cnt2 == 6 || cnt3 == 6 || cnt4 == 5) {
-		clrText();
-		gotoxy(37, 27); printf("축하합니다! %s님의 라인독점 승리!", player[turn].name);
-		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
-		gotoxy(37, 31);
-		exit(1);
-	}
-
-
-}
-
-void CheckGameOver(int turn) {
-	TouristMonop(turn);
-	ColorMonop(turn);
-	LineMonop(turn);
-}
-
+//유나
+//트리플 독점 승리
 void ColorMonop(int turn) {
 
-	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점 수
-	int color = 0;
+	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점
+	int color = 0; //컬러독점 수
 
 	if ((local[1].state == turn || local[1].state == turn + 2) && (local[3].state == turn || local[3].state == turn + 2)) {
 		cnt1++; //방콕 베이징
@@ -206,14 +178,60 @@ void ColorMonop(int turn) {
 		cnt8++; //뉴욕 서울
 	}
 
-	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt5 + cnt6 + cnt7 + cnt8;
-	if (color >= 3) { //컬러독점 3개
-		if (player[turn].state >= 3) {
-			clrText();
-			gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
-			gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
-			gotoxy(42, 31);
-			exit(1);
-		}
+	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt6 + cnt7 + cnt8;
+	if (color >= 3) { //컬러독점 3개이면 승리
+		clrText();
+		gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
+		gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
+		gotoxy(42, 31);
+		exit(1);
 	}
 }
+
+void LineMonop(int turn) {
+
+	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0;
+
+	/*라인별로 지역상태를 체크해서 카운트*/
+	for (int i = 1; i < 8; i++) {
+		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+			cnt1++;
+		}
+	}
+
+	for (int i = 9; i < 16; i++) {
+		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+			cnt2++;
+		}
+	}
+
+	for (int i = 17; i < 24; i++) {
+		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+			cnt3++;
+		}
+	}
+
+	for (int i = 25; i < 32; i++) {
+		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+			cnt4++;
+		}
+	}
+	if (cnt1 == 6 || cnt2 == 6 || cnt3 == 6 || cnt4 == 5) {
+		clrText();
+		gotoxy(37, 27);
+		printf("축하합니다! %s님의 라인독점 승리!", player[turn].name);
+
+		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
+		getch();
+		system("pause>null");
+		exit(1);
+	}
+
+
+}
+
+void CheckGameOver(int turn) {
+	TouristMonop(turn);
+	ColorMonop(turn);
+	LineMonop(turn);
+}	

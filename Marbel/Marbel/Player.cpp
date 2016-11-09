@@ -1,19 +1,20 @@
 #include "Player.h"
 #include "Draw.h"
 
-
+/*새로운 리스트 생성*/
 LinkedList *NewList() {
 
 	LinkedList *list = (LinkedList*)malloc(sizeof(LinkedList));
 	list->head = NULL;
 	list->tail = NULL;
-	
+
 	list->size = 0;
 	list->size2 = 0;
 
 	return list;
 }
 
+/*새로운 노드 생성*/
 Node *NewNode(char *local, int price, int num) {
 	Node *node = (Node*)malloc(sizeof(Node));
 	strcpy(node->local, local);
@@ -24,6 +25,7 @@ Node *NewNode(char *local, int price, int num) {
 	return node;
 }
 
+/*노드를 오름차순으로(지역번호기준) 리스트에 달아줌*/
 void HangNode(LinkedList *list, Node *node) {
 
 	if (list->head == NULL) {	//비어있을때
@@ -32,9 +34,9 @@ void HangNode(LinkedList *list, Node *node) {
 		list->size++;
 		return;
 	}
-	
+
 	Node *pos = list->head;
-	
+
 	while (pos != NULL && pos->num < node->num) {
 		pos = pos->next;
 	}
@@ -51,34 +53,35 @@ void HangNode(LinkedList *list, Node *node) {
 			pos->prev = node;
 
 		}
-	}else{								//맨뒤에 매달때
+	}
+	else {								//맨뒤에 매달때
 		list->tail->next = node;
 		node->prev = list->tail;
-		list->tail = node;	
+		list->tail = node;
 	}
 
 	list->size++;
 
 }
 
+/*노드 삭제*/
 void deletNode(LinkedList *list, char *local) {
 
 	Node *node = FindNode(list, local);
-	
+
 	if (node == NULL) {		//해당노드가 없을때
 		return;
 	}
 
-	gotoxy(110, 15);
-	printf("%s", node->local);
-
+	/*노드의 전노드가 없을때*/
 	if (node->prev != NULL) {
 		node->prev->next = node->next;
 	}
-	else{
+	else {
 		list->head = list->head->next;
 	}
 
+	/*노드의 다음노드가 없을때*/
 	if (node->next != NULL) {
 		node->next->prev = node->prev;
 	}
@@ -90,13 +93,14 @@ void deletNode(LinkedList *list, char *local) {
 	list->size--;
 }
 
+/*리스트 출력*/
 void PrintList(LinkedList *list) {
 	Node *prev, *pos;
 	prev = pos = list->head;
-	int i = 1;
+	int i = 2;
 	while (pos != NULL) {
 		gotoxy(110, i);
-		printf("%d %s %d\n", pos->num, pos->local,pos->price);
+		printf("%d %s %d\n", pos->num, pos->local, pos->price);
 		pos = pos->next;
 		i++;
 	}
@@ -115,6 +119,7 @@ void PrintList2(LinkedList *list) {
 	}
 }
 
+/*노드 검색*/
 Node *FindNode(LinkedList *list, char *local) {
 	Node *temp;
 	temp = list->head;
@@ -131,6 +136,7 @@ Node *FindNode(LinkedList *list, char *local) {
 	return NULL;
 }
 
+/*노드값 변경*/
 void modifiNode(LinkedList *list, char *local, int price) {
 	Node *node = FindNode(list, local);
 	node->price = price;
