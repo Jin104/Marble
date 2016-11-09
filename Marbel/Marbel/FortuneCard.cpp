@@ -100,6 +100,7 @@ void HalfAngelCard(int turn) {
 	gotoxyint(70, 28, select);
 
 	if (select == 1) {
+		sndPlaySoundA("..\\sound\\ChanceCardGet_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(37, 30, "카드를 보관합니다.");
 		player[turn].card = 1;		//플레이어의 카드상태 변경
 	}
@@ -128,6 +129,7 @@ void AngelCard(int turn) {
 	gotoxyint(70, 28, select);
 
 	if (select == 1) {
+		sndPlaySoundA("..\\sound\\ChanceCardGet_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(37, 30, "카드를 보관합니다.");
 		player[turn].card = 2;
 	}
@@ -236,7 +238,7 @@ void CompelSale(int turn) {
 			Sleep(900);
 			return;
 		}
-
+		sndPlaySoundA("..\\sound\\ChanceCardAtt_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		/*도시이름을 제대로 입력할때까지*/
 		for (int k = 0; k<1;) {
 			clrText();
@@ -272,11 +274,11 @@ void CompelSale(int turn) {
 
 }
 
-
 /*천사카드 실행*/
 int DoAngel(int turn, int price) {
 	int select;
 	Sleep(500);
+	sndPlaySoundA("..\\sound\\ChanceCardUsePop_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	if (player[turn].card == 1) {
 		gotoxytext(37, 27, "통행료 반값 할인 카드가 보관되어있습니다.");
 	}
@@ -299,6 +301,7 @@ int DoAngel(int turn, int price) {
 	gotoxyint(70, 29, select);
 	clrText();
 	if (select == 1) {
+		sndPlaySoundA("..\\sound\\ChanceCardDef_A03.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(37, 32, "카드를 사용합니다.");
 		if (player[turn].card == 1) {
 			price = price / 2;

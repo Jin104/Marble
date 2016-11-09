@@ -137,6 +137,7 @@ void TouristMonop(int turn) {
 	if (cnt == 5) {
 		clrText();
 		gotoxy(37, 27);
+		sndPlaySoundA("..\\sound\\WinRule_A03.wav", SND_ASYNC | SND_NODEFAULT);
 		printf("축하합니다! %s님의 관광지독점 승리!", player[turn].name);
 
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
@@ -180,6 +181,7 @@ void ColorMonop(int turn) {
 
 	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt6 + cnt7 + cnt8;
 	if (color >= 3) { //컬러독점 3개이면 승리
+		sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		clrText();
 		gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
 		gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
@@ -219,6 +221,7 @@ void LineMonop(int turn) {
 	if (cnt1 == 6 || cnt2 == 6 || cnt3 == 6 || cnt4 == 5) {
 		clrText();
 		gotoxy(37, 27);
+		sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		printf("축하합니다! %s님의 라인독점 승리!", player[turn].name);
 
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");

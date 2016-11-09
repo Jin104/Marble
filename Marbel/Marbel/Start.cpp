@@ -1,7 +1,6 @@
 #include "Start.h"
 #include "Player.h"
 #include "BuildEvent.h"
-//#include "Graphics.h"
 
 Local local[32];	//지역 32개
 Player player[2];	//플레이어 2명
@@ -66,6 +65,8 @@ void StartGame() {
 			A:
 				Dice d;
 				d = GameDice(i);	//주사위 굴리기
+				if(d.dice1==d.dice2)
+					sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
 				movePlayer(d.sum, i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/
@@ -147,7 +148,7 @@ void movePlayer(int i, int turn) {
 
 			printf("◆");
 		GRAY
-			Sleep(300);
+			Sleep(00);
 	}
 
 }
@@ -192,6 +193,7 @@ void playerTurn() {
 	Sleep(250);
 
 	system("cls");
+	sndPlaySoundA("..\\sound\\User_Set_ready_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxytext(53, 17, "순서를 정합니다. ENTER를 눌러주세요!");
 	_getch();
 	system("cls");
@@ -209,6 +211,7 @@ void playerTurn() {
 		player[1] = tmp;
 	}
 
+	sndPlaySoundA("..\\sound\\User_Set_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxy(53, 17);
 	printf("%s 님이 선이에요 !", player[0].name);
 	gotoxytext(53, 19, "제일 먼저 시작하세요 ~");

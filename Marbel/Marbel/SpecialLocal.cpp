@@ -31,6 +31,7 @@ void BonusEvent(int i) {
 
 	if (correct == 1) {
 		if (correct == select) {
+			sndPlaySoundA("..\\sound\\Maccau_Success_A01.wav", SND_ASYNC | SND_NODEFAULT);
 			gotoxytext(37, 30, "짝짝짝 ~ 맞추셨습니다! 50만 마블 지급!");
 			player[i].marble += 50;
 		}
@@ -39,6 +40,7 @@ void BonusEvent(int i) {
 	}
 	else {
 		if (correct == select) {
+			sndPlaySoundA("..\\sound\\Maccau_Success_A01.wav", SND_ASYNC | SND_NODEFAULT);
 			gotoxytext(37, 30, "짝짝짝 ~ 맞추셨습니다! 50만 마블 지급!");
 			player[i].marble += 50;
 		}
@@ -94,7 +96,7 @@ void StartEvent(int i) {
 			for (int k = 0; k < 1;) {
 				clrText();
 				gotoxytext(37, 28, "랜드마크를 지을 건물을 입력하세요. (관광지 불가)");
-				gotoxy(38, 28);
+				gotoxy(37, 29);
 				scanf("%s", name);
 				Node *node = FindNode(list, name);
 
@@ -188,6 +190,7 @@ int IslandEvent(int i) {
 void OlympicEvent(int i) {
 	int select;
 	char name[10];
+	sndPlaySoundA("..\\sound\\Olympic_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxytext(37, 27, "★ 올림픽 개최 ★");
 	gotoxytext(37, 28, "원하는 지역의 이름을 입력하면 통행료가 2배 ~");
 	gotoxytext(37, 29, "1) 개최 2)취소  ☞ ");
@@ -283,6 +286,7 @@ int WorldTourEvent(int i) {
 			return -1;
 		}
 
+		sndPlaySoundA("..\\sound\\WorldTour_A01.wav", SND_ASYNC | SND_NODEFAULT );
 		int cnt = 0;
 		for (int k = 0; k < 1;) {
 			int n;
