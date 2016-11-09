@@ -6,12 +6,14 @@ extern LinkedList *list1, *list2;
 extern Player player[2];
 extern Local local[32];
 
+//유나
+//보너스 게임 이벤트
 void BonusEvent(int i) {
 
 	int select, correct;
 	gotoxytext(37, 27, "★ 동전 게임 맞추기 ★");
 	gotoxytext(37, 28, "1) 앞면  2) 뒷면  (선택) ☞");
-	
+
 	gotoxy(70, 28);
 	cursor_view(1);
 
@@ -56,7 +58,7 @@ void StartEvent(int i) {
 	gotoxytext(37, 27, "★ 출발지 혜택 ★");
 	gotoxytext(37, 28, "자신의 지역에 랜드마크 건설 가능!");
 	gotoxytext(37, 29, "1) 건설 2)취소  (선택) ☞ ");
-	
+
 	gotoxy(70, 29);
 	cursor_view(1);
 	do {
@@ -71,7 +73,7 @@ void StartEvent(int i) {
 	if (select == 1) {
 
 		LinkedList *list;
-		if (i == 0) 
+		if (i == 0)
 			list = list1;
 		else
 			list = list2;
@@ -92,10 +94,10 @@ void StartEvent(int i) {
 			for (int k = 0; k < 1;) {
 				clrText();
 				gotoxytext(37, 28, "랜드마크를 지을 건물을 입력하세요. (관광지 불가)");
-				gotoxy(38, 28); 
+				gotoxy(38, 28);
 				scanf("%s", name);
 				Node *node = FindNode(list, name);
-				
+
 				/*소유하나 지역을 입력할때*/
 				if (node != NULL) {
 
@@ -109,8 +111,8 @@ void StartEvent(int i) {
 							PLAYER1
 						else
 							PLAYER2
-						
-						gotoxytext(local[node->num].x, local[node->num].y - 2, "♣♣♣");
+
+							gotoxytext(local[node->num].x, local[node->num].y - 2, "♣♣♣");
 						gotoxytext(37, 33, "랜드마크를 지었습니다!");
 						Sleep(500);
 						clrText();
@@ -163,7 +165,7 @@ int IslandEvent(int i) {
 
 
 	if (select == 1) {
-		gotoxy(37, 31); 
+		gotoxy(37, 31);
 		printf("한턴 쉽니다");
 		Sleep(900);
 		clrText();
@@ -189,7 +191,7 @@ void OlympicEvent(int i) {
 	gotoxytext(37, 27, "★ 올림픽 개최 ★");
 	gotoxytext(37, 28, "원하는 지역의 이름을 입력하면 통행료가 2배 ~");
 	gotoxytext(37, 29, "1) 개최 2)취소  ☞ ");
-	
+
 	gotoxy(70, 29);
 	cursor_view(1);
 	do {
@@ -286,11 +288,11 @@ int WorldTourEvent(int i) {
 			int n;
 			clrText();
 			gotoxytext(37, 29, "여행할 곳을 입력하세요  ☞");
-			gotoxy(70, 29); 
-			cursor_view(1); 
+			gotoxy(70, 29);
+			cursor_view(1);
 			scanf("%s", name);
 			cursor_view(0);
-			
+
 			/*입력한게 월드맵에 있는지*/
 			for (int j = 0; j < boardNum; j++) {
 				if (strcmp(local[j].name, name) == 0) {
@@ -322,7 +324,8 @@ int WorldTourEvent(int i) {
 							}
 						}
 
-					}else{
+					}
+					else {
 						n = j;
 					}
 					cnt++;
@@ -336,10 +339,11 @@ int WorldTourEvent(int i) {
 				player[i].marble -= 10;
 				player[i].state = 0;
 				int move;
-				
+
 				if (n > 24) {
 					move = n - 24;
-				}else{
+				}
+				else {
 					move = n + 8;
 				}
 				movePlayer(move, i);
@@ -364,6 +368,8 @@ int WorldTourEvent(int i) {
 
 }
 
+//유나
+//국세청 이벤트
 void TaxEvent(int i) {
 	int tax = 0;
 

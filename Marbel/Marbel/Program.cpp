@@ -1,9 +1,13 @@
 #include "Start.h"
-
+#include "Graphics.h"
+//유나
+//게임 메뉴 방향키
 void main() {
 
+	//커서 지움
 	cursor_view(0);
-
+	sndPlaySoundA("C:\\Users\\USER\\Downloads\\marbleSound\\Modoo Marble Zion-T AR new_44k_16b.wav", SND_ASYNC | SND_NODEFAULT);
+	//sndPlaySound("\\sound\\Modoo Marble Zion-T AR new_44k_16b.wav", SND_ASYNC | SND_NODEFAULT);
 	Loading();
 	Menu();
 
@@ -27,7 +31,7 @@ void main() {
 			settextcolor(0x0007, 000000);
 			gotoxytext(55, 28, "[1] 게임 시작");
 			break;
-		case 72: //위쪽 화살표
+		case 72: //위쪽 커서키
 			cnt--;
 			num = 1;
 			settextcolor(0x0007, 000000);

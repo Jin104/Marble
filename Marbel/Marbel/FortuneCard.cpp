@@ -7,7 +7,7 @@ extern Player player[2];
 extern Local local[32];
 
 void FortuneCard(int turn) {
-	
+
 	clrText();
 
 	/*카드모양 회전*/
@@ -22,7 +22,7 @@ void FortuneCard(int turn) {
 
 	/*1부터 7까지 랜덤한 수 생성*/
 	srand(time(NULL));
-	int n = 1;// rand() % 7 + 1;
+	int n = rand() % 7 + 1;
 
 	/*나온수에따라 이벤트발생*/
 	switch (n)
@@ -177,7 +177,7 @@ void GoIsland(int turn) {
 	gotoxytext(37, 27, "★ 무인도 탐험 ★");
 	gotoxytext(37, 28, "너무 앞서갔네요.. 지금 즉시 무인도로 이동!");
 	Sleep(900);
-	
+
 	/*플레이어위치에따라 이동*/
 	int now = player[turn].board;
 	if (now < 8) {
@@ -207,7 +207,7 @@ void CompelSale(int turn) {
 	char name[10];
 	gotoxytext(38, 27, "★ 강제 매각 ★");
 	gotoxytext(38, 28, "원하는 상대의 도시를 강제로 매각 (랜드마크 공격불가)");
-	gotoxytext(38, 29, "1) 매각  2) 버리기 (선택) ☞"); 
+	gotoxytext(38, 29, "1) 매각  2) 버리기 (선택) ☞");
 
 	gotoxy(70, 29);
 	cursor_view(1);
@@ -238,7 +238,7 @@ void CompelSale(int turn) {
 		}
 
 		/*도시이름을 제대로 입력할때까지*/
-		for(int k=0;k<1;){
+		for (int k = 0; k<1;) {
 			clrText();
 			gotoxytext(38, 27, "매각할 도시 이름을 입력해주세요");
 			gotoxytext(38, 29, "☞  ");

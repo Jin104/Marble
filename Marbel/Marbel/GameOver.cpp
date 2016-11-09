@@ -16,7 +16,7 @@ int SellBuilding(int turn, int price) {
 		list = list2;
 
 	char name[10];
-	
+
 	/*지불금액이 플레이어의 보유마블보다 큰경우*/
 	while (price > player[turn].marble) {
 
@@ -73,7 +73,7 @@ void Bankrupt(int turn, int price) {
 		list = list1;
 	else
 		list = list2;
-	
+
 	int select;
 	gotoxytext(37, 27, "통행료가 부족합니다.\n");
 	gotoxy(37, 28);
@@ -98,7 +98,7 @@ void Bankrupt(int turn, int price) {
 			clrText();
 			gotoxy(45, 30);
 			printf("%s님의 파산승리!", player[1 - turn].name);
-			
+
 			gotoxytext(37, 33, "Enter키를 누르면 게임이 종료됩니다!");
 			getch();
 			system("pause>null");
@@ -111,12 +111,12 @@ void Bankrupt(int turn, int price) {
 	else {
 		clrText();
 		gotoxytext(37, 27, "파산!!");
-		
+
 		Sleep(700);
 		clrText();
 		gotoxy(45, 30);
 		printf("%s님의 파산승리!", player[1 - turn].name);
-		
+
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
 		getch();
 		system("pause>null");
@@ -136,9 +136,9 @@ void TouristMonop(int turn) {
 	}
 	if (cnt == 5) {
 		clrText();
-		gotoxy(37, 27); 
+		gotoxy(37, 27);
 		printf("축하합니다! %s님의 관광지독점 승리!", player[turn].name);
-		
+
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
 		getch();
 		system("pause>null");
@@ -146,10 +146,12 @@ void TouristMonop(int turn) {
 	}
 }
 
+//유나
+//트리플 독점 승리
 void ColorMonop(int turn) {
 
-	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점 수
-	int color = 0;
+	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점
+	int color = 0; //컬러독점 수
 
 	if ((local[1].state == turn || local[1].state == turn + 2) && (local[3].state == turn || local[3].state == turn + 2)) {
 		cnt1++; //방콕 베이징
@@ -177,14 +179,14 @@ void ColorMonop(int turn) {
 	}
 
 	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt6 + cnt7 + cnt8;
-	if (color >= 3) { //컬러독점 3개
-			clrText();
-			gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
-			gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
-			gotoxy(42, 31);
-			exit(1);
-		}
+	if (color >= 3) { //컬러독점 3개이면 승리
+		clrText();
+		gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
+		gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
+		gotoxy(42, 31);
+		exit(1);
 	}
+}
 
 void LineMonop(int turn) {
 
@@ -216,9 +218,9 @@ void LineMonop(int turn) {
 	}
 	if (cnt1 == 6 || cnt2 == 6 || cnt3 == 6 || cnt4 == 5) {
 		clrText();
-		gotoxy(37, 27); 
+		gotoxy(37, 27);
 		printf("축하합니다! %s님의 라인독점 승리!", player[turn].name);
-		
+
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
 		getch();
 		system("pause>null");
@@ -232,4 +234,4 @@ void CheckGameOver(int turn) {
 	TouristMonop(turn);
 	ColorMonop(turn);
 	LineMonop(turn);
-}
+}	

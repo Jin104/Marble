@@ -11,8 +11,8 @@ void BuildingEvent(int turn, int board) {
 	/*
 	turn=> 현재 플레이어 번호		0:player1  1:player2
 	borad=> 플레이어가있는 지역번호
-	state=> 지역의 구매상태 
-			-1: 비어있음 0:player1의 호텔 1:player2의 호텔 2:player1의 랜드마크 3:player2의 랜드마크 4:player1의 관광지 5:player2의 관광지
+	state=> 지역의 구매상태
+	-1: 비어있음 0:player1의 호텔 1:player2의 호텔 2:player1의 랜드마크 3:player2의 랜드마크 4:player1의 관광지 5:player2의 관광지
 	board=> 지역의 특수성   0시작 2보너스게임 4,9,14,18,25관광지 8무인도 12,20,28포츈카드 16올림픽 24세계여행 30국세청
 	*/
 
@@ -64,7 +64,7 @@ void BuildingEvent(int turn, int board) {
 			if (player[turn].marble >= local[board].price) {	//구매할돈이 있으면
 				gotoxytext(37, 27, "비어있는 지역입니다. 구매하시겠습니까?");
 				gotoxytext(37, 28, "1) YES  2) NO  (선택) ☞ ");
-				gotoxy(70, 28); 
+				gotoxy(70, 28);
 				cursor_view(1);
 				answer = _getch() - 48;
 				printf("%d", answer);
@@ -85,17 +85,17 @@ void BuildingEvent(int turn, int board) {
 
 					Node *node = NewNode(local[board].name, local[board].price, player[turn].board);   //새로운 지역노드생성
 					HangNode(list, node);   //플레이어의 리스트에 지역노드를 연결해줌
-					
-					if(turn==0)
+
+					if (turn == 0)
 						PLAYER1
 					else
 						PLAYER2
-						
-					gotoxytext(local[board].x, local[board].y - 2, "▲▲▲");
+
+						gotoxytext(local[board].x, local[board].y - 2, "▲▲▲");
 					GRAY
 				}
 			}
-			else{
+			else {
 				gotoxy(37, 27);
 				printf("구매할 돈이 부족합니다.\n");
 			}
@@ -113,7 +113,7 @@ void BuildingEvent(int turn, int board) {
 					toll = toll * 2;
 					local[board].olystate = 0;
 				}
-				
+
 				printf("통행료는 %d마블 입니다.", toll);
 
 				int price = toll;
@@ -130,7 +130,7 @@ void BuildingEvent(int turn, int board) {
 				else {
 					player[turn].marble -= price;
 				}
-				
+
 				Takeover(turn, board);
 
 				Sleep(500);
@@ -152,7 +152,7 @@ void BuildingEvent(int turn, int board) {
 				}
 				Sleep(500);
 				printf("통행료는 %d마블 입니다.", toll);
-				
+
 				int price = toll;
 
 				if (player[turn].card == 1 || player[turn].card == 2) {
@@ -248,7 +248,7 @@ void BuildingEvent(int turn, int board) {
 					toll = toll * 2;
 					local[board].olystate = 0;
 				}
-				
+
 				printf("통행료는 %d마블 입니다.", toll);
 				player[turn].marble -= toll;
 				Sleep(500);
@@ -261,8 +261,6 @@ void BuildingEvent(int turn, int board) {
 		Sleep(500);
 		PlayerState();
 		clrList();
-		//PrintList(list1);
-		//PrintList2(list2);
 		clrText();
 		CheckGameOver(turn);
 		break;
@@ -271,9 +269,9 @@ void BuildingEvent(int turn, int board) {
 
 void BuildRandmark(int turn, int board) {
 	LinkedList *list;
-	if (turn == 0)	
+	if (turn == 0)
 		list = list1;
-	else 
+	else
 		list = list2;
 
 	int answer;
@@ -286,28 +284,28 @@ void BuildRandmark(int turn, int board) {
 		gotoxytext(37, 30, "랜드마크를 건설했습니다.");
 		local[board].state = turn + 2;      //지역의 상태변경
 		local[board].price = localPrice[board][3];   //지역의 가격변경
-	
+
 		player[turn].marble -= localPrice[board][1];
 		modifiNode(list, local[board].name, localPrice[board][3]);
-	
+
 		if (turn == 0)
 			PLAYER1
 		else
 			PLAYER2
-		gotoxytext(local[board].x, local[board].y - 2, "♣♣♣");	//랜드마크 모양으로 변경
+			gotoxytext(local[board].x, local[board].y - 2, "♣♣♣");	//랜드마크 모양으로 변경
 		GRAY
 	}
 }
 
 void Takeover(int turn, int board) {
-	
+
 	int select;
 	Sleep(1000);
 	if (player[turn].marble > localPrice[board][0]) {   //인수할 돈이 있을때
 		gotoxy(37, 27);
 		printf("인수하시겠습니까? 인수료는 %d입니다.\n", localPrice[board][0]);
 		gotoxy(37, 28);
-		printf("1) YES  2) NO  (선택) ▶ ");
+		printf("1) YES  2) NO  (선택) ☞ ");
 
 		gotoxy(70, 28);
 		cursor_view(1);
@@ -342,7 +340,7 @@ void Takeover(int turn, int board) {
 			}
 			gotoxytext(local[board].x, local[board].y - 2, "▲▲▲");
 			GRAY
-			return;
+				return;
 		}
 	}
 	else {

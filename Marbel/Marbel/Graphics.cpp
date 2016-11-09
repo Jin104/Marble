@@ -34,8 +34,3 @@ void cursor_view(char s)      // 0넣으면숨기기, 1넣으면보이기
 	ConsoleCursor.dwSize = 2;
 	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
 }
-
-void SetColor(int color, int bkcolor) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), bkcolor);
-}

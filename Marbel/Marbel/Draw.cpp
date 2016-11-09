@@ -5,8 +5,9 @@
 
 extern Player player[2];
 
+//유나 주사위
 Dice GameDice(int i) {
-	
+
 	Dice d;
 	gotoxy(48, 22);
 	printf("                                     ");
@@ -14,11 +15,13 @@ Dice GameDice(int i) {
 	srand(time(NULL));
 	while (1) {
 		Sleep(100);
-		d.dice1 = 1;// rand() % 6 + 1;
-		d.dice2 = 1;// rand() % 6 + 1;
+		//주사위 1부터 6까지 랜덤
+		d.dice1 = rand() % 6 + 1;
+		d.dice2 = rand() % 6 + 1;
 		d.sum = d.dice1 + d.dice2;
 		DiceShape(d.dice1);
 		DiceShape2(d.dice2);
+		// 주사위 모양이 돌아가는데 키를 누르면 멈춤
 		if (kbhit()) {
 			getch();
 			break;
@@ -32,6 +35,8 @@ Dice GameDice(int i) {
 	return d;
 }
 
+//유나
+//주사위 더블
 void DoubleDice() {
 	gotoxy(48, 24);
 	printf("더블입니다 한번 더 돌려주세요!");
@@ -40,6 +45,8 @@ void DoubleDice() {
 	printf("                                  ");
 }
 
+//유나
+//주사위 디자인
 void DiceShape(int dice) {
 
 	if (dice == 1) {
@@ -158,7 +165,7 @@ void DiceShape2(int dice2) {
 
 /*게임판 그려줌*/
 void GameBoard() {
-	
+
 	//외부 테두리
 	gotoxytext(17, 1, "┏━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┳━━━━┓");
 	for (int i = 2; i < 46; i++) {
@@ -200,40 +207,26 @@ void GameBoard() {
 			gotoxytext(i, j, "┃");
 		}
 	}
-	
+
 	//왼쪽 가로선
-	for (int j = 6; j < 46; j+=5) {
-		for (int i = 19; i < 26; i+=2) {
+	for (int j = 6; j < 46; j += 5) {
+		for (int i = 19; i < 26; i += 2) {
 			gotoxytext(i, j, "━");
 		}
 	}
 
 	//오른쪽 가로선
 	for (int j = 6; j < 46; j += 5) {
-		for (int i = 99; i < 106; i+=2) {
+		for (int i = 99; i < 106; i += 2) {
 			gotoxytext(i, j, "━");
 		}
 	}
 
-	/*int i = 0;
-	for (int j = 42; j > 5; j -= 5) {
-		gotoxy(19, j); printf("%8s", localName[i]);
-		i++;
-	}
-	for (int j = 19; j < 105; j += 10) {
-		gotoxy(j, 2); printf("%8s", localName[i]);
-		i++;
-	}
-	for (int j = 7; j < 47; j += 5) {
-		gotoxy(99, j); printf("%8s", localName[i]);
-		i++;
-	}
-	for (int j = 89; j > 22; j -= 10) {
-		gotoxy(j, 42); printf("%8s", localName[i]);
-		i++;
-	}*/
 
+	//유나 - 게임판에 지역이름 출력, 색 지정
 	int i = 0;
+
+	//왼쪽 세로줄
 	for (int j = 42; j > 5; j -= 5) {
 		gotoxy(19, j); printf("%8s", localName[i]);
 		if (i == 0 || i == 2) {
@@ -251,6 +244,7 @@ void GameBoard() {
 		i++;
 	}
 	settextcolor(0x0007, 007700);
+	//위쪽 가로줄
 	for (int j = 19; j < 105; j += 10) {
 		gotoxy(j, 2); printf("%8s", localName[i]);
 		if (i == 8) {
@@ -276,6 +270,7 @@ void GameBoard() {
 		}
 		i++;
 	}
+	//오른쪽 세로줄
 	for (int j = 7; j < 47; j += 5) {
 		gotoxy(99, j); printf("%8s", localName[i]);
 		if (i == 17) {
@@ -296,6 +291,7 @@ void GameBoard() {
 		i++;
 	}
 	settextcolor(0x0007, 007700);
+	//아래쪽 가로줄
 	for (int j = 89; j > 22; j -= 10) {
 		if (i == 25) {
 			settextcolor(0, 3);
@@ -320,6 +316,8 @@ void GameBoard() {
 		i++;
 	}
 
+	//유나
+	//텍스트 창
 	gotoxytext(32, 24, "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
 	for (int i = 25; i<35; i++) {
 		gotoxytext(32, i, "┃");
@@ -340,7 +338,6 @@ void DrawPlayer() {
 	gotoxytext(29, 10, "┃                        ┃");
 	gotoxytext(29, 11, "┗━━━━━━━━━━━━┛");
 
-	//gotoxytext(40, 8, "님");
 	gotoxytext(31, 10, "보유마블: ");
 
 	gotoxytext(69, 36, "┏━━━━━━━━━━━━┓");
@@ -349,13 +346,14 @@ void DrawPlayer() {
 	gotoxytext(69, 39, "┃                        ┃");
 	gotoxytext(69, 40, "┗━━━━━━━━━━━━┛");
 
-	//gotoxytext(80, 37, "님");
 	gotoxytext(71, 39, "보유마블: ");
 }
 
+//유나
+//게임 시작할때 로딩화면
 void Loading() {
 
-	system("mode con:cols=130 lines=48");
+	system("mode con:cols=130 lines=48"); //콘솔창 크기
 	gotoxy(25, 10); DARK_SKY_BLUE printf("┏━━━━━┓");
 	gotoxy(25, 11); printf("┃ ┏━━┓ ┃");
 	gotoxy(25, 12); printf("┃ ┃    ┃ ┃");
@@ -442,12 +440,11 @@ void Loading() {
 	gotoxy(75, 32); printf("▶");
 	Sleep(200);
 	GRAY
-	//clrText();
-	//system("cls");
-
 
 }
 
+//유나
+//게임 메뉴
 void Menu() {
 
 	clrText();
@@ -459,15 +456,16 @@ void Menu() {
 	gotoxytext(55, 28, "[1] 게임 시작");
 	settextcolor(0x0007, 000000);
 	gotoxytext(55, 30, "[2] 게임 설명");
-	//gotoxytext(55, 32, "[3] 게임 종료");
 
 }
 
+//유나
+//게임 설명 창
 void Explain() {
 
 	int select;
-	gotoxy(20, 5); DARK_SKY_BLUE 
-	printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━┳━━┳━━┓");
+	gotoxy(20, 5); DARK_SKY_BLUE
+		printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━┳━━┳━━┓");
 	for (int i = 6; i<42; i++) {
 		gotoxytext(20, i, "┃");
 		gotoxytext(106, i, "┃");
@@ -497,7 +495,7 @@ void Explain() {
 	gotoxy(25, 36); printf("    ☞ 관광지 독점 ─ 5개의 관광지를 모두 차지");
 	gotoxy(25, 37); printf("    ☞ 파산 ─ 상대방의 보유마블 부족");
 
-	if (select = _getch()) {
+	if (select = _getch()) { //키를 누르면 게임시작
 		system("cls");
 		StartGame();
 	}

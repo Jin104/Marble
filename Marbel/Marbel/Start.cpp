@@ -1,6 +1,7 @@
 #include "Start.h"
 #include "Player.h"
 #include "BuildEvent.h"
+//#include "Graphics.h"
 
 Local local[32];	//지역 32개
 Player player[2];	//플레이어 2명
@@ -10,6 +11,7 @@ LinkedList *list2 = NewList();
 
 void StartGame() {
 
+	
 	playerTurn();	//순서 정하기
 
 	system("mode con: cols=130 lines=48");
@@ -20,19 +22,20 @@ void StartGame() {
 	initLocal();	//지역 초기화
 	initPlayerCoord();	//플레이어 정보출력
 
+	PlaySound(NULL, 0, 0);
 	int doubleCnt = 0;
 	while (1) {
 
 		for (int i = 0; i < 2; i++) {		//플레이어 순서 0:player1  1:player2
-			
+
 			if (i == 0)
 				PLAYER1
 			else
 				PLAYER2
-			gotoxytext(64, 9, player[i].name);
-			
+				gotoxytext(64, 9, player[i].name);
+
 			GRAY
-			gotoxytext(73, 9, "님의 차례입니다!");
+				gotoxytext(73, 9, "님의 차례입니다!");
 
 			switch (player[i].state)		//플레이어에 상태를 받아서 그것에대한 이벤트를 발생
 			{
@@ -53,7 +56,7 @@ void StartGame() {
 				}
 			default:	//기본상태일때
 
-				/*더블이 3번이상일때 무인도로*/
+						/*더블이 3번이상일때 무인도로*/
 				if (doubleCnt > 2) {
 					GoIsland(i);	//무인도로 이동
 					player[i].marble -= 75;	//무인도로갈때는 월급을 지급하지 않음
@@ -64,9 +67,9 @@ void StartGame() {
 				Dice d;
 				d = GameDice(i);	//주사위 굴리기
 				movePlayer(d.sum, i);	//나온만큼 이동
-	
-				/*3번이상 더블을 제외하고*/
-				if (doubleCnt < 2) {	
+
+										/*3번이상 더블을 제외하고*/
+				if (doubleCnt < 2) {
 					BuildingEvent(i, player[i].board);	//도착한지역에대한 이벤트
 				}
 
@@ -104,18 +107,18 @@ void initLocal() {
 void initPlayerCoord() {
 
 	PLAYER1
-	gotoxytext(33, 8, player[0].name);
+		gotoxytext(33, 8, player[0].name);
 	gotoxy(player[0].playerX, player[0].playerY);
 	printf("◆");
 
 	PLAYER2
-	gotoxytext(73, 37, player[1].name);
+		gotoxytext(73, 37, player[1].name);
 	player[1].playerX = player[0].playerX + 2;
 	gotoxy(player[1].playerX, player[1].playerY);
 	printf("◆");
 
-	GRAY	
-	gotoxy(42, 10); printf("%d", player[0].marble);
+	GRAY
+		gotoxy(42, 10); printf("%d", player[0].marble);
 	gotoxy(82, 39); printf("%d", player[1].marble);
 }
 
@@ -139,12 +142,12 @@ void movePlayer(int i, int turn) {
 
 		if (turn == 0)
 			PLAYER1
-		else 
+		else
 			PLAYER2
 
-		printf("◆");
+			printf("◆");
 		GRAY
-		Sleep(0);
+			Sleep(300);
 	}
 
 }
@@ -154,10 +157,10 @@ void playerTurn() {
 
 	char name[50];
 
-	PLAYER1	
-	gotoxytext(45, 15, "Player 1");
+	PLAYER1
+		gotoxytext(45, 15, "Player 1");
 	GRAY
-	gotoxytext(54, 15, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
+		gotoxytext(54, 15, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
 	gotoxytext(45, 17, "☞  ");
 
 	/*이름이 크기를 넘어가면 다시입력받음*/
@@ -172,9 +175,9 @@ void playerTurn() {
 	gotoxytext(49, 17, player[0].name);
 
 	PLAYER2
-	gotoxytext(45, 20, "Player 2");
+		gotoxytext(45, 20, "Player 2");
 	GRAY
-	gotoxytext(54, 20, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
+		gotoxytext(54, 20, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
 	gotoxytext(45, 22, "☞  ");
 
 	cursor_view(1);
@@ -209,7 +212,7 @@ void playerTurn() {
 	gotoxy(53, 17);
 	printf("%s 님이 선이에요 !", player[0].name);
 	gotoxytext(53, 19, "제일 먼저 시작하세요 ~");
-	
+
 	Sleep(500);
 	gotoxytext(79, 12, "┏━━━━━━━┓");
 	for (int i = 13; i < 23; i++) {

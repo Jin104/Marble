@@ -7,7 +7,7 @@ LinkedList *NewList() {
 	LinkedList *list = (LinkedList*)malloc(sizeof(LinkedList));
 	list->head = NULL;
 	list->tail = NULL;
-	
+
 	list->size = 0;
 	list->size2 = 0;
 
@@ -34,9 +34,9 @@ void HangNode(LinkedList *list, Node *node) {
 		list->size++;
 		return;
 	}
-	
+
 	Node *pos = list->head;
-	
+
 	while (pos != NULL && pos->num < node->num) {
 		pos = pos->next;
 	}
@@ -53,10 +53,11 @@ void HangNode(LinkedList *list, Node *node) {
 			pos->prev = node;
 
 		}
-	}else{								//맨뒤에 매달때
+	}
+	else {								//맨뒤에 매달때
 		list->tail->next = node;
 		node->prev = list->tail;
-		list->tail = node;	
+		list->tail = node;
 	}
 
 	list->size++;
@@ -67,7 +68,7 @@ void HangNode(LinkedList *list, Node *node) {
 void deletNode(LinkedList *list, char *local) {
 
 	Node *node = FindNode(list, local);
-	
+
 	if (node == NULL) {		//해당노드가 없을때
 		return;
 	}
@@ -76,7 +77,7 @@ void deletNode(LinkedList *list, char *local) {
 	if (node->prev != NULL) {
 		node->prev->next = node->next;
 	}
-	else{
+	else {
 		list->head = list->head->next;
 	}
 
@@ -99,7 +100,7 @@ void PrintList(LinkedList *list) {
 	int i = 2;
 	while (pos != NULL) {
 		gotoxy(110, i);
-		printf("%d %s %d\n", pos->num, pos->local,pos->price);
+		printf("%d %s %d\n", pos->num, pos->local, pos->price);
 		pos = pos->next;
 		i++;
 	}
