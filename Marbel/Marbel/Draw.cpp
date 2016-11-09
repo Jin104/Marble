@@ -14,8 +14,8 @@ Dice GameDice(int i) {
 	srand(time(NULL));
 	while (1) {
 		Sleep(100);
-		d.dice1 = 6;// rand() % 6 + 1;
-		d.dice2 = 6;// rand() % 6 + 1;
+		d.dice1 = 1; // rand() % 6 + 1;
+		d.dice2 = 0;// rand() % 6 + 1;
 		d.sum = d.dice1 + d.dice2;
 		DiceShape(d.dice1);
 		DiceShape2(d.dice2);

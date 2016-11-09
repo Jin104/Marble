@@ -8,10 +8,11 @@ typedef struct _Player {
 	int playerX = 21;	//위치X좌표
 	int playerY = 45;	//위치Y좌표
 	char name[10];	//이름
-	int marble = 1000;	//보유마블
+	int marble = 10000;	//보유마블
 	int state = 0;	//상태 0: 기본 1:무인도 2:세계여행
 	int card = 0;	//소유카드 0: 기본 1:천사카드 2:반천사카드
 	int count = 0;	//무인도에 갇혔을때 던진 주사위 턴 수
+	int color = 0;
 }Player;
 
 typedef struct _Node {

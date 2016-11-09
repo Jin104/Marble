@@ -12,7 +12,7 @@ void StartGame() {
 
 	playerTurn();	//순서 정하기
 
-	system("mode con: cols=130 lines=48");
+	system("mode con: cols=130 lines=50");
 
 
 	GameBoard();	//게임판 출력
@@ -65,23 +65,23 @@ void StartGame() {
 				d = GameDice(i);	//주사위 굴리기
 				movePlayer(d.sum, i);	//나온만큼 이동
 	
-				/*3번이상 더블을 제외하고*/
+				///*3번이상 더블을 제외하고*/
 				if (doubleCnt < 2) {	
 					BuildingEvent(i, player[i].board);	//도착한지역에대한 이벤트
 				}
 
-				/*더블이나왔을때*/
-				if (d.dice1 == d.dice2 && player[i].state == 0) {
-					i--;	//턴을 바꾸지않기위해
-					doubleCnt++;
-					gotoxy(73, 10);
-					printf("더블 %d번째", doubleCnt);
-				}
-				else {
-					gotoxy(73, 10);
-					printf("             ");
-					doubleCnt = 0;
-				}
+				///*더블이나왔을때*/
+				//if (d.dice1 == d.dice2 && player[i].state == 0) {
+				//	i--;	//턴을 바꾸지않기위해
+				//	doubleCnt++;
+				//	gotoxy(73, 10);
+				//	printf("더블 %d번째", doubleCnt);
+				//}
+				//else {
+				//	gotoxy(73, 10);
+				//	printf("             ");
+				//	doubleCnt = 0;
+				//}
 			B:
 				break;
 
