@@ -28,33 +28,33 @@ void BuildingEvent(int turn, int board) {
 	switch (board)
 	{
 	case 0:	//출발지
-		//StartEvent(turn);
+		StartEvent(turn);
 		break;
 	case 2:	//보너스게임
-		//BonusEvent(turn);
+		BonusEvent(turn);
 		PlayerState();
 		break;
 	case 8:	//무인도
 		gotoxytext(37, 28, "무인도 당첨 다음 턴에 탈출 가능 !");
 		Sleep(800);
 		clrText();
-		//player[turn].state = 1;
+		player[turn].state = 1;
 		break;
 	case 12: case 20: case 28:
-		//FortuneCard(turn);
+		FortuneCard(turn);
 		break;
 	case 16:
-		//OlympicEvent(turn);
+		OlympicEvent(turn);
 		PlayerState();
 		break;
 	case 24:
 		gotoxytext(37, 28, "세계여행 ~~ 다음턴에 원하는곳으로 이동 !");
 		Sleep(800);
 		clrText();
-		//player[turn].state = 2;
+		player[turn].state = 2;
 		break;
 	case 30:
-		//TaxEvent(turn);
+		TaxEvent(turn);
 		break;
 	default:
 
@@ -258,10 +258,11 @@ void BuildingEvent(int turn, int board) {
 			break;
 		}
 
-		Sleep(00);
 		PlayerState();
+		Sleep(700);
 		clrList();
 		clrText();
+
 		CheckGameOver(turn);
 		break;
 	}
@@ -274,13 +275,25 @@ void BuildRandmark(int turn, int board) {
 	else
 		list = list2;
 
-	int answer;
+	int select;
 	gotoxytext(37, 27, "랜드마크를 건설하시겠습니까?");
 	gotoxy(37, 28);
 	printf("1) YES  2) NO  (선택) ☞ ");
-	answer = _getch() - 48;
-	gotoxy(73, 28); printf("%d", answer);
-	if (answer == 1) {
+
+	gotoxy(70, 28);
+	cursor_view(1);
+	do {
+		select = _getch() - 48;
+		gotoxyint(70, 28, select);
+		gotoxytext(70, 28, "      ");
+
+	} while (select != 1 && select != 2);
+	cursor_view(0);
+	gotoxyint(70, 28, select);
+	clrText();
+
+	if (select == 1) {
+		sndPlaySoundA("..\\sound\\LandMark_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(37, 30, "랜드마크를 건설했습니다.");
 		local[board].state = turn + 2;      //지역의 상태변경
 		local[board].price = localPrice[board][3];   //지역의 가격변경

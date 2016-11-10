@@ -6,8 +6,7 @@ void main() {
 
 	//커서 지움
 	cursor_view(0);
-	sndPlaySoundA("C:\\Users\\USER\\Downloads\\marbleSound\\Modoo Marble Zion-T AR new_44k_16b.wav", SND_ASYNC | SND_NODEFAULT);
-	//sndPlaySound("\\sound\\Modoo Marble Zion-T AR new_44k_16b.wav", SND_ASYNC | SND_NODEFAULT);
+	sndPlaySoundA("..\\sound\\Modoo Marble Zion-T AR new_44k_16b.wav", SND_ASYNC | SND_NODEFAULT);
 	Loading();
 	Menu();
 

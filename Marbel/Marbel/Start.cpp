@@ -1,7 +1,6 @@
 #include "Start.h"
 #include "Player.h"
 #include "BuildEvent.h"
-//#include "Graphics.h"
 
 Local local[32];	//지역 32개
 Player player[2];	//플레이어 2명
@@ -11,7 +10,7 @@ LinkedList *list2 = NewList();
 
 void StartGame() {
 
-	
+
 	playerTurn();	//순서 정하기
 
 	system("mode con: cols=130 lines=48");
@@ -126,6 +125,7 @@ void initPlayerCoord() {
 void movePlayer(int i, int turn) {
 
 	for (int j = 0; j < i; j++) {
+		sndPlaySoundA("..\\sound\\DiceItem00000_0.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(player[turn].playerX, player[turn].playerY, "  ");	//이전위치의 말을 지워줌
 		player[turn].board++;
 
@@ -147,7 +147,7 @@ void movePlayer(int i, int turn) {
 
 			printf("◆");
 		GRAY
-			Sleep(300);
+			Sleep(200);
 	}
 
 }
@@ -192,6 +192,7 @@ void playerTurn() {
 	Sleep(250);
 
 	system("cls");
+	sndPlaySoundA("..\\sound\\User_Set_ready_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxytext(53, 17, "순서를 정합니다. ENTER를 눌러주세요!");
 	_getch();
 	system("cls");
@@ -209,11 +210,12 @@ void playerTurn() {
 		player[1] = tmp;
 	}
 
+	sndPlaySoundA("..\\sound\\User_Set_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxy(53, 17);
 	printf("%s 님이 선이에요 !", player[0].name);
 	gotoxytext(53, 19, "제일 먼저 시작하세요 ~");
 
-	Sleep(500);
+	Sleep(1400);
 	gotoxytext(79, 12, "┏━━━━━━━┓");
 	for (int i = 13; i < 23; i++) {
 		gotoxytext(79, i, "┃");
