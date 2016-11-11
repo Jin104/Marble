@@ -237,4 +237,4 @@ void CheckGameOver(int turn) {
 	TouristMonop(turn);
 	ColorMonop(turn);
 	LineMonop(turn);
-}	
+}

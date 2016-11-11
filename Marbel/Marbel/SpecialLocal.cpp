@@ -286,7 +286,7 @@ int WorldTourEvent(int i) {
 			return -1;
 		}
 
-		sndPlaySoundA("..\\sound\\WorldTour_A01.wav", SND_ASYNC | SND_NODEFAULT );
+		sndPlaySoundA("..\\sound\\WorldTour_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		int cnt = 0;
 		for (int k = 0; k < 1;) {
 			int n;

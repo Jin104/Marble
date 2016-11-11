@@ -24,9 +24,12 @@ Dice GameDice(int i) {
 		// 주사위 모양이 돌아가는데 키를 누르면 멈춤
 		if (kbhit()) {
 			getch();
+			sndPlaySoundA("..\\sound\\DiceItem00000_Swing.wav", SND_ASYNC | SND_NODEFAULT);
 			break;
 		}
 	}
+	if(d.dice1==d.dice2)
+		sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxy(48, 22);
 	printf("주사위의 값은 %d 입니다", d.sum);
 	Sleep(500);

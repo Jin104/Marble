@@ -10,7 +10,7 @@ LinkedList *list2 = NewList();
 
 void StartGame() {
 
-	
+
 	playerTurn();	//순서 정하기
 
 	system("mode con: cols=130 lines=48");
@@ -65,8 +65,6 @@ void StartGame() {
 			A:
 				Dice d;
 				d = GameDice(i);	//주사위 굴리기
-				if(d.dice1==d.dice2)
-					sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
 				movePlayer(d.sum, i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/
@@ -127,6 +125,7 @@ void initPlayerCoord() {
 void movePlayer(int i, int turn) {
 
 	for (int j = 0; j < i; j++) {
+		sndPlaySoundA("..\\sound\\DiceItem00000_0.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(player[turn].playerX, player[turn].playerY, "  ");	//이전위치의 말을 지워줌
 		player[turn].board++;
 
@@ -148,7 +147,7 @@ void movePlayer(int i, int turn) {
 
 			printf("◆");
 		GRAY
-			Sleep(00);
+			Sleep(200);
 	}
 
 }
@@ -216,7 +215,7 @@ void playerTurn() {
 	printf("%s 님이 선이에요 !", player[0].name);
 	gotoxytext(53, 19, "제일 먼저 시작하세요 ~");
 
-	Sleep(500);
+	Sleep(1400);
 	gotoxytext(79, 12, "┏━━━━━━━┓");
 	for (int i = 13; i < 23; i++) {
 		gotoxytext(79, i, "┃");
