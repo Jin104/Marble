@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <time.h>
 #include <mmsystem.h>
-#pragma comment(lib,"Winmm.lib");
+#pragma comment(lib,"Winmm.lib")
 
 #define COL GetStdHandle(STD_OUTPUT_HANDLE)
 #define PLAYER1 SetConsoleTextAttribute(COL, 13);

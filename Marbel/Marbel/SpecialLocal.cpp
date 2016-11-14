@@ -100,7 +100,7 @@ void StartEvent(int i) {
 				scanf("%s", name);
 				Node *node = FindNode(list, name);
 
-				/*소유하나 지역을 입력할때*/
+				/*소유한 지역을 입력할때*/
 				if (node != NULL) {
 
 					/*지역의 상태가 랜드마크가 아닐때*/
@@ -113,9 +113,10 @@ void StartEvent(int i) {
 							PLAYER1
 						else
 							PLAYER2
-
-							gotoxytext(local[node->num].x, local[node->num].y - 2, "♣♣♣");
-						gotoxytext(37, 33, "랜드마크를 지었습니다!");
+						gotoxytext(local[node->num].x, local[node->num].y - 2, "♣♣♣");
+						GRAY
+						sndPlaySoundA("..\\sound\\LandMark_A01.wav", SND_ASYNC | SND_NODEFAULT);
+						gotoxytext(37, 33, "랜드마크를 건설했습니다!");
 						Sleep(500);
 						clrText();
 					}
@@ -165,10 +166,8 @@ int IslandEvent(int i) {
 	cursor_view(0);
 	gotoxyint(80, 28, select);
 
-
 	if (select == 1) {
-		gotoxy(37, 31);
-		printf("한턴 쉽니다");
+		gotoxytext(37, 31, "한턴 쉽니다");
 		Sleep(900);
 		clrText();
 		return -1;
@@ -176,8 +175,7 @@ int IslandEvent(int i) {
 	else {
 		player[i].marble -= 50;
 		gotoxytext(37, 31, "50만 마블이 지불 되었습니다");
-		player[i].state = 0;
-		player[i].count = 0;
+		player[i].state = 0;	//플레이어 상태 변경
 		Sleep(900);
 		clrText();
 		return 0;
@@ -305,7 +303,9 @@ int WorldTourEvent(int i) {
 						for (int m = 0; m < 1;) {
 							gotoxytext(37, 32, "몇번째 포츈카드로 갈까요? ☞");
 							int k;
-							gotoxy(70, 32); scanf("%d", &k);
+							gotoxy(70, 32);
+							k = getch() - 48;
+							gotoxyint(70, 32, k);
 							switch (k)
 							{
 							case 1:
@@ -327,7 +327,6 @@ int WorldTourEvent(int i) {
 								break;
 							}
 						}
-
 					}
 					else {
 						n = j;
@@ -350,12 +349,12 @@ int WorldTourEvent(int i) {
 				else {
 					move = n + 8;
 				}
-				movePlayer(move, i);
+				MovePlayer(move, i);
 				BuildingEvent(i, player[i].board);
 			}
 			else {
 				clrText();
-				gotoxy(37, 33); printf("없는 지역 입니다. 다시 입력해주세요. ");
+				gotoxytext(37, 33, "없는 지역 입니다. 다시 입력해주세요.");
 				Sleep(700);
 				clrText();
 			}

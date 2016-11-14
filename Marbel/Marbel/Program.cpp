@@ -10,15 +10,13 @@ void main() {
 	Loading();
 	Menu();
 
-	int select, cnt = 0;
-	int num = 1, truth = 1;
+	int select, num = 1;
 
 	while (1) {
 		select = _getch();
 
 		switch (select) {
 		case 80: //아래쪽 커서키
-			cnt++;
 			num = 2;
 			settextcolor(0x0007, 000000);
 			gotoxytext(50, 28, " ");
@@ -31,7 +29,6 @@ void main() {
 			gotoxytext(55, 28, "[1] 게임 시작");
 			break;
 		case 72: //위쪽 커서키
-			cnt--;
 			num = 1;
 			settextcolor(0x0007, 000000);
 			gotoxytext(50, 30, " ");
@@ -46,15 +43,11 @@ void main() {
 		case 13:
 			system("cls");
 			if (num == 1) {
-				truth = 0;
 				StartGame();
-				break;
 			}
 			else if (num == 2) {
 				Explain();
 			}
 		}
-		if (truth == 0)
-			break;
 	}
 }

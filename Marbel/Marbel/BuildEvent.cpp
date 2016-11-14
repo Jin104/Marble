@@ -64,11 +64,16 @@ void BuildingEvent(int turn, int board) {
 			if (player[turn].marble >= local[board].price) {	//구매할돈이 있으면
 				gotoxytext(37, 27, "비어있는 지역입니다. 구매하시겠습니까?");
 				gotoxytext(37, 28, "1) YES  2) NO  (선택) ☞ ");
+
 				gotoxy(70, 28);
 				cursor_view(1);
-				answer = _getch() - 48;
-				printf("%d", answer);
+				do {
+					answer = _getch() - 48;
+					gotoxyint(70, 28, answer);
+					gotoxytext(70, 28, "      ");
+				} while (answer != 1 && answer != 2);
 				cursor_view(0);
+				gotoxyint(70, 28, answer);
 				Sleep(500);
 
 				if (answer == 1) {
@@ -90,7 +95,6 @@ void BuildingEvent(int turn, int board) {
 						PLAYER1
 					else
 						PLAYER2
-
 						gotoxytext(local[board].x, local[board].y - 2, "▲▲▲");
 					GRAY
 				}
@@ -109,6 +113,7 @@ void BuildingEvent(int turn, int board) {
 
 				int toll = localPrice[board][2];
 
+				/*지역이 올림픽 상태면 통행료 2배 증가*/
 				if (local[board].olystate == 1) {
 					toll = toll * 2;
 					local[board].olystate = 0;
@@ -118,12 +123,14 @@ void BuildingEvent(int turn, int board) {
 
 				int price = toll;
 
+				/*보유한 카드가 있으면*/
 				if (player[turn].card == 1 || player[turn].card == 2) {
 					price -= DoAngel(turn, toll);
 					gotoxy(37, 31);
 					printf("통행료는 %d마블 입니다.", price);
 				}
 
+				/*보유마블이 통행료보다 적으면 파산실행(건물매각)*/
 				if (player[turn].marble < toll) {
 					Bankrupt(turn, toll);
 				}
@@ -131,6 +138,7 @@ void BuildingEvent(int turn, int board) {
 					player[turn].marble -= price;
 				}
 
+				/*인수할 것인지*/
 				Takeover(turn, board);
 
 				Sleep(500);
@@ -139,6 +147,7 @@ void BuildingEvent(int turn, int board) {
 			break;
 		case 1:	//player2의 호텔이 지어져있는경우
 			if (turn == 1) {
+				/*랜드마크를 지을 것인지*/
 				BuildRandmark(turn, board);
 			}
 			if (turn == 0) {
@@ -299,7 +308,7 @@ void BuildRandmark(int turn, int board) {
 		local[board].price = localPrice[board][3];   //지역의 가격변경
 
 		player[turn].marble -= localPrice[board][1];
-		modifiNode(list, local[board].name, localPrice[board][3]);
+		modifiNode(list, local[board].name, localPrice[board][3]);	//지역노드의 가격수정
 
 		if (turn == 0)
 			PLAYER1

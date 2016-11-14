@@ -10,8 +10,7 @@ LinkedList *list2 = NewList();
 
 void StartGame() {
 
-
-	playerTurn();	//순서 정하기
+	PlayerTurn();	//순서 정하기
 
 	system("mode con: cols=130 lines=48");
 
@@ -54,8 +53,7 @@ void StartGame() {
 					goto B;	//다음턴으로
 				}
 			default:	//기본상태일때
-
-						/*더블이 3번이상일때 무인도로*/
+				/*더블이 3번이상일때 무인도로*/
 				if (doubleCnt > 2) {
 					GoIsland(i);	//무인도로 이동
 					player[i].marble -= 75;	//무인도로갈때는 월급을 지급하지 않음
@@ -65,7 +63,7 @@ void StartGame() {
 			A:
 				Dice d;
 				d = GameDice(i);	//주사위 굴리기
-				movePlayer(d.sum, i);	//나온만큼 이동
+				MovePlayer(d.sum, i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/
 				if (doubleCnt < 2) {
@@ -122,7 +120,7 @@ void initPlayerCoord() {
 }
 
 /*플레이어를 이동시켜줌   i:이동시킬숫자  turn:플레이어순서*/
-void movePlayer(int i, int turn) {
+void MovePlayer(int i, int turn) {
 
 	for (int j = 0; j < i; j++) {
 		sndPlaySoundA("..\\sound\\DiceItem00000_0.wav", SND_ASYNC | SND_NODEFAULT);
@@ -153,14 +151,14 @@ void movePlayer(int i, int turn) {
 }
 
 /*플레이어 순서를 정해줌*/
-void playerTurn() {
+void PlayerTurn() {
 
 	char name[50];
 
 	PLAYER1
-		gotoxytext(45, 15, "Player 1");
+	gotoxytext(45, 15, "Player 1");
 	GRAY
-		gotoxytext(54, 15, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
+	gotoxytext(54, 15, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
 	gotoxytext(45, 17, "☞  ");
 
 	/*이름이 크기를 넘어가면 다시입력받음*/

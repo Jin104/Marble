@@ -106,27 +106,12 @@ void PrintList(LinkedList *list) {
 	}
 }
 
-//테스트용
-void PrintList2(LinkedList *list) {
-	Node *prev, *pos;
-	prev = pos = list->head;
-	int i = 20;
-	while (pos != NULL) {
-		gotoxy(110, i);
-		printf("%d %s %d", pos->num, pos->local, pos->price);
-		pos = pos->next;
-		i++;
-	}
-}
-
 /*노드 검색*/
 Node *FindNode(LinkedList *list, char *local) {
 	Node *temp;
 	temp = list->head;
 	while (temp != NULL) {
 		if (strcmp(temp->local, local) == 0) {		//노드를 발견하면
-			gotoxy(110, 15);
-			printf("%s", temp->local);
 			return temp;
 		}
 		else {

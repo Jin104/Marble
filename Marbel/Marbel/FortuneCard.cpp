@@ -149,10 +149,10 @@ void InviteTravel(int turn) {
 	/*플레이어위치에따라 이동*/
 	int now = player[turn].board;
 	if (now < 24) {
-		movePlayer(24 - now, turn);
+		MovePlayer(24 - now, turn);
 	}
 	else {
-		movePlayer(28, turn);
+		MovePlayer(28, turn);
 	}
 	player[turn].state = 2;	//플레이어의 상태변경
 	PlayerState();
@@ -166,7 +166,7 @@ void GoStart(int turn) {
 	clrText();
 	/*플레이어위치에따라 이동*/
 	int now = player[turn].board;
-	movePlayer(32 - now, turn);
+	MovePlayer(32 - now, turn);
 
 	StartEvent(turn);	//출발지이벤트 실행
 	PlayerState();
@@ -183,10 +183,10 @@ void GoIsland(int turn) {
 	/*플레이어위치에따라 이동*/
 	int now = player[turn].board;
 	if (now < 8) {
-		movePlayer(8 - now, turn);
+		MovePlayer(8 - now, turn);
 	}
 	else {
-		movePlayer(40 - now, turn);
+		MovePlayer(40 - now, turn);
 		player[turn].marble -= 75;
 	}
 	player[turn].state = 1;	//플레이어상태 변경
@@ -303,6 +303,7 @@ int DoAngel(int turn, int price) {
 	if (select == 1) {
 		sndPlaySoundA("..\\sound\\ChanceCardDef_A03.wav", SND_ASYNC | SND_NODEFAULT);
 		gotoxytext(37, 32, "카드를 사용합니다.");
+		/*카드 종류에 따라 통행료 변경*/
 		if (player[turn].card == 1) {
 			price = price / 2;
 		}

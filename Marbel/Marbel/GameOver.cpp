@@ -91,6 +91,7 @@ void Bankrupt(int turn, int price) {
 	gotoxyint(70, 28, select);
 
 	if (select == 1) {
+		/*모든 건물을 매각해도 통행료가 부족할때*/
 		if (SellBuilding(turn, price) == -1) {
 			clrText();
 			gotoxytext(37, 27, "모든 건물을 매각해도 부족합니다..");
@@ -180,7 +181,7 @@ void ColorMonop(int turn) {
 	}
 
 	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt6 + cnt7 + cnt8;
-	if (color >= 3) { //컬러독점 3개이면 승리
+	if (color == 3) { //컬러독점 3개이면 승리
 		sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		clrText();
 		gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
