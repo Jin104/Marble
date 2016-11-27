@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BuildEvent.h" />
+    <ClInclude Include="Client.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="FortuneCard.h" />
     <ClInclude Include="GameOver.h" />
@@ -156,6 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuildEvent.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ServerClient.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="FortuneCard.cpp" />
     <ClCompile Include="GameOver.cpp" />
@@ -165,6 +168,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SpecialLocal.cpp" />
     <ClCompile Include="Start.cpp" />
+    <ClCompile Include="TCPClient.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

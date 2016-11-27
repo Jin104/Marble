@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Marbel", "Marbel.vcxproj", "{EEBE5D90-8CB3-4E55-A789-B1CC05CE8F4F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MarbelServer", "..\MarbelServer\MarbelServer.vcxproj", "{37A86B6F-95FE-4407-9402-508C908F70FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{EEBE5D90-8CB3-4E55-A789-B1CC05CE8F4F}.Release|x64.Build.0 = Release|x64
 		{EEBE5D90-8CB3-4E55-A789-B1CC05CE8F4F}.Release|x86.ActiveCfg = Release|Win32
 		{EEBE5D90-8CB3-4E55-A789-B1CC05CE8F4F}.Release|x86.Build.0 = Release|Win32
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Debug|x64.ActiveCfg = Debug|x64
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Debug|x64.Build.0 = Debug|x64
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Debug|x86.ActiveCfg = Debug|Win32
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Debug|x86.Build.0 = Debug|Win32
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Release|x64.ActiveCfg = Release|x64
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Release|x64.Build.0 = Release|x64
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Release|x86.ActiveCfg = Release|Win32
+		{37A86B6F-95FE-4407-9402-508C908F70FB}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
