@@ -3,37 +3,44 @@
 #include "BuildEvent.h"
 
 Local local[32];	//지역 32개
-Player player[2];	//플레이어 2명
+Player player[4];	//플레이어 2명
 
 LinkedList *list1 = NewList();		//플레이어가 소유한 지역의 리스트
 LinkedList *list2 = NewList();
+LinkedList *list3 = NewList();
+LinkedList *list4 = NewList();
 
-void StartGame() {
+void StartGame(int totalNumber) {
 
-	PlayerTurn();	//순서 정하기
+	PlayerTurn(totalNumber);	//순서 정하기
 
 	system("mode con: cols=130 lines=48");
-
-
+	printf("%d\n", totalNumber);
+	system("pause");
 	GameBoard();	//게임판 출력
-	DrawPlayer();	//플레이어판 출력
+	DrawPlayer(totalNumber);	//플레이어판 출력
 	initLocal();	//지역 초기화
-	initPlayerCoord();	//플레이어 정보출력
+	initPlayerCoord(totalNumber);	//플레이어 정보출력
 
 	PlaySound(NULL, 0, 0);
 	int doubleCnt = 0;
 	while (1) {
 
-		for (int i = 0; i < 2; i++) {		//플레이어 순서 0:player1  1:player2
+		for (int i = 0; i < totalNumber; i++) {		//플레이어 순서 0:player1  1:player2
 
 			if (i == 0)
 				PLAYER1
-			else
+			else if(i==1)
 				PLAYER2
-				gotoxytext(64, 9, player[i].name);
+			else if(i==2)
+				PLAYER3
+			else
+				PLAYER4
+
+			gotoxytext(1, 20, player[i].name);
 
 			GRAY
-				gotoxytext(73, 9, "님의 차례입니다!");
+				gotoxytext(1, 21, "님의 차례입니다!");
 
 			switch (player[i].state)		//플레이어에 상태를 받아서 그것에대한 이벤트를 발생
 			{
@@ -101,7 +108,7 @@ void initLocal() {
 }
 
 /*초기 플레이어정보 출력*/
-void initPlayerCoord() {
+void initPlayerCoord(int totalNumber) {
 
 	PLAYER1
 		gotoxytext(33, 8, player[0].name);
@@ -117,6 +124,7 @@ void initPlayerCoord() {
 	GRAY
 		gotoxy(42, 10); printf("%d", player[0].marble);
 	gotoxy(82, 39); printf("%d", player[1].marble);
+
 }
 
 /*플레이어를 이동시켜줌   i:이동시킬숫자  turn:플레이어순서*/
@@ -140,10 +148,14 @@ void MovePlayer(int i, int turn) {
 
 		if (turn == 0)
 			PLAYER1
-		else
+		else if(turn == 1)
 			PLAYER2
+		else if(turn == 2)
+			PLAYER3
+		else
+			PLAYER4
 
-			printf("◆");
+		printf("◆");
 		GRAY
 			Sleep(200);
 	}
@@ -151,7 +163,14 @@ void MovePlayer(int i, int turn) {
 }
 
 /*플레이어 순서를 정해줌*/
-void PlayerTurn() {
+void PlayerTurn(int totalNumber) {
+
+	/*for (int i = 0; i < totalNumber; i++) {
+
+
+	}*/
+	
+
 
 	char name[50];
 

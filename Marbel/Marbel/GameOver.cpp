@@ -3,7 +3,7 @@
 #include "Start.h"
 
 extern LinkedList *list1, *list2;   //플레이어1,2의 보유지역 연결리스트
-extern Player player[2];
+extern Player player[4];
 extern Local local[32];
 
 /*건물 매각*/

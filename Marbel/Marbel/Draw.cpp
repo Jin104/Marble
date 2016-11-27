@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-extern Player player[2];
+extern Player player[4];
 
 //유나 주사위
 Dice GameDice(int i) {
@@ -331,9 +331,8 @@ void GameBoard() {
 
 }
 
-
 /*플레이어정보판 그려줌*/
-void DrawPlayer() {
+void DrawPlayer(int totalNumber) {
 
 	gotoxytext(29, 7, "┏━━━━━━━━━━━━┓");
 	gotoxytext(29, 8, "┃                        ┃");
@@ -350,6 +349,26 @@ void DrawPlayer() {
 	gotoxytext(69, 40, "┗━━━━━━━━━━━━┛");
 
 	gotoxytext(71, 39, "보유마블: ");
+
+	if (totalNumber == 3 || totalNumber == 4) {
+		gotoxytext(29, 36, "┏━━━━━━━━━━━━┓");
+		gotoxytext(29, 37, "┃                        ┃");
+		gotoxytext(29, 38, "┃                        ┃");
+		gotoxytext(29, 39, "┃                        ┃");
+		gotoxytext(29, 40, "┗━━━━━━━━━━━━┛");
+
+		gotoxytext(31, 39, "보유마블: ");
+
+		if (totalNumber == 4) {
+			gotoxytext(69, 7, "┏━━━━━━━━━━━━┓");
+			gotoxytext(69, 8, "┃                        ┃");
+			gotoxytext(69, 9, "┃                        ┃");
+			gotoxytext(69, 10, "┃                        ┃");
+			gotoxytext(69, 11, "┗━━━━━━━━━━━━┛");
+
+			gotoxytext(71, 10, "보유마블: ");
+		}
+	}
 }
 
 //유나
@@ -500,7 +519,7 @@ void Explain() {
 
 	if (select = _getch()) { //키를 누르면 게임시작
 		system("cls");
-		StartGame();
+		//StartGame();
 	}
 
 }
@@ -508,9 +527,19 @@ void Explain() {
 /*플레이어의 마블상태를 그려줌*/
 void PlayerState() {
 	gotoxy(42, 10); printf("             ");
-	gotoxy(82, 39); printf("             ");
 	gotoxy(42, 10); printf("%d", player[0].marble);
+	gotoxy(82, 39); printf("             ");
 	gotoxy(82, 39); printf("%d", player[1].marble);
+
+	//if (totalNumber == 3 || totalNumber == 4) {
+	//	gotoxy(42, 39); printf("             ");
+	//	gotoxy(42, 39); printf("%d", player[0].marble);
+
+	//	if (totalNumber == 4) {
+	//		gotoxy(82, 10); printf("             ");
+	//		gotoxy(82, 10); printf("%d", player[0].marble);
+	//	}
+	//}
 }
 
 /*텍스트화면 지우기*/

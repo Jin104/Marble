@@ -34,7 +34,6 @@ SOCKET NewTCPSocket() {
 	serverAddr.sin_port = htons(10200);
 
 	/*서버에 연결요청*/
-
 	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
 		ErrorHandling1("connect() error");
 

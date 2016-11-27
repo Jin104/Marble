@@ -68,6 +68,7 @@ void ErrorHandling(char* msg) {
 void DoIt(void *param) {
 
 	char select[2];	//클라이언트의 선택
+	char roomNum[5];
 	char roomName[256];	//방 이름
 	char message[256];
 	int roomCount;	//방 개수
@@ -99,9 +100,12 @@ void DoIt(void *param) {
 		sprintf(select, "%d", roomCount);
 		send(sock, select, sizeof(select), 0);
 		pos = list->head;
+		printf("\n===========방 목록===========\n");
 		while (pos != NULL) {
-			send(sock, pos->allNum, sizeof(pos->allNum), 0);
 			send(sock, pos->name, sizeof(pos->name), 0);
+			sprintf(roomNum, "%d", pos->num);
+			send(sock, roomNum, sizeof(roomNum), 0);
+			send(sock, pos->allNum, sizeof(pos->allNum), 0);
 			printf("%d번째 방 [방 이름: %s\t현재 인원수: %d\t총인원수: %s]\n", pos->number, pos->name, pos->num, pos->allNum);
 			pos = pos->next;
 		}

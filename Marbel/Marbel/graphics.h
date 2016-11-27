@@ -10,6 +10,8 @@
 #define COL GetStdHandle(STD_OUTPUT_HANDLE)
 #define PLAYER1 SetConsoleTextAttribute(COL, 13);
 #define PLAYER2 SetConsoleTextAttribute(COL, 11);
+#define PLAYER3 SetConsoleTextAttribute(COL, 6);
+#define PLAYER4 SetConsoleTextAttribute(COL, 9);
 #define DARK_SKY_BLUE SetConsoleTextAttribute(COL, 3);
 #define GRAY SetConsoleTextAttribute(COL, 7);
 

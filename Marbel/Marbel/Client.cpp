@@ -1,21 +1,19 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Windows.h>
 #include <process.h>
+#include "Start.h"
 #include "Client.h"
 
 #define BUF_SIZE 100
 #define NAME_SIZE 20
 
-unsigned WINAPI SendMsg(void* arg);//쓰레드 전송함수
-unsigned WINAPI RecvMsg(void* arg);//쓰레드 수신함수
+
 void ErrorHandling(char* msg);
 
 char name[NAME_SIZE] = "[DEFAULT]";
 char msg[BUF_SIZE];
 
-void AccessServerClient(char *ip) {
+void AccessServerClient(char *ip,int totalNumber) {
 	WSADATA wsaData;
 	SOCKET sock;
 	SOCKADDR_IN serverAddr;
@@ -50,11 +48,15 @@ void AccessServerClient(char *ip) {
 
 	//접속에 성공하면 이 줄 아래가 실행된다.
 
-	sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
-	recvThread = (HANDLE)_beginthreadex(NULL, 0, RecvMsg, (void*)&sock, 0, NULL);//메시지 수신용 쓰레드가 실행된다.
 
-	WaitForSingleObject(sendThread, INFINITE);//전송용 쓰레드가 중지될때까지 기다린다./
-	WaitForSingleObject(recvThread, INFINITE);//수신용 쓰레드가 중지될때까지 기다린다.
+	//StartGame(totalNumber);
+
+	/*이건 다중채팅했던거*/
+	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
+	//recvThread = (HANDLE)_beginthreadex(NULL, 0, RecvMsg, (void*)&sock, 0, NULL);//메시지 수신용 쓰레드가 실행된다.
+
+	//WaitForSingleObject(sendThread, INFINITE);//전송용 쓰레드가 중지될때까지 기다린다./
+	//WaitForSingleObject(recvThread, INFINITE);//수신용 쓰레드가 중지될때까지 기다린다.
 											  //클라이언트가 종료를 시도한다면 이줄 아래가 실행된다.
 	closesocket(sock);//소켓을 종료한다.
 	WSACleanup();//윈도우 소켓 사용중지를 운영체제에 알린다.

@@ -1,10 +1,10 @@
 #pragma once
 
 typedef struct _Node {
-	char name[50];		//방 이름
+	char name[256];		//방 이름
 	char allNum[5];		//방의 총 인원수
 						//char num[5];		//방의 현재 인원수
-	int num;
+	int num;			//방의 현재 인원수
 	int number;			//방의 번호(리스트 번호)
 	char ip[20];		//방의 ip
 	_Node *next;

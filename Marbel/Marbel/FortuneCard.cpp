@@ -3,7 +3,7 @@
 #include "Player.h"
 
 extern LinkedList *list1, *list2;
-extern Player player[2];
+extern Player player[4];
 extern Local local[32];
 
 void FortuneCard(int turn) {
