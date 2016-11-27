@@ -28,8 +28,8 @@ void main()
 	SOCKADDR_IN serverAddr;
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
-	//serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	serverAddr.sin_addr.S_un.S_addr = inet_addr("25.34.50.142");
+	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.26");
 	serverAddr.sin_port = htons(10200);
 
 	/*생성한 소켓 배치*/
@@ -46,8 +46,8 @@ void main()
 	SOCKET clientSock;	//클라이언트와 송수신 하기 위한 소켓
 	SOCKADDR_IN clientAddr; //접속 요청한 클라이언트의 소켓 주소를 담을 변수
 	int clientLen = sizeof(clientAddr);	//소켓 주소 버퍼 크기
-
-	printf("ip: %s\n", inet_ntoa(serverAddr.sin_addr));
+	
+	//printf("ip: %ld\n", serverAddr.sin_addr.S_un.S_addr);
 	
 while (1) {
 

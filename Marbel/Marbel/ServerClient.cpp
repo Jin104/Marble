@@ -34,7 +34,8 @@ void NewServer() {
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	serverAddr.sin_port = htons(10200);
+	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.26");
+	serverAddr.sin_port = htons(10201);
 
 	if (bind(serverSock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) //생성한 소켓을 배치한다.
 		ErrorHandling2("bind() error");

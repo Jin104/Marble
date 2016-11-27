@@ -100,11 +100,8 @@ void main()
 		printf("입장하실방의 번호를 입력해주세요 :   ");
 		getchar();
 		gets_s(select);
-		printf("테스트0\n");
 		send(sock, select, sizeof(select), 0);
-		printf("테스트1\n");
 		recv(sock, roomIp, sizeof(roomIp), 0);
-		printf("테스트2\n");
 		AccessServerClient(roomIp);
 		break;
 	default:

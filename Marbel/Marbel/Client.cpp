@@ -38,8 +38,8 @@ void AccessServerClient(char *ip) {
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = inet_addr(myIp);
-	serverAddr.sin_port = htons(atoi(port));
-
+	//serverAddr.sin_port = htons(atoi(port));
+	serverAddr.sin_port = htons(10201);
 	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속한다.
 		ErrorHandling("connect() error");
 
