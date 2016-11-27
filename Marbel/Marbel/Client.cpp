@@ -25,7 +25,11 @@ void AccessServerClient(char *ip) {
 	char port[100];
 	char inputName[100];
 
-	sprintf(myIp, "%s", ip);
+	//sprintf(myIp, "%s", ip);
+	//printf("ip: %s\n", myIp);
+	printf("Input IP : ");
+	gets_s(myIp);
+
 	printf("Input your name : ");
 	gets_s(inputName);
 
@@ -38,7 +42,8 @@ void AccessServerClient(char *ip) {
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = inet_addr(myIp);
-	//serverAddr.sin_port = htons(atoi(port));
+	//serverAddr.sin_addr.S_un.S_addr = inet_addr("110.15.82.167");
+	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.2");
 	serverAddr.sin_port = htons(10201);
 	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속한다.
 		ErrorHandling("connect() error");
