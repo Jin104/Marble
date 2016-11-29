@@ -2,12 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <process.h>
+#include <time.h>
 #include <WinSock2.h>
 #include <Windows.h>
 #include "Client.h"
 
 #define BUF_SIZE 100
 #define MAX_CLNT 256
+
+
+void DoIt(void *param);
 
 unsigned WINAPI HandleClient(void* arg);//쓰레드 함수
 void SendMsg(char* msg, int len);//메시지 보내는 함수
@@ -55,6 +59,7 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 		ReleaseMutex(hMutex);//뮤텍스 중지
 		//hThread = (HANDLE)_beginthreadex(NULL, 0, HandleClient, (void*)&clientSock, 0, NULL);//HandleClient 쓰레드 실행, clientSock을 매개변수로 전달
 		hThread = (HANDLE)_beginthreadex(NULL, 0, HandleClient, (void*)&clientSock, 0, NULL);//HandleClient 쓰레드 실행, clientSock을 매개변수로 전달
+		//_beginthread(DoIt, 0, (void*)clientSock);
 		printf("Connected Client IP : %s\n", inet_ntoa(clientAddr.sin_addr));
 	}
 	closesocket(serverSock);//생성한 소켓을 끈다.
@@ -63,14 +68,28 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 
 }
 
-unsigned WINAPI HandleClient(void* arg) {
-	SOCKET clientSock = *((SOCKET*)arg); //매개변수로받은 클라이언트 소켓을 전달
+//
+//void DoIt(void *param)
+//{
+//	SOCKET sock = (SOCKET)param;
+//	if (clientSocks[total-1] != NULL) {
+//		for (int i = 0; i < total; i++) {
+//			send(clientSocks[i], "9", sizeof("9"), 0);
+//		}
+//	}
+//}
 
-	if (clientSocks[total] != NULL) {
-		printf("????\n");
+unsigned WINAPI HandleClient(void* arg) {
+	int n;
+	char num[2];
+	srand(time(NULL));
+	n = rand() % total;
+	
+	
+	if (clientSocks[total-2] != NULL) {
 		for (int i = 0; i < total; i++) {
-			printf("보낸다%d", i);
 			send(clientSocks[i], "9", sizeof("9"), 0);
+			
 		}
 	}
 	return 0;

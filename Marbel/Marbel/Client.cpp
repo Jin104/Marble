@@ -50,7 +50,8 @@ void AccessServerClient(char *ip,int totalNumber) {
 	printf("대기중입니다...\n");
 
 	recv(sock, start, sizeof(start), 0);
-	if (strcmp(start, "9")) {
+	if (atoi(start) == 9) {
+		printf("게임을 시작합니다.\n");
 		StartGame(totalNumber);
 	}
 	/*이건 다중채팅했던거*/
