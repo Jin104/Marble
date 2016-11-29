@@ -54,6 +54,7 @@
 //	}
 //}
 
+
 void main()
 {
 	char select[2];
@@ -77,7 +78,6 @@ void main()
 		printf("2~4인 중, 몇 인용 방을 만드실 건가요? 숫자만 입력해주세요.\n");
 		scanf("%s", select);
 		send(sock, select, sizeof(select), 0);
-
 		printf("방 이름을 입력해주세요.\n");
 		getchar();
 		gets_s(roomName);

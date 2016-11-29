@@ -19,6 +19,7 @@ void AccessServerClient(char *ip,int totalNumber) {
 	SOCKADDR_IN serverAddr;
 	HANDLE sendThread, recvThread;
 
+	char start[2];
 	char myIp[20];
 	char port[100];
 	char inputName[100];
@@ -46,11 +47,12 @@ void AccessServerClient(char *ip,int totalNumber) {
 	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속한다.
 		ErrorHandling("connect() error");
 
-	//접속에 성공하면 이 줄 아래가 실행된다.
+	printf("대기중입니다...\n");
 
-
-	//StartGame(totalNumber);
-
+	recv(sock, start, sizeof(start), 0);
+	if (strcmp(start, "9")) {
+		StartGame(totalNumber);
+	}
 	/*이건 다중채팅했던거*/
 	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
 	//recvThread = (HANDLE)_beginthreadex(NULL, 0, RecvMsg, (void*)&sock, 0, NULL);//메시지 수신용 쓰레드가 실행된다.

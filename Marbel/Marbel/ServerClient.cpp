@@ -27,7 +27,7 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	HANDLE hThread;
 	
 	total = totalNumber;
-
+	
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) //윈도우 소켓을 사용하겠다는 사실을 운영체제에 전달
 		ErrorHandling2("WSAStartup() error!");
 
@@ -65,12 +65,14 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 
 unsigned WINAPI HandleClient(void* arg) {
 	SOCKET clientSock = *((SOCKET*)arg); //매개변수로받은 클라이언트 소켓을 전달
-	
-	if (clientSocks[4] != NULL) {
-		send(clientSock[0],)
 
+	if (clientSocks[total] != NULL) {
+		printf("????\n");
+		for (int i = 0; i < total; i++) {
+			printf("보낸다%d", i);
+			send(clientSocks[i], "9", sizeof("9"), 0);
+		}
 	}
-
 	return 0;
 }
 
