@@ -130,6 +130,7 @@ unsigned WINAPI HandleClient(void* arg) {
 	return 0;
 }
 
+
 //unsigned WINAPI HandleClient(void* arg) {
 //	SOCKET clientSock = *((SOCKET*)arg); //매개변수로받은 클라이언트 소켓을 전달
 //	int strLen = 0, i;
