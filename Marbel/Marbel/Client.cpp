@@ -3,10 +3,13 @@
 #include <process.h>
 #include "Start.h"
 #include "Client.h"
+#include "Player.h"
 
 #define BUF_SIZE 100
 #define NAME_SIZE 20
 
+extern LinkedList *list1, *list2, *list3, *list4;
+extern Player player[4];
 
 void ErrorHandling(char* msg);
 
@@ -22,8 +25,8 @@ void AccessServerClient(char *ip,int totalNumber) {
 	char start[2];
 	char myIp[20];
 	char port[100];
-	char inputName[100];
-
+	char inputName[10];
+	int turn;
 	//sprintf(myIp, "%s", ip);
 	//printf("ip: %s\n", myIp);
 	printf("Input IP : ");
@@ -48,11 +51,22 @@ void AccessServerClient(char *ip,int totalNumber) {
 		ErrorHandling("connect() error");
 
 	printf("대기중입니다...\n");
-
+	send(sock, name, sizeof(name), 0);
 	recv(sock, start, sizeof(start), 0);
 	if (atoi(start) == 9) {
+		for (int i = 0; i < totalNumber; i++) {
+			recv(sock, start, sizeof(start), 0);
+			turn = atoi(start);
+			player[i].myTurn = turn;
+			//recv(sock, name, sizeof(name), 0);
+			//strcpy(player[i].name, name);
+			//printf("player[%d]의 turn: %d\n", i, player[i].myTurn);
+			//printf("player[%d]의 turn: %d 이름:%s\n", i, player[i].myTurn, player[i].name);
+			}
+		recv(sock, start, sizeof(start), 0);
+		turn = atoi(start);
 		printf("게임을 시작합니다.\n");
-		StartGame(totalNumber);
+		StartGame(totalNumber, turn, inputName);
 	}
 	/*이건 다중채팅했던거*/
 	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
@@ -103,4 +117,4 @@ void ErrorHandling(char* msg) {
 	fputs(msg, stderr);
 	fputc('\n', stderr);
 	exit(1);
-}
+}eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee

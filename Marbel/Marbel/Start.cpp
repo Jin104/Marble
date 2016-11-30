@@ -10,9 +10,9 @@ LinkedList *list2 = NewList();
 LinkedList *list3 = NewList();
 LinkedList *list4 = NewList();
 
-void StartGame(int totalNumber) {
+void StartGame(int totalNumber, int playerTurn, char *name) {
 
-	PlayerTurn(totalNumber);	//순서 정하기
+	PlayerTurn(totalNumber);	//순서
 
 	system("mode con: cols=130 lines=48");
 	printf("%d\n", totalNumber);
@@ -114,13 +114,36 @@ void initPlayerCoord(int totalNumber) {
 		gotoxytext(33, 8, player[0].name);
 	gotoxy(player[0].playerX, player[0].playerY);
 	printf("◆");
+	GRAY
+		gotoxy(42, 10); printf("%d", player[0].marble);
 
 	PLAYER2
 		gotoxytext(73, 37, player[1].name);
 	player[1].playerX = player[0].playerX + 2;
 	gotoxy(player[1].playerX, player[1].playerY);
 	printf("◆");
+	GRAY
+		gotoxy(42, 10); printf("%d", player[0].marble);
 
+	if (totalNumber >= 3) {
+		PLAYER3
+			gotoxytext(33, 37, player[2].name);
+		player[2].playerX = player[1].playerX + 2;
+		gotoxy(player[2].playerX, player[2].playerY);
+		printf("◆");
+		GRAY
+			gotoxy(42, 10); printf("%d", player[0].marble);
+
+		if (totalNumber > 3) {
+			PLAYER4
+				gotoxytext(73, 8, player[3].name);
+			player[3].playerX = player[2].playerX + 2;
+			gotoxy(player[3].playerX, player[3].playerY);
+			printf("◆");
+			GRAY
+				gotoxy(42, 10); printf("%d", player[0].marble);
+		}
+	}
 	GRAY
 		gotoxy(42, 10); printf("%d", player[0].marble);
 	gotoxy(82, 39); printf("%d", player[1].marble);
@@ -165,87 +188,10 @@ void MovePlayer(int i, int turn) {
 /*플레이어 순서를 정해줌*/
 void PlayerTurn(int totalNumber) {
 
-	/*for (int i = 0; i < totalNumber; i++) {
+	//for (int i = 0; i < totalNumber; i++) {
+	//	//player[i].myTurn=
 
+	//}
 
-	}*/
-	
-
-
-	char name[50];
-
-	PLAYER1
-	gotoxytext(45, 15, "Player 1");
-	GRAY
-	gotoxytext(54, 15, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
-	gotoxytext(45, 17, "☞  ");
-
-	/*이름이 크기를 넘어가면 다시입력받음*/
-	cursor_view(1);
-	do {
-		gotoxy(49, 17); scanf("%s", name);
-		gotoxytext(49, 17, "                                                            ");
-
-	} while (strlen(name) > 10);
-	cursor_view(0);
-	strcpy(player[0].name, name);
-	gotoxytext(49, 17, player[0].name);
-
-	PLAYER2
-		gotoxytext(45, 20, "Player 2");
-	GRAY
-		gotoxytext(54, 20, "의 이름을 입력해주세요 (1~5글자,띄어쓰기x)");
-	gotoxytext(45, 22, "☞  ");
-
-	cursor_view(1);
-	do {
-		gotoxy(49, 22); scanf("%s", name);
-		gotoxytext(49, 22, "                                                            ");
-
-	} while (strlen(name) > 10);
-	cursor_view(0);
-	strcpy(player[1].name, name);
-	gotoxytext(49, 22, player[1].name);
-	Sleep(250);
-
-	system("cls");
-	sndPlaySoundA("..\\sound\\User_Set_ready_A01.wav", SND_ASYNC | SND_NODEFAULT);
-	gotoxytext(53, 17, "순서를 정합니다. ENTER를 눌러주세요!");
-	_getch();
-	system("cls");
-
-	/*랜덤으로 순서를 정해줌*/
-	srand(time(NULL));
-	int n = rand() % 2;
-	player[0].turn = n;
-	player[1].turn = 1 - n;
-
-	/*0이나온 플레이어를 첫번째 플레이어로*/
-	if (player[1].turn == 0) {
-		Player tmp = player[0];
-		player[0] = player[1];
-		player[1] = tmp;
-	}
-
-	sndPlaySoundA("..\\sound\\User_Set_A01.wav", SND_ASYNC | SND_NODEFAULT);
-	gotoxy(53, 17);
-	printf("%s 님이 선이에요 !", player[0].name);
-	gotoxytext(53, 19, "제일 먼저 시작하세요 ~");
-
-	Sleep(1400);
-	gotoxytext(79, 12, "┏━━━━━━━┓");
-	for (int i = 13; i < 23; i++) {
-		gotoxytext(79, i, "┃");
-		gotoxytext(95, i, "┃");
-	}
-	gotoxytext(81, 14, "   ●     ●");
-	gotoxytext(81, 15, "  ●●    ●");
-	gotoxytext(81, 16, " ●  ● ●●");
-	gotoxytext(81, 17, "●    ●  ●");
-	gotoxytext(81, 18, "          ●");
-	gotoxytext(81, 19, "  ●       ");
-	gotoxytext(81, 20, "  ●       ");
-	gotoxytext(81, 21, "  ●●●●●");
-	gotoxytext(79, 23, "┗━━━━━━━┛");
 	Sleep(800);
 }

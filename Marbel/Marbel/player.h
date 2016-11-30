@@ -3,9 +3,9 @@
 #include "local.h"
 
 typedef struct _Player {
-	int turn = 0;	//PlayerTurn에서 Turn정해줄때
+	int myTurn = 0;	//PlayerTurn에서 Turn정해줄때
 	int board = 0;	//플레이어가 위치한 지역
-	int playerX = 21;	//위치X좌표
+	int playerX = 19;	//위치X좌표
 	int playerY = 45;	//위치Y좌표
 	char name[10];	//이름
 	int marble = 2000;	//보유마블
