@@ -259,7 +259,7 @@ void OlympicEvent(int i) {
 }
 
 /*技拌咯青*/
-int WorldTourEvent(int i) {
+int WorldTourEvent(int i, int playerTurn) {
 	char name[10];
 	int select;
 	gotoxytext(37, 27, "≮ 技拌 咯青 ≮");
@@ -350,7 +350,7 @@ int WorldTourEvent(int i) {
 					move = n + 8;
 				}
 				MovePlayer(move, i);
-				BuildingEvent(i, player[i].board);
+				BuildingEvent(i, player[i].board, playerTurn);
 			}
 			else {
 				clrText();

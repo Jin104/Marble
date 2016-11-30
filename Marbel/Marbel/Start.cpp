@@ -1,6 +1,7 @@
 #include "Start.h"
 #include "Player.h"
 #include "BuildEvent.h"
+#include "Client.h"
 
 Local local[32];	//지역 32개
 Player player[4];	//플레이어 2명
@@ -10,13 +11,14 @@ LinkedList *list2 = NewList();
 LinkedList *list3 = NewList();
 LinkedList *list4 = NewList();
 
+extern SOCKET sock;
 void StartGame(int totalNumber, int playerTurn, char *name) {
 
-	PlayerTurn(totalNumber);	//순서
+	//PlayerTurn(totalNumber);	//순서
 
 	system("mode con: cols=130 lines=48");
-	printf("%d\n", totalNumber);
-	system("pause");
+	//printf("%d\n", playerTurn);
+	//system("pause");
 	GameBoard();	//게임판 출력
 	DrawPlayer(totalNumber);	//플레이어판 출력
 	initLocal();	//지역 초기화
@@ -45,7 +47,7 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 			switch (player[i].state)		//플레이어에 상태를 받아서 그것에대한 이벤트를 발생
 			{
 			case 2:	//세계여행에있는 상태
-				if (WorldTourEvent(i) == -1) {
+				if (WorldTourEvent(i, playerTurn) == -1) {
 					player[i].state = 0;	//플레이어상태를 기본으로
 					goto A;	//주사위를 굴리는 곳부터
 				}
@@ -69,12 +71,20 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 				}
 			A:
 				Dice d;
+				char dd[2];
+				itoa(d.sum, dd, 10);
 				d = GameDice(i);	//주사위 굴리기
-				MovePlayer(d.sum, i);	//나온만큼 이동
+				
+				if (i == playerTurn) {
+					send(sock, dd, 2, 0);
+				}else{
+					recv(sock, dd, 2, 0);
+				}
+				MovePlayer(atoi(dd), i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/
 				if (doubleCnt < 2) {
-					BuildingEvent(i, player[i].board);	//도착한지역에대한 이벤트
+					BuildingEvent(i, player[i].board, playerTurn);	//도착한지역에대한 이벤트
 				}
 
 				/*더블이나왔을때*/
@@ -123,7 +133,7 @@ void initPlayerCoord(int totalNumber) {
 	gotoxy(player[1].playerX, player[1].playerY);
 	printf("◆");
 	GRAY
-		gotoxy(42, 10); printf("%d", player[0].marble);
+		gotoxy(42, 10); printf("%d", player[1].marble);
 
 	if (totalNumber >= 3) {
 		PLAYER3
@@ -132,7 +142,7 @@ void initPlayerCoord(int totalNumber) {
 		gotoxy(player[2].playerX, player[2].playerY);
 		printf("◆");
 		GRAY
-			gotoxy(42, 10); printf("%d", player[0].marble);
+			gotoxy(42, 10); printf("%d", player[2].marble);
 
 		if (totalNumber > 3) {
 			PLAYER4
@@ -141,12 +151,9 @@ void initPlayerCoord(int totalNumber) {
 			gotoxy(player[3].playerX, player[3].playerY);
 			printf("◆");
 			GRAY
-				gotoxy(42, 10); printf("%d", player[0].marble);
+				gotoxy(42, 10); printf("%d", player[3].marble);
 		}
 	}
-	GRAY
-		gotoxy(42, 10); printf("%d", player[0].marble);
-	gotoxy(82, 39); printf("%d", player[1].marble);
 
 }
 

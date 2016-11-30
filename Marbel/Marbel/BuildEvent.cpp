@@ -5,8 +5,9 @@
 extern LinkedList *list1, *list2;
 extern Player player[4];
 extern Local local[32];
-
-void BuildingEvent(int turn, int board) {
+extern SOCKET sock;
+char dd[2];
+void BuildingEvent(int turn, int board, int playerTurn) {
 
 	/*
 	turn=> 현재 플레이어 번호		0:player1  1:player2
@@ -62,20 +63,28 @@ void BuildingEvent(int turn, int board) {
 		{
 		case -1:   //지역이 비어있을때
 			if (player[turn].marble >= local[board].price) {	//구매할돈이 있으면
-				gotoxytext(37, 27, "비어있는 지역입니다. 구매하시겠습니까?");
-				gotoxytext(37, 28, "1) YES  2) NO  (선택) ☞ ");
+				if (turn == playerTurn) {
+					gotoxytext(37, 27, "비어있는 지역입니다. 구매하시겠습니까?");
+					gotoxytext(37, 28, "1) YES  2) NO  (선택) ☞ ");
 
-				gotoxy(70, 28);
-				cursor_view(1);
-				do {
-					answer = _getch() - 48;
+					gotoxy(70, 28);
+					cursor_view(1);
+					do {
+						answer = _getch() - 48;
+						gotoxyint(70, 28, answer);
+						gotoxytext(70, 28, "      ");
+					} while (answer != 1 && answer != 2);
+					cursor_view(0);
 					gotoxyint(70, 28, answer);
-					gotoxytext(70, 28, "      ");
-				} while (answer != 1 && answer != 2);
-				cursor_view(0);
-				gotoxyint(70, 28, answer);
+					itoa(answer, dd, 10);
+					send(sock, dd, 2, 0);
+				}
+				else {
+					recv(sock, dd, 2, 0);
+				}
 				Sleep(500);
 
+				answer = atoi(dd);
 				if (answer == 1) {
 					if (board != 4 && board != 9 && board != 14 && board != 18 && board != 25) {   //관광지는 제외
 						gotoxytext(37, 30, "호텔을 건설했습니다.");

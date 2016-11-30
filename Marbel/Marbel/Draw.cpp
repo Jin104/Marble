@@ -13,21 +13,24 @@ Dice GameDice(int i) {
 	printf("                                     ");
 	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
 	srand(time(NULL));
-	while (1) {
-		Sleep(100);
-		//주사위 1부터 6까지 랜덤
-		d.dice1 = rand() % 6 + 1;
-		d.dice2 = rand() % 6 + 1;
-		d.sum = d.dice1 + d.dice2;
-		DiceShape(d.dice1);
-		DiceShape2(d.dice2);
-		// 주사위 모양이 돌아가는데 키를 누르면 멈춤
-		if (kbhit()) {
-			getch();
-			sndPlaySoundA("..\\sound\\DiceItem00000_Swing.wav", SND_ASYNC | SND_NODEFAULT);
-			break;
-		}
-	}
+	d.dice1 = rand() % 6 + 1;
+	d.dice2 = rand() % 6 + 1;
+	d.sum = d.dice1 + d.dice2;
+	//while (1) {
+	//	Sleep(100);
+	//	//주사위 1부터 6까지 랜덤
+	//	d.dice1 = rand() % 6 + 1;
+	//	d.dice2 = rand() % 6 + 1;
+	//	d.sum = d.dice1 + d.dice2;
+	//	DiceShape(d.dice1);
+	//	DiceShape2(d.dice2);
+	//	// 주사위 모양이 돌아가는데 키를 누르면 멈춤
+	//	if (kbhit()) {
+	//		getch();
+	//		sndPlaySoundA("..\\sound\\DiceItem00000_Swing.wav", SND_ASYNC | SND_NODEFAULT);
+	//		break;
+	//	}
+	//}
 	if(d.dice1==d.dice2)
 		sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxy(48, 22);

@@ -10,15 +10,15 @@
 
 extern LinkedList *list1, *list2, *list3, *list4;
 extern Player player[4];
-
+SOCKET sock;
 void ErrorHandling(char* msg);
 
-char name[NAME_SIZE] = "[DEFAULT]";
+//char name[NAME_SIZE] = "[DEFAULT]";
 char msg[BUF_SIZE];
 
 void AccessServerClient(char *ip,int totalNumber) {
 	WSADATA wsaData;
-	SOCKET sock;
+	
 	SOCKADDR_IN serverAddr;
 	HANDLE sendThread, recvThread;
 
@@ -27,6 +27,7 @@ void AccessServerClient(char *ip,int totalNumber) {
 	char port[100];
 	char inputName[10];
 	int turn;
+	char name[10];
 	//sprintf(myIp, "%s", ip);
 	//printf("ip: %s\n", myIp);
 	printf("Input IP : ");
@@ -38,7 +39,8 @@ void AccessServerClient(char *ip,int totalNumber) {
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)// 윈도우 소켓을 사용한다고 운영체제에 알림
 		ErrorHandling("WSAStartup() error!");
 
-	sprintf(name, "[%s]", inputName);
+	sprintf(name, "%s", inputName);
+
 	sock = socket(PF_INET, SOCK_STREAM, 0);//소켓을 하나 생성한다.
 
 	memset(&serverAddr, 0, sizeof(serverAddr));
@@ -51,17 +53,14 @@ void AccessServerClient(char *ip,int totalNumber) {
 		ErrorHandling("connect() error");
 
 	printf("대기중입니다...\n");
-	send(sock, name, sizeof(name), 0);
+	//send(sock, name, sizeof(name), 0);		//이름보내기
 	recv(sock, start, sizeof(start), 0);
 	if (atoi(start) == 9) {
 		for (int i = 0; i < totalNumber; i++) {
 			recv(sock, start, sizeof(start), 0);
 			turn = atoi(start);
 			player[i].myTurn = turn;
-			//recv(sock, name, sizeof(name), 0);
-			//strcpy(player[i].name, name);
-			//printf("player[%d]의 turn: %d\n", i, player[i].myTurn);
-			//printf("player[%d]의 turn: %d 이름:%s\n", i, player[i].myTurn, player[i].name);
+			printf("player[%d]의 turn: %d\n", i, player[i].myTurn);
 			}
 		recv(sock, start, sizeof(start), 0);
 		turn = atoi(start);
@@ -82,13 +81,13 @@ void AccessServerClient(char *ip,int totalNumber) {
 
 unsigned WINAPI SendMsg(void* arg) {//전송용 쓰레드함수
 	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
-	char nameMsg[NAME_SIZE + BUF_SIZE];
+	char nameMsg[2];
 	while (1) {//반복
-		fgets(msg, BUF_SIZE, stdin);//입력을 받는다.
+		fgets(msg, 2, stdin);//입력을 받는다.
 		if (!strcmp(msg, "q\n")) {//q를 입력하면 종료한다.
 			send(sock, "q", 1, 0);//nameMsg를 서버에게 전송한다.
 		}
-		sprintf(nameMsg, "%s %s", name, msg);//nameMsg에 메시지를 전달한다.
+		//sprintf(nameMsg, "%s %s", name, msg);//nameMsg에 메시지를 전달한다.
 		send(sock, nameMsg, strlen(nameMsg), 0);//nameMsg를 서버에게 전송한다.
 	}
 	return 0;
@@ -113,8 +112,41 @@ unsigned WINAPI RecvMsg(void* arg) {
 	return 0;
 }
 
+//unsigned WINAPI SendMsg(void* arg) {//전송용 쓰레드함수
+//	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
+//	char nameMsg[NAME_SIZE + BUF_SIZE];
+//	while (1) {//반복
+//		fgets(msg, BUF_SIZE, stdin);//입력을 받는다.
+//		if (!strcmp(msg, "q\n")) {//q를 입력하면 종료한다.
+//			send(sock, "q", 1, 0);//nameMsg를 서버에게 전송한다.
+//		}
+//		//sprintf(nameMsg, "%s %s", name, msg);//nameMsg에 메시지를 전달한다.
+//		send(sock, nameMsg, strlen(nameMsg), 0);//nameMsg를 서버에게 전송한다.
+//	}
+//	return 0;
+//}
+//
+//unsigned WINAPI RecvMsg(void* arg) {
+//	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
+//	char nameMsg[NAME_SIZE + BUF_SIZE];
+//	int strLen;
+//	while (1) {//반복
+//		strLen = recv(sock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);//서버로부터 메시지를 수신한다.
+//		if (strLen == -1)
+//			return -1;
+//		nameMsg[strLen] = 0;//문자열의 끝을 알리기 위해 설정
+//		if (!strcmp(nameMsg, "q")) {
+//			printf("left the chat\n");
+//			closesocket(sock);
+//			exit(0);
+//		}
+//		fputs(nameMsg, stdout);//자신의 콘솔에 받은 메시지를 출력한다.
+//	}
+//	return 0;
+//}
+
 void ErrorHandling(char* msg) {
 	fputs(msg, stderr);
 	fputc('\n', stderr);
 	exit(1);
-}eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+}
