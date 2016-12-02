@@ -1,7 +1,6 @@
 #include "Start.h"
 #include "Graphics.h"
 #include "Client.h"
-#include <process.h>
 
 //유나
 //게임 메뉴 방향키
@@ -86,10 +85,6 @@ void main()
 		recv(sock, message, sizeof(message), 0);
 		printf("server: %s\n", message);
 		NewServer(atoi(select));
-		//AccessServerClient2((void*) roomAllNum);
-	
-		//_beginthread(NewServer2, 0, (void*)roomAllNum);
-		//_beginthread(AccessServerClient2, 0, (void*)roomAllNum);
 		break;
 	case 2:
 		system("cls");

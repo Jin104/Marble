@@ -3,7 +3,6 @@
 #include "BuildEvent.h"
 #include "Client.h"
 
-extern int totalll;
 Local local[32];	//지역 32개
 Player player[4];	//플레이어 2명
 
@@ -13,7 +12,7 @@ LinkedList *list3 = NewList();
 LinkedList *list4 = NewList();
 
 extern SOCKET sock;
-void StartGame(int totalNumber, int playerTurn) {
+void StartGame(int totalNumber, int playerTurn, char *name) {
 
 	//PlayerTurn(totalNumber);	//순서
 
@@ -84,103 +83,6 @@ void StartGame(int totalNumber, int playerTurn) {
 				MovePlayer(atoi(dd), i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/
-				if (doubleCnt < 2) {
-					BuildingEvent(i, player[i].board, playerTurn);	//도착한지역에대한 이벤트
-				}
-
-				/*더블이나왔을때*/
-				if (d.dice1 == d.dice2 && player[i].state == 0) {
-					i--;	//턴을 바꾸지않기위해
-					doubleCnt++;
-					gotoxy(73, 10);
-					printf("더블 %d번째", doubleCnt);
-				}
-				else {
-					gotoxy(73, 10);
-					printf("             ");
-					doubleCnt = 0;
-				}
-			B:
-				break;
-
-			}
-		}
-	}
-}
-
-void StartGame2(void* playerturn) {
-
-	int playerTurn = (int)playerturn;
-	int totalNumber = totalll;
-	//PlayerTurn(totalNumber);	//순서
-
-	system("mode con: cols=130 lines=48");
-	//printf("%d\n", playerTurn);
-	//system("pause");
-	GameBoard();	//게임판 출력
-	DrawPlayer(totalNumber);	//플레이어판 출력
-	initLocal();	//지역 초기화
-	initPlayerCoord(totalNumber);	//플레이어 정보출력
-
-	PlaySound(NULL, 0, 0);
-	int doubleCnt = 0;
-	while (1) {
-
-		for (int i = 0; i < totalNumber; i++) {		//플레이어 순서 0:player1  1:player2
-
-			if (i == 0)
-				PLAYER1
-			else if (i == 1)
-				PLAYER2
-			else if (i == 2)
-				PLAYER3
-			else
-				PLAYER4
-
-				gotoxytext(1, 20, player[i].name);
-
-			GRAY
-				gotoxytext(1, 21, "님의 차례입니다!");
-
-			switch (player[i].state)		//플레이어에 상태를 받아서 그것에대한 이벤트를 발생
-			{
-			case 2:	//세계여행에있는 상태
-				if (WorldTourEvent(i, playerTurn) == -1) {
-					player[i].state = 0;	//플레이어상태를 기본으로
-					goto A;	//주사위를 굴리는 곳부터
-				}
-				else {
-					goto B;	//다음턴으로
-				}
-
-			case 1:	//무인도에있는 상태
-				doubleCnt = 0;
-				if (IslandEvent(i) == -1) {
-					player[i].state = 0;
-					goto B;	//다음턴으로
-				}
-			default:	//기본상태일때
-						/*더블이 3번이상일때 무인도로*/
-				if (doubleCnt > 2) {
-					GoIsland(i);	//무인도로 이동
-					player[i].marble -= 75;	//무인도로갈때는 월급을 지급하지 않음
-					doubleCnt = 0;
-					goto B;	//다음턴으로
-				}
-			A:
-				Dice d;
-				char dd[2];
-				d = GameDice(i);	//주사위 굴리기
-				itoa(d.sum, dd, 10);
-
-				if (i == playerTurn) {
-					send(sock, dd, 2, 0);
-				}
-				recv(sock, dd, 2, 0);
-
-				MovePlayer(atoi(dd), i);	//나온만큼 이동
-
-											/*3번이상 더블을 제외하고*/
 				if (doubleCnt < 2) {
 					BuildingEvent(i, player[i].board, playerTurn);	//도착한지역에대한 이벤트
 				}

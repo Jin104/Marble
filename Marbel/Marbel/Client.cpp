@@ -8,16 +8,16 @@
 #define BUF_SIZE 100
 #define NAME_SIZE 20
 
+extern LinkedList *list1, *list2, *list3, *list4;
 extern Player player[4];
+SOCKET sock;
 void ErrorHandling(char* msg);
 
-SOCKET sock;
 //char name[NAME_SIZE] = "[DEFAULT]";
 char msg[BUF_SIZE];
-int totalll;
+
 void AccessServerClient(char *ip,int totalNumber) {
 	WSADATA wsaData;
-	SOCKET sock;
 	
 	SOCKADDR_IN serverAddr;
 	HANDLE sendThread, recvThread;
@@ -65,7 +65,7 @@ void AccessServerClient(char *ip,int totalNumber) {
 		recv(sock, start, sizeof(start), 0);
 		turn = atoi(start);
 		printf("게임을 시작합니다.\n");
-		StartGame(totalNumber, turn);
+		StartGame(totalNumber, turn, inputName);
 	}
 	/*이건 다중채팅했던거*/
 	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
@@ -74,68 +74,6 @@ void AccessServerClient(char *ip,int totalNumber) {
 	//WaitForSingleObject(sendThread, INFINITE);//전송용 쓰레드가 중지될때까지 기다린다./
 	//WaitForSingleObject(recvThread, INFINITE);//수신용 쓰레드가 중지될때까지 기다린다.
 											  //클라이언트가 종료를 시도한다면 이줄 아래가 실행된다.
-	closesocket(sock);//소켓을 종료한다.
-	WSACleanup();//윈도우 소켓 사용중지를 운영체제에 알린다.
-	return;
-}
-
-void AccessServerClient2(void* totalNumber) {
-	WSADATA wsaData;
-
-	SOCKADDR_IN serverAddr;
-	HANDLE sendThread, recvThread;
-
-	int total = (int)totalNumber;
-	char start[2];
-	char myIp[20];
-	char port[100];
-	char inputName[10];
-	int turn;
-	char name[10];
-	//sprintf(myIp, "%s", ip);
-	//printf("ip: %s\n", myIp);
-	
-	printf("Input your name : ");
-	gets_s(inputName);
-
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)// 윈도우 소켓을 사용한다고 운영체제에 알림
-		ErrorHandling("WSAStartup() error!");
-
-	sprintf(name, "%s", inputName);
-
-	sock = socket(PF_INET, SOCK_STREAM, 0);//소켓을 하나 생성한다.
-
-	memset(&serverAddr, 0, sizeof(serverAddr));
-	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.S_un.S_addr = inet_addr("127.0.0.1");
-
-	serverAddr.sin_port = htons(10201);
-	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속한다.
-		ErrorHandling("connect() error");
-
-	printf("대기중입니다...\n");
-	//send(sock, name, sizeof(name), 0);		//이름보내기
-	recv(sock, start, sizeof(start), 0);
-	if (atoi(start) == 9) {
-		for (int i = 0; i < total; i++) {
-			recv(sock, start, sizeof(start), 0);
-			turn = atoi(start);
-			player[i].myTurn = turn;
-			printf("player[%d]의 turn: %d\n", i, player[i].myTurn);
-		}
-		recv(sock, start, sizeof(start), 0);
-		turn = atoi(start);
-		printf("게임을 시작합니다.\n");
-		totalll = total;
-		StartGame(total, turn);
-	}
-	/*이건 다중채팅했던거*/
-	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
-	//recvThread = (HANDLE)_beginthreadex(NULL, 0, RecvMsg, (void*)&sock, 0, NULL);//메시지 수신용 쓰레드가 실행된다.
-
-	//WaitForSingleObject(sendThread, INFINITE);//전송용 쓰레드가 중지될때까지 기다린다./
-	//WaitForSingleObject(recvThread, INFINITE);//수신용 쓰레드가 중지될때까지 기다린다.
-	//클라이언트가 종료를 시도한다면 이줄 아래가 실행된다.
 	closesocket(sock);//소켓을 종료한다.
 	WSACleanup();//윈도우 소켓 사용중지를 운영체제에 알린다.
 	return;
