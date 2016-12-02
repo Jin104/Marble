@@ -7,11 +7,12 @@ extern Player player[4];
 
 //유나 주사위
 Dice GameDice(int i) {
-
+	Sleep(200);
 	Dice d;
 	gotoxy(48, 22);
 	printf("                                     ");
 	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
+	Sleep(200);
 	srand(time(NULL));
 	d.dice1 = rand() % 6 + 1;
 	d.dice2 = rand() % 6 + 1;

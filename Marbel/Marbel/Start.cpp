@@ -72,14 +72,14 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 			A:
 				Dice d;
 				char dd[2];
-				itoa(d.sum, dd, 10);
 				d = GameDice(i);	//주사위 굴리기
+				itoa(d.sum, dd, 10);
 				
 				if (i == playerTurn) {
 					send(sock, dd, 2, 0);
-				}else{
-					recv(sock, dd, 2, 0);
 				}
+				recv(sock, dd, 2, 0);
+				
 				MovePlayer(atoi(dd), i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/
