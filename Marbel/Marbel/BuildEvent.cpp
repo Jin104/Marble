@@ -1,12 +1,15 @@
 #include "Player.h"
 #include "BuildEvent.h"
 #include "Start.h"
+#include "Client.h"
 
 extern LinkedList *list1, *list2;
 extern Player player[4];
 extern Local local[32];
 extern SOCKET sock;
 char dd[2];
+extern int serverNumber;
+
 void BuildingEvent(int turn, int board, int playerTurn) {
 
 	/*
@@ -77,9 +80,14 @@ void BuildingEvent(int turn, int board, int playerTurn) {
 					cursor_view(0);
 					gotoxyint(70, 28, answer);
 					itoa(answer, dd, 10);
-					send(sock, dd, 2, 0);
+				}
+				if (turn == serverNumber) {
+					SendMsg(dd, sizeof(dd));
 				}
 				else {
+					if (turn == playerTurn) {
+						send(sock, dd, 2, 0);
+					}
 					recv(sock, dd, 2, 0);
 				}
 				Sleep(500);

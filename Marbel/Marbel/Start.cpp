@@ -11,14 +11,16 @@ LinkedList *list2 = NewList();
 LinkedList *list3 = NewList();
 LinkedList *list4 = NewList();
 
+extern int serverNumber;
 extern SOCKET sock;
 void StartGame(int totalNumber, int playerTurn, char *name) {
 
 	//PlayerTurn(totalNumber);	//순서
 
 	system("mode con: cols=130 lines=48");
-	//printf("%d\n", playerTurn);
-	//system("pause");
+	printf("%d\n", playerTurn);
+	Sleep(1000);
+	system("cls");
 	GameBoard();	//게임판 출력
 	DrawPlayer(totalNumber);	//플레이어판 출력
 	initLocal();	//지역 초기화
@@ -75,11 +77,15 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 				d = GameDice(i);	//주사위 굴리기
 				itoa(d.sum, dd, 10);
 				
-				if (i == playerTurn) {
-					send(sock, dd, 2, 0);
+				if (i == serverNumber) {
+					SendMsg(dd, sizeof(dd));
 				}
-				recv(sock, dd, 2, 0);
-				
+				else {
+					if (i == playerTurn) {
+						send(sock, dd, 2, 0);
+					}
+					recv(sock, dd, 2, 0);
+				}
 				MovePlayer(atoi(dd), i);	//나온만큼 이동
 
 										/*3번이상 더블을 제외하고*/

@@ -2,7 +2,7 @@
 #include "Player.h"
 #include <stdlib.h>
 
-
+extern int serverNumber;
 extern Player player[4];
 
 //유나 주사위
