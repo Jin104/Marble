@@ -1,3 +1,10 @@
+#include <stdlib.h>
+#include <string.h>
+#include <process.h>
+#include <WinSock2.h>
+#include "Client.h"
+#include "Start.h"
+/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,11 +12,9 @@
 #include <time.h>
 #include <WinSock2.h>
 #include <Windows.h>
-#include "Client.h"
-
+#include "Client.h"*/
 #define BUF_SIZE 100
 #define MAX_CLNT 256
-
 
 void DoIt(void *param);
 
@@ -22,7 +27,7 @@ int total = 0;
 char playerName[4][10];
 SOCKET clientSocks[MAX_CLNT];//클라이언트 소켓 보관용 배열
 HANDLE hMutex;//뮤텍스
-
+int myturnn;
 void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	
 	WSADATA wsaData;
@@ -88,12 +93,79 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	WSACleanup();//윈도우 소켓을 종료하겠다는 사실을 운영체제에 전달
 }
 
+void NewServer2(void* totalNumber) {	//방의 인원수 받아옴~
+
+	WSADATA wsaData;
+	SOCKET serverSock, clientSock;
+	SOCKADDR_IN serverAddr, clientAddr;
+	int clientAddrSize;
+	HANDLE hThread, sThread, rThread;
+
+	
+	total = (int)totalNumber;
+
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) //윈도우 소켓을 사용하겠다는 사실을 운영체제에 전달
+		ErrorHandling2("WSAStartup() error!");
+
+	hMutex = CreateMutex(NULL, FALSE, NULL);//하나의 뮤텍스를 생성한다.
+	serverSock = socket(PF_INET, SOCK_STREAM, 0); //하나의 소켓을 생성한다.
+
+	memset(&serverAddr, 0, sizeof(serverAddr));
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.26");
+	serverAddr.sin_port = htons(10201);
+
+	if (bind(serverSock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) //생성한 소켓을 배치한다.
+		ErrorHandling2("bind() error");
+	if (listen(serverSock, total) == SOCKET_ERROR)//소켓을 준비상태에 둔다.	//백로그큐 몇명까지 받느냐
+		ErrorHandling2("listen() error");
+
+	printf("listening...\n");
+
+	//while (1) {
+	//	clientAddrSize = sizeof(clientAddr);
+	//	clientSock = accept(serverSock, (SOCKADDR*)&clientAddr, &clientAddrSize);//서버에게 전달된 클라이언트 소켓을 clientSock에 전달
+	//	WaitForSingleObject(hMutex, INFINITE);//뮤텍스 실행
+	//	clientSocks[clientCount++] = clientSock;//클라이언트 소켓배열에 방금 가져온 소켓 주소를 전달
+	//	ReleaseMutex(hMutex);//뮤텍스 중지
+	//	//_beginthread(DoIt, 0, (void*)clientSock);
+	//	//hThread = (HANDLE)_beginthreadex(NULL, 0, HandleClient, (void*)&clientSock, 0, NULL);//HandleClient 쓰레드 실행, clientSock을 매개변수로 전달
+	//	hThread = (HANDLE)_beginthreadex(NULL, 0, HandleClient, (void*)&clientSock, 0, NULL);//HandleClient 쓰레드 실행, clientSock을 매개변수로 전달
+	//	_beginthread(DoIt, 0, (void*)clientSock);
+	//	printf("Connected Client IP : %s\n", inet_ntoa(clientAddr.sin_addr));
+	//	
+	//}
+
+
+	for (int i = 0; i < total; i++) {
+		clientAddrSize = sizeof(clientAddr);
+		clientSock = accept(serverSock, (SOCKADDR*)&clientAddr, &clientAddrSize);//서버에게 전달된 클라이언트 소켓을 clientSock에 전달
+		WaitForSingleObject(hMutex, INFINITE);//뮤텍스 실행
+		clientSocks[clientCount++] = clientSock;//클라이언트 소켓배열에 방금 가져온 소켓 주소를 전달
+		ReleaseMutex(hMutex);//뮤텍스 중지
+		hThread = (HANDLE)_beginthreadex(NULL, 0, HandleClient, (void*)&clientSock, 0, NULL);//HandleClient 쓰레드 실행, clientSock을 매개변수로 전달
+		//printf("Connected Client IP : %s\n", inet_ntoa(clientAddr.sin_addr));
+	}
+
+	char msg[2];
+	int strLen = 0;
+	while ((strLen = recv(clientSock, msg, sizeof(msg), 0)) != 0) {
+		//_beginthread(StartGame2, 0, (void*)myturnn);
+		SendMsg(msg, strLen);
+	}
+
+	closesocket(serverSock);//생성한 소켓을 끈다.
+	WSACleanup();//윈도우 소켓을 종료하겠다는 사실을 운영체제에 전달
+}
+
 void DoIt(void *param)
 {
-	char name[10];
+	/*char name[10];
 	SOCKET sock = (SOCKET)param;
 	recv(clientSocks[clientCount], name, sizeof(name), 0);
-	sprintf(playerName[clientCount], "%s", name);
+	sprintf(playerName[clientCount], "%s", name);*/
+	
 }
 
 unsigned WINAPI HandleClient(void* arg) {
@@ -127,6 +199,8 @@ unsigned WINAPI HandleClient(void* arg) {
 			send(clientSocks[i], number[i], sizeof(number[i]), 0);	//순서
 		}
 	}
+	system("cls");
+	StartGame(total, num[0]);
 	return 0;
 }
 
