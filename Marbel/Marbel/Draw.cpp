@@ -17,6 +17,7 @@ Dice GameDice(int i) {
 	d.dice1 = rand() % 6 + 1;
 	d.dice2 = rand() % 6 + 1;
 	d.sum = d.dice1 + d.dice2;
+
 	//while (1) {
 	//	Sleep(100);
 	//	//주사위 1부터 6까지 랜덤
