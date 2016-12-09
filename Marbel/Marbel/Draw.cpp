@@ -11,7 +11,7 @@ Dice GameDice(int i) {
 	Dice d;
 	gotoxy(48, 22);
 	printf("                                     ");
-	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
+	//gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
 	Sleep(2000);
 	srand(time(NULL));
 	d.dice1 = rand() % 6 + 1;
@@ -35,7 +35,7 @@ Dice GameDice(int i) {
 	if(d.dice1==d.dice2)
 		sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
 	gotoxy(48, 22);
-	printf("주사위의 값은 %d 입니다", d.sum);
+	//printf("주사위의 값은 %d 입니다", d.sum);
 	Sleep(500);
 	gotoxy(48, 20);
 	printf("                                     ");

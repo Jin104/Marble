@@ -83,7 +83,7 @@ void BuildingEvent(int turn, int board, int playerTurn) {
 					itoa(answer, dd, 10);
 				}
 				if (turn == serverNumber) {
-					SendMsg(dd, sizeof(dd));
+					SendMsg(dd, sizeof(dd), 0);
 				}
 				if (turn == playerTurn && turn != serverNumber) {
 					send(sock, dd, sizeof(dd), 0);

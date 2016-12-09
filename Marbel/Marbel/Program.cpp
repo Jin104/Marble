@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "Client.h"
 
+#pragma warning(disable:4996)
 //유나
 //게임 메뉴 방향키
 //void main() {

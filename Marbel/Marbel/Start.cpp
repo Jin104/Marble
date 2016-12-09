@@ -12,16 +12,16 @@ LinkedList *list3 = NewList();
 LinkedList *list4 = NewList();
 
 extern int serverNumber;
-extern SOCKET sock;
-void StartGame(int totalNumber, int playerTurn, char *name) {
+//extern SOCKET sock;
+void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isServer) {
 
 	//PlayerTurn(totalNumber);	//순서
-
+/*
 	strcpy(player[0].name, "1");
 	strcpy(player[1].name, "2");
 	strcpy(player[2].name, "3");
 	strcpy(player[3].name, "4");
-
+*/
 	system("mode con: cols=130 lines=48");
 	printf("%d\n", playerTurn);
 	Sleep(1000);
@@ -33,93 +33,146 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 
 	PlaySound(NULL, 0, 0);
 	int doubleCnt = 0;
+
 	while (1) {
 
 		for (int i = 0; i < totalNumber; i++) {		//플레이어 순서 0:player1  1:player2
-
+			Sleep(1000);
 			if (i == 0)
 				PLAYER1
-			else if(i==1)
+			else if (i == 1)
 				PLAYER2
-			else if(i==2)
+			else if (i == 2)
 				PLAYER3
 			else
 				PLAYER4
 
-			gotoxytext(1, 20, player[i].name);
+
+				//gotoxytext(1, 20, player[i].name);
 
 			GRAY
-				gotoxytext(1, 21, "님의 차례입니다!");
+				
+				//gotoxytext(1, 21, "님의 차례입니다!");
 
-			switch (player[i].state)		//플레이어에 상태를 받아서 그것에대한 이벤트를 발생
-			{
-			case 2:	//세계여행에있는 상태
-				if (WorldTourEvent(i, playerTurn) == -1) {
-					player[i].state = 0;	//플레이어상태를 기본으로
-					goto A;	//주사위를 굴리는 곳부터
-				}
-				else {
-					goto B;	//다음턴으로
-				}
-
-			case 1:	//무인도에있는 상태
-				doubleCnt = 0;
-				if (IslandEvent(i) == -1) {
-					player[i].state = 0;
-					goto B;	//다음턴으로
-				}
-			default:	//기본상태일때
-				/*더블이 3번이상일때 무인도로*/
-				if (doubleCnt > 2) {
-					GoIsland(i);	//무인도로 이동
-					player[i].marble -= 75;	//무인도로갈때는 월급을 지급하지 않음
-					doubleCnt = 0;
-					goto B;	//다음턴으로
-				}
-			A:
 				Dice d;
 				char dd[2];
 				char ddd[2];
 				int select;
 				if (i == playerTurn) {
-					printf("주사위를 굴립니다!\n");
+					//printf("%d 주사위 굴림", i);
+					//printf("주사위를 굴립니다!\n");
 					d = GameDice(i);	//주사위 굴리기
 					itoa(d.sum, dd, 10);
-				}
-			
-				if (i == playerTurn && i != serverNumber) {
-					send(sock, dd, sizeof(dd), 0);
-				}
-				if (i == serverNumber) {
-					SendMsg(dd, sizeof(dd));
-				}
-				recv(sock, dd, sizeof(dd), 0);
 
-				select = atoi(dd);
-				MovePlayer(select, i);	//나온만큼 이동
+					if (isServer)
+					{
+						SendMsg(dd, sizeof(dd), 0);
+					}
+					else
+					{
+						send((SOCKET)socks, dd, sizeof(dd), 0);
+					}
+					select = atoi(dd);
+					MovePlayer(select, i);	//나온만큼 이동
+				}
+				else
+				{
+					if (isServer)
+					{
+						SOCKET *sockArr = (SOCKET *)socks;
+						while (recv(sockArr[i], dd, sizeof(dd), 0) <= 0);
 
-			
-				/*3번이상 더블을 제외하고*/
-				if (doubleCnt < 2) {
-					BuildingEvent(i, player[i].board, playerTurn);	//도착한지역에대한 이벤트
+						SendMsg(dd, sizeof(dd), i);
+					}
+					else
+					{
+						while (recv((SOCKET)socks, dd, sizeof(dd), 0) <= 0);
+					}
+					select = atoi(dd);
+					MovePlayer(select, i);	//나온만큼 이동
 				}
 
-				/*더블이나왔을때*/
-				if (d.dice1 == d.dice2 && player[i].state == 0) {
-					i--;	//턴을 바꾸지않기위해
-					doubleCnt++;
-					gotoxy(73, 10);
-					printf("더블 %d번째", doubleCnt);
-				}
-				else {
-					gotoxy(73, 10);
-					printf("             ");
-					doubleCnt = 0;
-				}
-			B:
-				break;
+			//switch (player[i].state)		//플레이어에 상태를 받아서 그것에대한 이벤트를 발생
+			//{
+			//case 2:	//세계여행에있는 상태
+			//	if (WorldTourEvent(i, playerTurn) == -1) {
+			//		player[i].state = 0;	//플레이어상태를 기본으로
+			//		goto A;	//주사위를 굴리는 곳부터
+			//	}
+			//	else {
+			//		goto B;	//다음턴으로
+			//	}
 
-			}
+			//case 1:	//무인도에있는 상태
+			//	doubleCnt = 0;
+			//	if (IslandEvent(i) == -1) {
+			//		player[i].state = 0;
+			//		goto B;	//다음턴으로
+			//	}
+			//default:	//기본상태일때
+			//	/*더블이 3번이상일때 무인도로*/
+			//	if (doubleCnt > 2) {
+			//		GoIsland(i);	//무인도로 이동
+			//		player[i].marble -= 75;	//무인도로갈때는 월급을 지급하지 않음
+			//		doubleCnt = 0;
+			//		goto B;	//다음턴으로
+			//	}
+			//A:
+			//	Dice d;
+			//	char dd[2];
+			//	char ddd[2];
+			//	int select;
+			//	if (i == playerTurn) {
+			//		printf("%d 주사위 굴림", i);
+			//		printf("주사위를 굴립니다!\n");
+			//		d = GameDice(i);	//주사위 굴리기
+			//		itoa(d.sum, dd, 10);
+			//	}
+			//
+			//	//printf("i : %d, 서버 넘버 : %d\n", i, serverNumber);
+			//	//if (i == playerTurn && i != serverNumber) {
+			//	//	printf("이정도 나왔으니 결과 반영 하셈");
+			//	//	send(sock, dd, sizeof(dd), 0);
+			//	//}
+			//	//if (i == serverNumber) {
+			//	//	SendMsg(dd, sizeof(dd));
+
+			//	//	select = atoi(dd);
+			//	//	printf("방장 움직이신다");
+			//	//	MovePlayer(select, i);	//나온만큼 이동
+			//	//}
+			//	//else
+			//	//{
+			//	//	printf("받는다");
+			//	//	while (recv(sock, dd, sizeof(dd), 0) < 0);
+			//	//	printf("받음");
+
+			//	//	select = atoi(dd);
+			//	//	MovePlayer(select, i);	//나온만큼 이동
+			//	//}
+			//
+			//	/*3번이상 더블을 제외하고*/
+			//	if (doubleCnt < 2) {
+			//		//BuildingEvent(i, player[i].board, playerTurn);	//도착한지역에대한 이벤트
+			//	}
+
+			//	/*더블이나왔을때*/
+			//	if (d.dice1 == d.dice2 && player[i].state == 0) {
+			//		i--;	//턴을 바꾸지않기위해
+			//		doubleCnt++;
+			//		gotoxy(73, 10);
+			//		printf("더블 %d번째", doubleCnt);
+			//	}
+			//	else {
+			//		gotoxy(73, 10);
+			//		printf("             ");
+			//		doubleCnt = 0;
+			//	}
+			//B:
+			//	printf("이제 차례 넘겨야 한다");
+			//	break;
+
+			//}
 		}
 	}
 }
