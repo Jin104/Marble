@@ -12,7 +12,7 @@ Dice GameDice(int i) {
 	gotoxy(48, 22);
 	printf("                                     ");
 	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
-	Sleep(200);
+	Sleep(2000);
 	srand(time(NULL));
 	d.dice1 = rand() % 6 + 1;
 	d.dice2 = rand() % 6 + 1;

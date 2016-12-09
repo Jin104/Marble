@@ -21,6 +21,7 @@ void BuildingEvent(int turn, int board, int playerTurn) {
 	*/
 
 	int answer;
+	int answer1;
 	int state = local[board].state;
 
 	LinkedList *list;
@@ -32,33 +33,33 @@ void BuildingEvent(int turn, int board, int playerTurn) {
 	switch (board)
 	{
 	case 0:	//출발지
-		StartEvent(turn);
+		//StartEvent(turn);
 		break;
 	case 2:	//보너스게임
-		BonusEvent(turn);
+		//BonusEvent(turn);
 		PlayerState();
 		break;
 	case 8:	//무인도
 		gotoxytext(37, 28, "무인도 당첨 다음 턴에 탈출 가능 !");
 		Sleep(800);
 		clrText();
-		player[turn].state = 1;
+		//player[turn].state = 1;
 		break;
 	case 12: case 20: case 28:
-		FortuneCard(turn);
+		//FortuneCard(turn);
 		break;
 	case 16:
-		OlympicEvent(turn);
+		//OlympicEvent(turn);
 		PlayerState();
 		break;
 	case 24:
 		gotoxytext(37, 28, "세계여행 ~~ 다음턴에 원하는곳으로 이동 !");
 		Sleep(800);
 		clrText();
-		player[turn].state = 2;
+		//player[turn].state = 2;
 		break;
 	case 30:
-		TaxEvent(turn);
+		//TaxEvent(turn);
 		break;
 	default:
 
@@ -84,16 +85,15 @@ void BuildingEvent(int turn, int board, int playerTurn) {
 				if (turn == serverNumber) {
 					SendMsg(dd, sizeof(dd));
 				}
-				else {
-					if (turn == playerTurn) {
-						send(sock, dd, 2, 0);
-					}
-					recv(sock, dd, 2, 0);
+				if (turn == playerTurn && turn != serverNumber) {
+					send(sock, dd, sizeof(dd), 0);
 				}
+				recv(sock, dd, sizeof(dd), 0);
+			
 				Sleep(500);
 
-				answer = atoi(dd);
-				if (answer == 1) {
+				answer1 = atoi(dd);
+				if (answer1 == 1) {
 					if (board != 4 && board != 9 && board != 14 && board != 18 && board != 25) {   //관광지는 제외
 						gotoxytext(37, 30, "호텔을 건설했습니다.");
 						local[board].state = turn;   //지역의 상태를 바꿔줌

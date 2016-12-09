@@ -133,18 +133,23 @@ void startSign() {
 		StartGame(total, serverNumber, "0");
 	}
 }
+
 unsigned WINAPI HandleClient(void* arg) {
 	int n, tmp;
-	int num[4] = { 0,1,2,3 };
+	int num[4];// = { 0,1,2,3 };
 	char number[4][2];
 
 	srand(time(NULL));
-	for (int i = total - 1; i > 0; i--) {
-		n = rand() % total;
-		tmp = num[i];
-		num[i] = num[n];
-		num[n] = tmp;
-	}
+	//for (int i = total - 1; i > 0; i--) {
+	//	n = rand() % total;
+	//	tmp = num[i];
+	//	num[i] = num[n];
+	//	num[n] = tmp;
+	//}
+	num[0] = 0;
+	num[1] = 1;
+	num[2] = 2;
+	num[3] = 3;
 
 	for (int i = 0; i < total; i++) {
 		printf("num[%d]=%d\t", i, num[i]);

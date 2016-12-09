@@ -17,6 +17,11 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 
 	//PlayerTurn(totalNumber);	//순서
 
+	strcpy(player[0].name, "1");
+	strcpy(player[1].name, "2");
+	strcpy(player[2].name, "3");
+	strcpy(player[3].name, "4");
+
 	system("mode con: cols=130 lines=48");
 	printf("%d\n", playerTurn);
 	Sleep(1000);
@@ -74,21 +79,27 @@ void StartGame(int totalNumber, int playerTurn, char *name) {
 			A:
 				Dice d;
 				char dd[2];
-				d = GameDice(i);	//주사위 굴리기
-				itoa(d.sum, dd, 10);
-				
+				char ddd[2];
+				int select;
+				if (i == playerTurn) {
+					printf("주사위를 굴립니다!\n");
+					d = GameDice(i);	//주사위 굴리기
+					itoa(d.sum, dd, 10);
+				}
+			
+				if (i == playerTurn && i != serverNumber) {
+					send(sock, dd, sizeof(dd), 0);
+				}
 				if (i == serverNumber) {
 					SendMsg(dd, sizeof(dd));
 				}
-				else {
-					if (i == playerTurn) {
-						send(sock, dd, 2, 0);
-					}
-					recv(sock, dd, 2, 0);
-				}
-				MovePlayer(atoi(dd), i);	//나온만큼 이동
+				recv(sock, dd, sizeof(dd), 0);
 
-										/*3번이상 더블을 제외하고*/
+				select = atoi(dd);
+				MovePlayer(select, i);	//나온만큼 이동
+
+			
+				/*3번이상 더블을 제외하고*/
 				if (doubleCnt < 2) {
 					BuildingEvent(i, player[i].board, playerTurn);	//도착한지역에대한 이벤트
 				}
