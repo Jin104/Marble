@@ -86,6 +86,7 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 		SendMsg(msg, strLen);
 	}
 
+
 	closesocket(serverSock);//생성한 소켓을 끈다.
 	WSACleanup();//윈도우 소켓을 종료하겠다는 사실을 운영체제에 전달
 }
