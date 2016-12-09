@@ -20,11 +20,11 @@ int total = 0;
 char playerName[4][10];
 SOCKET clientSocks[MAX_CLNT];//클라이언트 소켓 보관용 배열
 HANDLE hMutex;//뮤텍스
+SOCKET serverSock, clientSock;
 
 void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	
 	WSADATA wsaData;
-	SOCKET serverSock, clientSock;
 	SOCKADDR_IN serverAddr, clientAddr;
 	int clientAddrSize;
 	HANDLE hThread, sThread, rThread;
@@ -82,11 +82,13 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 
 	char msg[2];
 	int strLen = 0;
-	while ((strLen = recv(clientSock, msg, sizeof(msg), 0)) != 0) {
+	/*while ((strLen = recv(clientSock, msg, sizeof(msg), 0)) > 0) {
 		SendMsg(msg, strLen);
+	}*/
+	while (1)
+	{
+
 	}
-
-
 	closesocket(serverSock);//생성한 소켓을 끈다.
 	WSACleanup();//윈도우 소켓을 종료하겠다는 사실을 운영체제에 전달
 }
@@ -131,7 +133,7 @@ void startSign() {
 			send(clientSocks[i], number[i], sizeof(number[i]), 0);	//순서
 		}
 		serverNumber = num[0];
-		StartGame(total, serverNumber, "0");
+		//StartGame(total, serverNumber, "0");
 	}
 }
 
@@ -141,16 +143,12 @@ unsigned WINAPI HandleClient(void* arg) {
 	char number[4][2];
 
 	srand(time(NULL));
-	//for (int i = total - 1; i > 0; i--) {
-	//	n = rand() % total;
-	//	tmp = num[i];
-	//	num[i] = num[n];
-	//	num[n] = tmp;
-	//}
-	num[0] = 0;
-	num[1] = 1;
-	num[2] = 2;
-	num[3] = 3;
+	for (int i = total - 1; i > 0; i--) {
+		n = rand() % total;
+		tmp = num[i];
+		num[i] = num[n];
+		num[n] = tmp;
+	}
 
 	for (int i = 0; i < total; i++) {
 		printf("num[%d]=%d\t", i, num[i]);
@@ -170,7 +168,7 @@ unsigned WINAPI HandleClient(void* arg) {
 			send(clientSocks[i], number[i], sizeof(number[i]), 0);	//순서
 		}
 		serverNumber = num[0];
-		StartGame(total, serverNumber, "0");
+		StartGame(total, serverNumber, "0", (void *)clientSocks, true);
 	}
 
 	return 0;
@@ -206,11 +204,17 @@ unsigned WINAPI HandleClient(void* arg) {
 //	return 0;
 //}
 
-void SendMsg(char* msg, int len) { //메시지를 모든 클라이언트에게 보낸다.
+void SendMsg(char* msg, int len, int index) { //메시지를 모든 클라이언트에게 보낸다.
 	int i;
 	WaitForSingleObject(hMutex, INFINITE);//뮤텍스 실행
-	for (i = 0; i<clientCount; i++)//클라이언트 개수만큼
+	for (i = 0; i < clientCount; i++)//클라이언트 개수만큼
+	{
+		if (i == index)
+		{
+			continue;
+		}
 		send(clientSocks[i], msg, len, 0);//클라이언트들에게 메시지를 전달한다.
+	}
 	ReleaseMutex(hMutex);//뮤텍스 중지
 }
 

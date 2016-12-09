@@ -65,7 +65,7 @@ void AccessServerClient(char *ip,int totalNumber) {
 		recv(sock, start, sizeof(start), 0);
 		turn = atoi(start);
 		printf("게임을 시작합니다.\n");
-		StartGame(totalNumber, turn, inputName);
+		StartGame(totalNumber, turn, inputName, (void *)sock, false);
 	}
 	/*이건 다중채팅했던거*/
 	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
