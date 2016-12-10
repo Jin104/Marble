@@ -6,6 +6,7 @@
 typedef struct {
 	int dice1;
 	int dice2;
+	int equal = 0;
 	int sum;
 }Dice;
 
@@ -23,3 +24,5 @@ void Loading();	//로딩화면
 void clrText();	//텍스트 출력 지우기
 void clrList();	//지역리스트 출력 지우기
 void clrCard();	//카드 출력 지우기
+void clrDice();
+void SetDrawColor(int turn);

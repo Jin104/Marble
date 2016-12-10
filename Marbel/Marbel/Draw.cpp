@@ -2,41 +2,41 @@
 #include "Player.h"
 #include <stdlib.h>
 
-extern int serverNumber;
 extern Player player[4];
 
 //유나 주사위
 Dice GameDice(int i) {
-	Sleep(200);
+	Sleep(500);
 	Dice d;
 	gotoxy(48, 22);
 	printf("                                     ");
-	//gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
-	Sleep(2000);
-	srand(time(NULL));
-	d.dice1 = rand() % 6 + 1;
-	d.dice2 = rand() % 6 + 1;
-	d.sum = d.dice1 + d.dice2;
+	gotoxytext(48, 20, "주사위를 돌려주세요  ☞ Enter ☜");
 
-	//while (1) {
-	//	Sleep(100);
-	//	//주사위 1부터 6까지 랜덤
-	//	d.dice1 = rand() % 6 + 1;
-	//	d.dice2 = rand() % 6 + 1;
-	//	d.sum = d.dice1 + d.dice2;
-	//	DiceShape(d.dice1);
-	//	DiceShape2(d.dice2);
-	//	// 주사위 모양이 돌아가는데 키를 누르면 멈춤
-	//	if (kbhit()) {
-	//		getch();
-	//		sndPlaySoundA("..\\sound\\DiceItem00000_Swing.wav", SND_ASYNC | SND_NODEFAULT);
-	//		break;
-	//	}
-	//}
-	if(d.dice1==d.dice2)
+	srand(time(NULL));
+	while (1) {
+		Sleep(100);
+		//주사위 1부터 6까지 랜덤
+		d.dice1 = rand() % 6 + 1;
+		d.dice2 = rand() % 6 + 1;
+		d.sum = d.dice1 + d.dice2;
+		DiceShape(d.dice1);
+		DiceShape2(d.dice2);
+		// 주사위 모양이 돌아가는데 키를 누르면 멈춤
+		if (kbhit()) {
+			getch();
+			sndPlaySoundA("..\\sound\\DiceItem00000_Swing.wav", SND_ASYNC | SND_NODEFAULT);
+			break;
+		}
+	}
+	//d.dice1 = 4;// rand() % 6 + 1;
+	//d.dice2 = 2;// rand() % 6 + 1;
+	//d.sum = d.dice1 + d.dice2;
+	if (d.dice1 == d.dice2) {
 		sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
+		d.equal = 1;
+	}
 	gotoxy(48, 22);
-	//printf("주사위의 값은 %d 입니다", d.sum);
+	printf("주사위의 값은 %d 입니다", d.sum);
 	Sleep(500);
 	gotoxy(48, 20);
 	printf("                                     ");
@@ -569,4 +569,22 @@ void clrCard() {
 		gotoxy(112, i); printf("                ");
 	}
 
+}
+
+void clrDice()
+{
+	for (int i = 12; i < 20; i++) {
+		gotoxytext(45, i, "                                             ");
+	}
+}
+
+void SetDrawColor(int turn){
+	if (turn == 0)
+		PLAYER1
+	else if (turn == 1)
+		PLAYER2
+	else if (turn == 2)
+		PLAYER3
+	else
+		PLAYER4
 }
