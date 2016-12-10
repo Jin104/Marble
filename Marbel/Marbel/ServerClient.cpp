@@ -4,17 +4,21 @@
 #include <WinSock2.h>
 #include "start.h"
 #include "Client.h"
+#include "Player.h"
+
 #define BUF_SIZE 100
 #define MAX_CLNT 256
 
 int serverNumber;
-
+extern Player player[4];
 unsigned WINAPI HandleClient(void* arg);//쓰레드 함수
 void ErrorHandling2(char* msg);
 
 int clientCount = 0;
 int total = 0;
 char playerName[4][10];
+char inputName[10];
+char naam[4][10];
 SOCKET clientSocks[MAX_CLNT];//클라이언트 소켓 보관용 배열
 HANDLE hMutex;//뮤텍스
 SOCKET serverSock, clientSock;
@@ -54,6 +58,8 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 		clientSock = accept(serverSock, (SOCKADDR*)&clientAddr, &clientAddrSize);//서버에게 전달된 클라이언트 소켓을 clientSock에 전달
 		WaitForSingleObject(hMutex, INFINITE);//뮤텍스 실행
 		clientSocks[clientCount++] = clientSock;//클라이언트 소켓배열에 방금 가져온 소켓 주소를 전달
+		recv(clientSocks[i], inputName, sizeof(inputName), 0); //클라이언트로부터 이름 받아옴
+		strcpy(naam[i], inputName);
 		ReleaseMutex(hMutex);//뮤텍스 중지
 		printf("Connected Client IP : %s\n", inet_ntoa(clientAddr.sin_addr));
 	}
@@ -72,7 +78,8 @@ unsigned WINAPI HandleClient(void* arg) {
 	int n, tmp;
 	int num[4];// = { 0,1,2,3 };
 	char number[4][2];
-
+	char mastername[10];
+	char name[10];
 	//srand(time(NULL));
 	//for (int i = total - 1; i > 0; i--) {
 	//	n = rand() % total;
@@ -92,6 +99,11 @@ unsigned WINAPI HandleClient(void* arg) {
 		printf("number[%d]=%s\n", i, number[i]);
 	}
 
+	printf("\n방의 인원이 다 찼어요!\n");
+	printf("\n방장의 이름을 입력하면 게임이 시작됩니다!");
+	printf("\nInput your name : ");
+	gets_s(mastername); //방장의 이름 입력
+
 	if (clientSocks[total-1] != NULL) {
 		printf("전송시작\n");
 		for (int i = 0; i < total; i++) {
@@ -99,12 +111,15 @@ unsigned WINAPI HandleClient(void* arg) {
 			send(clientSocks[i], "9", sizeof("9"), 0);	//시작메세지
 			for (int j = 0; j < total; j++) {
 				send(clientSocks[i], number[j], sizeof(number[j]), 0);	//순서
-				//send(clientSocks[i], playerName[j], sizeof(playerName[j]), 0);	//순서
+				send(clientSocks[i], naam[j], sizeof(naam[j]), 0); //모든 클라이언트들한테 이름 전송
+				send(clientSocks[i], mastername, sizeof(mastername), 0); //모든 클라이언트들한테 방장 이름 전송
 			}
 			send(clientSocks[i], number[i], sizeof(number[i]), 0);	//순서
+			strcpy(player[0].name, mastername);
+			strcpy(player[i].name, naam[i]);
 		}
 		serverNumber = num[0];
-		StartGame(total, serverNumber, "0", (void *)clientSocks, true);
+		StartGame(total, serverNumber, name, (void *)clientSocks, true);
 	}
 
 	return 0;

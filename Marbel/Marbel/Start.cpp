@@ -16,10 +16,6 @@ int tNum;
 void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isServer) {
 	
 	tNum = totalNumber;
-	strcpy(player[0].name, "1");
-	strcpy(player[1].name, "2");
-	strcpy(player[2].name, "3");
-	strcpy(player[3].name, "4");
 
 	system("mode con: cols=130 lines=48");
 	printf("%d\n", playerTurn);

@@ -93,7 +93,6 @@ void DoIt(void *param) {
 		HangNode(list, node);
 		sprintf(message, "방을 생성했습니다.");
 		send(sock, message, sizeof(message), 0);
-
 		break;
 	case 2:
 		roomCount = list->size;
@@ -114,7 +113,6 @@ void DoIt(void *param) {
 		node = FindNode(list, atoi(select));
 		send(sock, node->ip, sizeof(node->ip), 0);
 		modiNode(list, node);
-
 		break;
 	default:
 		break;

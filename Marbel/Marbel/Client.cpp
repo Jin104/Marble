@@ -25,11 +25,12 @@ void AccessServerClient(char *ip,int totalNumber) {
 	char myIp[20];
 	char port[100];
 	char inputName[10];
+	char masterName[10];
 	int turn;
 	char name[10];
 	//sprintf(myIp, "%s", ip);
 	//printf("ip: %s\n", myIp);
-	printf("Input IP : ");
+	printf("\nInput IP : ");
 	gets_s(myIp);
 
 	printf("Input your name : ");
@@ -52,14 +53,19 @@ void AccessServerClient(char *ip,int totalNumber) {
 		ErrorHandling("connect() error");
 
 	printf("대기중입니다...\n");
-	//send(sock, name, sizeof(name), 0);		//이름보내기
+	send(sock, inputName, sizeof(inputName), 0); //이름 서버로 전송
 	recv(sock, start, sizeof(start), 0);
 	if (atoi(start) == 9) {
 		for (int i = 0; i < totalNumber; i++) {
 			recv(sock, start, sizeof(start), 0);
+			recv(sock, inputName, sizeof(inputName), 0); //서버로부터 클라이언트들의 이름 받아옴
+			recv(sock, masterName, sizeof(masterName), 0); //방장 서버로부터 방장이름 받아옴
 			turn = atoi(start);
 			player[i].myTurn = turn;
+			strcpy(player[0].name, masterName); //방장이름을 구조체 이름과 일치
+			strcpy(player[i].name, inputName); //이름을 구조체 이름과 일치
 			printf("player[%d]의 turn: %d\n", i, player[i].myTurn);
+			printf("%s\n", player[i].name);
 			}
 		recv(sock, start, sizeof(start), 0);
 		turn = atoi(start);

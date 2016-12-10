@@ -142,6 +142,7 @@ void Bankrupt(int turn, int price, int playerTurn, void *socks, bool isServer, L
 		/*모든 건물을 매각해도 통행료가 부족할때*/
 		if (SellBuilding(turn, price, playerTurn, socks, isServer, list) == -1) {
 			clrText();
+			
 			gotoxytext(37, 27, "모든 건물을 매각해도 부족합니다..");
 			Sleep(700);
 			clrText();
