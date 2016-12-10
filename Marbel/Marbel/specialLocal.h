@@ -6,4 +6,4 @@ void StartEvent(int turn, int board, int playerTurn, void *socks, bool isServer,
 int IslandEvent(int turn, int playerTurn, void *socks, bool isServer);	//무인도
 void OlympicEvent(int turn, int playerTurn, void *socks, bool isServer, LinkedList *list);	//올림픽개최
 int WorldTourEvent(int turn, int playerTurn, void *socks, bool isServer);	//세계이동
-void TaxEvent(int turn, int playerTurn);	//국세청
+void TaxEvent(int turn, int playerTurn, void *socks, bool isServer, LinkedList *list);	//국세청

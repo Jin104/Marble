@@ -530,21 +530,21 @@ void Explain() {
 }
 
 /*플레이어의 마블상태를 그려줌*/
-void PlayerState() {
+void PlayerState(int tNum) {
 	gotoxy(42, 10); printf("             ");
 	gotoxy(42, 10); printf("%d", player[0].marble);
 	gotoxy(82, 39); printf("             ");
 	gotoxy(82, 39); printf("%d", player[1].marble);
 
-	//if (totalNumber == 3 || totalNumber == 4) {
-	//	gotoxy(42, 39); printf("             ");
-	//	gotoxy(42, 39); printf("%d", player[0].marble);
+	if (tNum == 3 || tNum == 4) {
+		gotoxy(42, 39); printf("             ");
+		gotoxy(42, 39); printf("%d", player[2].marble);
 
-	//	if (totalNumber == 4) {
-	//		gotoxy(82, 10); printf("             ");
-	//		gotoxy(82, 10); printf("%d", player[0].marble);
-	//	}
-	//}
+		if (tNum == 4) {
+			gotoxy(82, 10); printf("             ");
+			gotoxy(82, 10); printf("%d", player[3].marble);
+		}
+	}
 }
 
 /*텍스트화면 지우기*/

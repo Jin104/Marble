@@ -6,8 +6,8 @@
 extern LinkedList *list1, *list2, *list3, *list4;
 extern Player player[4];
 extern Local local[32];
+extern int tNum;
 char data[2];
-
 void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServer) {
 
 	/*
@@ -35,17 +35,11 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 	switch (board)
 	{
 	case 0:	//출발지
-		if(isServer)
-			StartEvent(turn, board, playerTurn, socks, true, list);
-		else
-			StartEvent(turn, board, playerTurn, socks, false, list);
+		StartEvent(turn, board, playerTurn, socks, isServer, list);
 		break;
 	case 2:	//보너스게임
-		if (isServer)
-			BonusEvent(turn, board, playerTurn, socks, true);
-		else
-			BonusEvent(turn, board, playerTurn, socks, false);
-		PlayerState();
+		BonusEvent(turn, board, playerTurn, socks, isServer);
+		PlayerState(tNum);
 		break;
 	case 8:	//무인도
 		if(turn==playerTurn)
@@ -55,17 +49,11 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 		player[turn].state = 1;
 		break;
 	case 12: case 20: case 28:
-		if (isServer)
-			FortuneCard(turn, board, playerTurn, socks, true, list);
-		else
-			FortuneCard(turn, board, playerTurn, socks, false, list);
+		FortuneCard(turn, board, playerTurn, socks, isServer, list);
 		break;
 	case 16:
-		if (isServer)
-			OlympicEvent(turn, playerTurn, socks, true, list);
-		else
-			OlympicEvent(turn, playerTurn, socks, false, list);
-		PlayerState();
+		OlympicEvent(turn, playerTurn, socks, isServer, list);
+		PlayerState(tNum);
 		break;
 	case 24:
 		gotoxytext(37, 28, "세계여행 ~~ 다음턴에 원하는곳으로 이동 !");
@@ -74,7 +62,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 		player[turn].state = 2;
 		break;
 	case 30:
-		TaxEvent(turn, playerTurn);
+		TaxEvent(turn, playerTurn, socks, isServer, list);
 		break;
 	default:
 
@@ -193,7 +181,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유마블이 통행료보다 적으면 파산실행(건물매각)*/
 				if (player[turn].marble < toll) {
-					Bankrupt(turn, toll);
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
 				}
 				else {
 					player[turn].marble -= price;
@@ -254,7 +242,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유마블이 통행료보다 적으면 파산실행(건물매각)*/
 				if (player[turn].marble < toll) {
-					Bankrupt(turn, toll);
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
 				}
 				else {
 					player[turn].marble -= price;
@@ -315,7 +303,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유마블이 통행료보다 적으면 파산실행(건물매각)*/
 				if (player[turn].marble < toll) {
-					Bankrupt(turn, toll);
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
 				}
 				else {
 					player[turn].marble -= price;
@@ -375,7 +363,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유마블이 통행료보다 적으면 파산실행(건물매각)*/
 				if (player[turn].marble < toll) {
-					Bankrupt(turn, toll);
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
 				}
 				else {
 					player[turn].marble -= price;
@@ -583,12 +571,12 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 			break;
 		}
 
-		PlayerState();
+		PlayerState(tNum);
 		Sleep(700);
 		clrList();
 		clrText();
 		
-		CheckGameOver(turn);
+		CheckGameOver(turn, playerTurn);
 		break;
 	}
 }

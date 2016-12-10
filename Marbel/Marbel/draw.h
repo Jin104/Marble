@@ -16,7 +16,7 @@ void GameBoard();	//게임판
 void DiceShape(int dice);	//주사위 그림1
 void DiceShape2(int dice2);	//주사위 그림2
 void DrawPlayer(int totalNumber);	//플레이어 창
-void PlayerState();	//플레이어 마블상태
+void PlayerState(int tNum);	//플레이어 마블상태
 
 void Menu();	//메뉴
 void Explain();	//설명

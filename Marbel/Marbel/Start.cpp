@@ -11,9 +11,11 @@ LinkedList *list2 = NewList();
 LinkedList *list3 = NewList();
 LinkedList *list4 = NewList();
 
+int tNum;
 //extern SOCKET sock;
 void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isServer) {
 	
+	tNum = totalNumber;
 	strcpy(player[0].name, "1");
 	strcpy(player[1].name, "2");
 	strcpy(player[2].name, "3");
@@ -116,7 +118,7 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 				}
 			
 				/*3번이상 더블을 제외하고*/
-				if (doubleCnt < 2) {
+				if (doubleCnt < 3) {
 					BuildingEvent(turn, player[turn].board, playerTurn, socks, isServer);	//도착한지역에대한 이벤트
 				}
 				
@@ -125,7 +127,7 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 					turn--;	//턴을 바꾸지않기위해
 					doubleCnt++;
 					gotoxy(73, 10);
-					printf("더블 %d번째", doubleCnt);
+					//printf("더블 %d번째", doubleCnt);
 				}
 				else {
 					gotoxy(73, 10);

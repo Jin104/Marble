@@ -5,6 +5,7 @@
 extern LinkedList *list1, *list2, *list3, *list4;
 extern Player player[4];
 extern Local local[32];
+extern int tNum;
 
 void FortuneCard(int turn, int board, int playerTurn, void *socks, bool isServer, LinkedList *list) {
 
@@ -238,7 +239,7 @@ void InviteTravel(int turn, int playerTurn) {
 		MovePlayer(28, turn);
 	}
 	player[turn].state = 2;	//플레이어의 상태변경
-	PlayerState();
+	PlayerState(tNum);
 }
 
 /*출발지로가는 카드*/
@@ -258,7 +259,7 @@ void GoStart(int turn, int board, int playerTurn, void *socks, bool isServer, Li
 	else
 		StartEvent(turn, board, playerTurn, socks, false, list);
 
-	PlayerState();
+	PlayerState(tNum);
 
 }
 
@@ -280,7 +281,7 @@ void GoIsland(int turn) {
 	}
 	player[turn].state = 1;	//플레이어상태 변경
 	clrText();
-	PlayerState();
+	PlayerState(tNum);
 }
 
 /*올림픽으로가는 카드*/
@@ -389,11 +390,11 @@ void CompelSale(int turn, int playerTurn, void *socks, bool isServer) {
 		}
 
 		LinkedList *list;
-		if (select2 == 0)
+		if (select2 == 1)
 			list = list1;
-		else if (select2 == 1)
-			list = list2;
 		else if (select2 == 2)
+			list = list2;
+		else if (select2 == 3)
 			list = list3;
 		else
 			list = list4;
@@ -413,6 +414,7 @@ void CompelSale(int turn, int playerTurn, void *socks, bool isServer) {
 			clrText();
 
 			if (turn == playerTurn) {
+				PrintList(list);
 				gotoxytext(38, 27, "매각할 도시 이름을 입력해주세요");
 				gotoxytext(38, 29, "☞  ");
 				cursor_view(1);

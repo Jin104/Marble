@@ -1,37 +1,58 @@
 #include "Player.h"
 #include "BuildEvent.h"
 #include "Start.h"
+#include "Client.h"
 
-extern LinkedList *list1, *list2;   //플레이어1,2의 보유지역 연결리스트
+extern LinkedList *list1, *list2, *list3, *list4;   //플레이어1,2의 보유지역 연결리스트
 extern Player player[4];
 extern Local local[32];
+extern int tNum;
 
 /*건물 매각*/
-int SellBuilding(int turn, int price) {
-
-	LinkedList *list;
-	if (turn == 0)
-		list = list1;
-	else
-		list = list2;
-
+int SellBuilding(int turn, int price, int playerTurn, void *socks, bool isServer, LinkedList *list) {
+	
+	int select, select1;
 	char name[10];
+	char data[2];
 
 	/*지불금액이 플레이어의 보유마블보다 큰경우*/
 	while (price > player[turn].marble) {
 
 		clrText();
 		clrList();
-		gotoxytext(37, 27, "매각가는 절반입니다.");
-		PrintList(list);
-		gotoxy(65, 27);
-		printf("%d 마블이 부족합니다.", price - player[turn].marble);
-		gotoxy(37, 29); printf("매각할 지역이름을 입력해주세요.");
-		gotoxytext(37, 30, "입력 ☞ ");
-		cursor_view(1);
-		gotoxy(53, 30); scanf("%s", name);
-		cursor_view(0);
-
+		if (turn == playerTurn) {
+			gotoxytext(37, 27, "매각가는 절반입니다.");
+			PrintList(list);
+			gotoxy(65, 27);
+			printf("%d 마블이 부족합니다.", price - player[turn].marble);
+			gotoxy(37, 29); printf("매각할 지역이름을 입력해주세요.");
+			gotoxytext(37, 30, "입력 ☞ ");
+			cursor_view(1);
+			gotoxy(53, 30); scanf("%s", name);
+			cursor_view(0);
+			if (isServer)
+			{
+				SendMsg(name, sizeof(name), 0);
+			}
+			else
+			{
+				send((SOCKET)socks, name, sizeof(name), 0);
+			}
+		}
+		else
+		{
+			if (isServer)
+			{
+				SOCKET *sockArr = (SOCKET *)socks;
+				while (recv(sockArr[turn], name, sizeof(name), 0) <= 0);
+				SendMsg(name, sizeof(name), turn);
+			}
+			else
+			{
+				while (recv((SOCKET)socks, name, sizeof(name), 0) <= 0);
+			}
+		}
+		
 		Node *node = FindNode(list, name);	//리스트에서 입력한지역이 있는지 확인
 		int cnt = 0;
 		if (node != NULL) {	//있으면
@@ -42,17 +63,19 @@ int SellBuilding(int turn, int price) {
 			gotoxytext(local[node->num].x, local[node->num].y - 2, "      ");	//건물그림 지우기
 			deletNode(list, name);	//노드삭제
 			player[turn].marble += money;	//보유마블에 매각가 더하기
-			PlayerState();
+			PlayerState(tNum);
 
 			/*노드의 개수가 0일때*/
 			if (list->size < 1) {
-				gotoxytext(37, 32, "더이상 매각할건물이 없습니다.");
+				if(turn==playerTurn)
+					gotoxytext(37, 32, "더이상 매각할건물이 없습니다.");
 				Sleep(900);
 				return -1;
 			};
 		}
 		else {
-			gotoxytext(37, 32, "다시 입력해주세요.");
+			if (turn == playerTurn)
+				gotoxytext(37, 32, "다시 입력해주세요.");
 			Sleep(500);
 			gotoxytext(37, 32, "                  ");
 		}
@@ -61,38 +84,63 @@ int SellBuilding(int turn, int price) {
 	/*매각이 끝나면 상대방에게 마블 지급*/
 	player[turn].marble -= price;
 	player[1 - turn].marble += price;
-	PlayerState();
+	PlayerState(tNum);
 	return 0;
 
 }
 
 /*파산*/
-void Bankrupt(int turn, int price) {
-	LinkedList *list;
-	if (turn == 0)
-		list = list1;
-	else
-		list = list2;
+void Bankrupt(int turn, int price, int playerTurn, void *socks, bool isServer, LinkedList *list) {
+	
+	int select, select1;
+	char data[2];
 
-	int select;
-	gotoxytext(37, 27, "통행료가 부족합니다.\n");
-	gotoxy(37, 28);
-	printf("1) 매각  2) 파산  (선택) ☞ ");
+	if (turn == playerTurn) {
+		gotoxytext(37, 27, "통행료가 부족합니다.\n");
+		gotoxy(37, 28);
+		printf("1) 매각  2) 파산  (선택) ☞ ");
 
-	gotoxy(70, 28);
-	cursor_view(1);
-	do {
-		select = _getch() - 48;
+		gotoxy(70, 28);
+		cursor_view(1);
+		do {
+			select = _getch() - 48;
+			gotoxyint(70, 28, select);
+			gotoxytext(70, 28, "      ");
+
+		} while (select != 1 && select != 2);
+		cursor_view(0);
 		gotoxyint(70, 28, select);
-		gotoxytext(70, 28, "      ");
+		clrText();
+		itoa(select, data, 10);
 
-	} while (select != 1 && select != 2);
-	cursor_view(0);
-	gotoxyint(70, 28, select);
+		if (isServer)
+		{
+			SendMsg(data, sizeof(data), 0);
+		}
+		else
+		{
+			send((SOCKET)socks, data, sizeof(data), 0);
+		}
+		select1 = atoi(data);
+	}
+	else
+	{
+		if (isServer)
+		{
+			SOCKET *sockArr = (SOCKET *)socks;
+			while (recv(sockArr[turn], data, sizeof(data), 0) <= 0);
+			SendMsg(data, sizeof(data), turn);
+		}
+		else
+		{
+			while (recv((SOCKET)socks, data, sizeof(data), 0) <= 0);
+		}
+		select1 = atoi(data);
+	}
 
-	if (select == 1) {
+	if (select1 == 1) { 
 		/*모든 건물을 매각해도 통행료가 부족할때*/
-		if (SellBuilding(turn, price) == -1) {
+		if (SellBuilding(turn, price, playerTurn, socks, isServer, list) == -1) {
 			clrText();
 			gotoxytext(37, 27, "모든 건물을 매각해도 부족합니다..");
 			Sleep(700);
@@ -126,7 +174,7 @@ void Bankrupt(int turn, int price) {
 }
 
 /*관광지독점 승리*/
-void TouristMonop(int turn) {
+void TouristMonop(int turn, int playerTurn) {
 	int cnt = 0;
 
 	/*지역의 상태가 관광지면 cnt증가*/
@@ -138,9 +186,13 @@ void TouristMonop(int turn) {
 	if (cnt == 5) {
 		clrText();
 		gotoxy(37, 27);
-		sndPlaySoundA("..\\sound\\WinRule_A03.wav", SND_ASYNC | SND_NODEFAULT);
-		printf("축하합니다! %s님의 관광지독점 승리!", player[turn].name);
-
+		if (turn == playerTurn) {
+			sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
+			printf("축하합니다! %s님의 관광지독점 승리!", player[turn].name);
+		}
+		else {
+			printf("%s님의 관광지독점으로 패배!", player[turn].name);
+		}
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
 		getch();
 		system("pause>null");
@@ -150,7 +202,7 @@ void TouristMonop(int turn) {
 
 //유나
 //트리플 독점 승리
-void ColorMonop(int turn) {
+void ColorMonop(int turn, int playerTurn) {
 
 	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점
 	int color = 0; //컬러독점 수
@@ -182,16 +234,22 @@ void ColorMonop(int turn) {
 
 	color = cnt1 + cnt2 + cnt3 + cnt4 + cnt5 + cnt6 + cnt7 + cnt8;
 	if (color == 3) { //컬러독점 3개이면 승리
-		sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		clrText();
-		gotoxy(42, 27); printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
+		gotoxy(42, 27); 
+		if (turn == playerTurn) {
+			sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
+			printf("축하합니다! %s님의 트리플독점 승리!", player[turn].name);
+		}
+		else {
+			printf("%s님의 트리플독점으로 패배!", player[turn].name);
+		}
 		gotoxytext(42, 29, "Enter키를 누르면 게임이 종료됩니다!");
 		gotoxy(42, 31);
 		exit(1);
 	}
 }
 
-void LineMonop(int turn) {
+void LineMonop(int turn, int playerTurn) {
 
 	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0;
 
@@ -222,9 +280,14 @@ void LineMonop(int turn) {
 	if (cnt1 == 6 || cnt2 == 6 || cnt3 == 6 || cnt4 == 5) {
 		clrText();
 		gotoxy(37, 27);
-		sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
-		printf("축하합니다! %s님의 라인독점 승리!", player[turn].name);
-
+		
+		if (turn == playerTurn) {
+			sndPlaySoundA("..\\sound\\WinRule_A01.wav", SND_ASYNC | SND_NODEFAULT);
+			printf("축하합니다! %s님의 라인독점 승리!", player[turn].name);
+		}
+		else {
+			printf("%s님의 라인독점으로 패배!", player[turn].name);
+		}
 		gotoxytext(37, 29, "Enter키를 누르면 게임이 종료됩니다!");
 		getch();
 		system("pause>null");
@@ -234,8 +297,8 @@ void LineMonop(int turn) {
 
 }
 
-void CheckGameOver(int turn) {
-	TouristMonop(turn);
-	ColorMonop(turn);
-	LineMonop(turn);
+void CheckGameOver(int turn, int playerTurn) {
+	TouristMonop(turn, playerTurn);
+	ColorMonop(turn, playerTurn);
+	LineMonop(turn, playerTurn);
 }

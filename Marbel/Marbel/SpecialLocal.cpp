@@ -6,6 +6,7 @@
 extern LinkedList *list1, *list2, *list3, *list4;
 extern Player player[4];
 extern Local local[32];
+extern int tNum;
 
 //유나
 //보너스 게임 이벤트
@@ -639,7 +640,7 @@ int WorldTourEvent(int turn, int playerTurn, void *socks, bool isServer) {
 
 //유나
 //국세청 이벤트
-void TaxEvent(int turn, int playerTurn) {
+void TaxEvent(int turn, int playerTurn, void *socks, bool isServer, LinkedList *list) {
 	int tax = 0;
 
 	if (turn == playerTurn) {
@@ -664,10 +665,10 @@ void TaxEvent(int turn, int playerTurn) {
 			gotoxytext(37, 32, "세금 지불이 완료 되었습니다");
 	}
 	else {
-		Bankrupt(turn, tax);
+		Bankrupt(turn, tax, playerTurn, socks, isServer, list);
 	}
 
-	PlayerState();
+	PlayerState(tNum);
 	Sleep(900);
 	clrText();
 }

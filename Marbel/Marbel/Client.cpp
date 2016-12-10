@@ -13,7 +13,6 @@ extern Player player[4];
 SOCKET sock;
 void ErrorHandling(char* msg);
 
-//char name[NAME_SIZE] = "[DEFAULT]";
 char msg[BUF_SIZE];
 
 void AccessServerClient(char *ip,int totalNumber) {
@@ -66,84 +65,11 @@ void AccessServerClient(char *ip,int totalNumber) {
 		turn = atoi(start);
 		printf("게임을 시작합니다.\n");
 		StartGame(totalNumber, turn, inputName, (void *)sock, false);
-	}
-	/*이건 다중채팅했던거*/
-	//sendThread = (HANDLE)_beginthreadex(NULL, 0, SendMsg, (void*)&sock, 0, NULL);//메시지 전송용 쓰레드가 실행된다.
-	//recvThread = (HANDLE)_beginthreadex(NULL, 0, RecvMsg, (void*)&sock, 0, NULL);//메시지 수신용 쓰레드가 실행된다.
-
-	//WaitForSingleObject(sendThread, INFINITE);//전송용 쓰레드가 중지될때까지 기다린다./
-	//WaitForSingleObject(recvThread, INFINITE);//수신용 쓰레드가 중지될때까지 기다린다.
-											  //클라이언트가 종료를 시도한다면 이줄 아래가 실행된다.
+	}									  
 	closesocket(sock);//소켓을 종료한다.
 	WSACleanup();//윈도우 소켓 사용중지를 운영체제에 알린다.
 	return;
 }
-
-unsigned WINAPI SendMsg(void* arg) {//전송용 쓰레드함수
-	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
-	char nameMsg[2];
-	while (1) {//반복
-		fgets(msg, 2, stdin);//입력을 받는다.
-		if (!strcmp(msg, "q\n")) {//q를 입력하면 종료한다.
-			send(sock, "q", 1, 0);//nameMsg를 서버에게 전송한다.
-		}
-		//sprintf(nameMsg, "%s %s", name, msg);//nameMsg에 메시지를 전달한다.
-		send(sock, nameMsg, strlen(nameMsg), 0);//nameMsg를 서버에게 전송한다.
-	}
-	return 0;
-}
-
-unsigned WINAPI RecvMsg(void* arg) {
-	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
-	char nameMsg[NAME_SIZE + BUF_SIZE];
-	int strLen;
-	while (1) {//반복
-		strLen = recv(sock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);//서버로부터 메시지를 수신한다.
-		if (strLen == -1)
-			return -1;
-		nameMsg[strLen] = 0;//문자열의 끝을 알리기 위해 설정
-		if (!strcmp(nameMsg, "q")) {
-			printf("left the chat\n");
-			closesocket(sock);
-			exit(0);
-		}
-		fputs(nameMsg, stdout);//자신의 콘솔에 받은 메시지를 출력한다.
-	}
-	return 0;
-}
-
-//unsigned WINAPI SendMsg(void* arg) {//전송용 쓰레드함수
-//	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
-//	char nameMsg[NAME_SIZE + BUF_SIZE];
-//	while (1) {//반복
-//		fgets(msg, BUF_SIZE, stdin);//입력을 받는다.
-//		if (!strcmp(msg, "q\n")) {//q를 입력하면 종료한다.
-//			send(sock, "q", 1, 0);//nameMsg를 서버에게 전송한다.
-//		}
-//		//sprintf(nameMsg, "%s %s", name, msg);//nameMsg에 메시지를 전달한다.
-//		send(sock, nameMsg, strlen(nameMsg), 0);//nameMsg를 서버에게 전송한다.
-//	}
-//	return 0;
-//}
-//
-//unsigned WINAPI RecvMsg(void* arg) {
-//	SOCKET sock = *((SOCKET*)arg);//서버용 소켓을 전달한다.
-//	char nameMsg[NAME_SIZE + BUF_SIZE];
-//	int strLen;
-//	while (1) {//반복
-//		strLen = recv(sock, nameMsg, NAME_SIZE + BUF_SIZE - 1, 0);//서버로부터 메시지를 수신한다.
-//		if (strLen == -1)
-//			return -1;
-//		nameMsg[strLen] = 0;//문자열의 끝을 알리기 위해 설정
-//		if (!strcmp(nameMsg, "q")) {
-//			printf("left the chat\n");
-//			closesocket(sock);
-//			exit(0);
-//		}
-//		fputs(nameMsg, stdout);//자신의 콘솔에 받은 메시지를 출력한다.
-//	}
-//	return 0;
-//}
 
 void ErrorHandling(char* msg) {
 	fputs(msg, stderr);
