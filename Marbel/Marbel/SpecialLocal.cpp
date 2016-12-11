@@ -190,13 +190,13 @@ void StartEvent(int turn, int board, int playerTurn, void *socks, bool isServer,
 				/*소유한 지역을 입력할때*/
 				if (node != NULL) {
 
-					/*지역의 상태가 랜드마크가 아닐때*/
+					/*지역의 상태가 랜드마크, 관광지가 아닐때*/
 					if (local[node->num].state != turn + 4 && local[node->num].state != turn + 8) {
 						k++;
 						local[node->num].state = turn + 4;
 						local[node->num].price = localPrice[node->num][3];
 						modifiNode(list, name, localPrice[node->num][3]);
-						
+
 						SetDrawColor(turn);
 						gotoxytext(local[node->num].x, local[node->num].y - 2, "♣♣♣");
 						GRAY
@@ -655,14 +655,16 @@ void TaxEvent(int turn, int playerTurn, void *socks, bool isServer, LinkedList *
 	}
 
 	tax = (0.1)*tax;
-	if (turn == playerTurn)
-		gotoxy(70, 30); printf("세금은 %d 마블 입니다", tax);
+	if (turn == playerTurn) {
+		gotoxy(37, 30); printf("세금은 %d 마블 입니다", tax);
+	}
 
 	if (player[turn].marble >= tax) {
 		player[turn].marble -= tax;
-		Sleep(1000);
-		if (turn == playerTurn)
-			gotoxytext(37, 32, "세금 지불이 완료 되었습니다");
+		if (turn == playerTurn) {
+			gotoxytext(37, 31, "세금 지불이 완료 되었습니다");
+		}
+		Sleep(300);
 	}
 	else {
 		Bankrupt(turn, tax, playerTurn, socks, isServer, list);

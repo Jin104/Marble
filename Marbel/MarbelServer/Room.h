@@ -7,6 +7,7 @@ typedef struct _Node {
 	int num;			//방의 현재 인원수
 	int number;			//방의 번호(리스트 번호)
 	char ip[20];		//방의 ip
+	char innerIp[20];	//방의 내부ip
 	_Node *next;
 	_Node *prev;
 }Node;
@@ -18,7 +19,7 @@ typedef struct _LinkedList {
 }LinkedList;
 
 LinkedList *NewList();
-Node *NewNode(char *name, char *allNum, int num, char *ip);
+Node *NewNode(char *name, char *allNum, int num, char *ip, char *innerIp);
 void HangNode(LinkedList *list, Node *node);
 
 Node *FindNode(LinkedList *list, int num);   //노드 찾기

@@ -14,14 +14,14 @@ LinkedList *NewList() {
 	return list;
 }
 
-Node *NewNode(char *name, char *allNum, int num, char *ip) {
+Node *NewNode(char *name, char *allNum, int num, char *ip, char *innerIp) {
 
 	Node *node = (Node*)malloc(sizeof(Node));
 	strcpy(node->name, name);
 	strcpy(node->allNum, allNum);
-	//strcpy(node->num, num);
 	node->num = num;
 	strcpy(node->ip, ip);
+	strcpy(node->innerIp, innerIp);
 	node->number = count++;
 	node->next = NULL;
 	node->prev = NULL;

@@ -33,14 +33,7 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 
 		for (int turn = 0; turn < totalNumber; turn++) {		//플레이어 순서 0:player1  1:player2
 
-			if (turn == 0)
-				PLAYER1
-			else if (turn == 1)
-				PLAYER2
-			else if (turn == 2)
-				PLAYER3
-			else
-				PLAYER4
+			SetDrawColor(turn);
 			gotoxytext(1, 20, player[turn].name);
 
 			GRAY

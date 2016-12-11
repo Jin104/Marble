@@ -15,7 +15,7 @@ void ErrorHandling(char* msg);
 
 char msg[BUF_SIZE];
 
-void AccessServerClient(char *ip,int totalNumber) {
+void AccessServerClient(char *ip,char *innerIp, int totalNumber) {
 	WSADATA wsaData;
 	
 	SOCKADDR_IN serverAddr;
@@ -30,8 +30,8 @@ void AccessServerClient(char *ip,int totalNumber) {
 	char name[10];
 	//sprintf(myIp, "%s", ip);
 	//printf("ip: %s\n", myIp);
-	printf("\nInput IP : ");
-	gets_s(myIp);
+	//printf("\nInput IP : ");
+	//gets_s(myIp);
 
 	printf("Input your name : ");
 	gets_s(inputName);
@@ -45,12 +45,19 @@ void AccessServerClient(char *ip,int totalNumber) {
 
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = inet_addr(myIp);
+	serverAddr.sin_addr.s_addr = inet_addr(ip);
 	//serverAddr.sin_addr.S_un.S_addr = inet_addr("110.15.82.167");
 	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.2");
 	serverAddr.sin_port = htons(10201);
 	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속한다.
+	{
 		ErrorHandling("connect() error");
+		serverAddr.sin_addr.s_addr = inet_addr(innerIp);
+		if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+		{
+			ErrorHandling("connect() error");
+		}
+	}
 
 	printf("대기중입니다...\n");
 	send(sock, inputName, sizeof(inputName), 0); //이름 서버로 전송

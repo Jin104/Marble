@@ -4,8 +4,9 @@
 
 #pragma warning(disable:4996)
 
-void main()
+int main(int argc, char *argv[])
 {
+	struct hostent *h;
 	char select[2];
 	char roomNum[5];
 	char roomAllNum[5];
@@ -13,10 +14,14 @@ void main()
 	char message[256];
 	char roomIp[20];
 	char inputName[10];
-
+	char ip[20];
+	
 	/*家南 积己*/
 	SOCKET sock = NewTCPSocket();
-
+	h = gethostbyname(argv[1]);
+	printf("Host name  : %s\n", h->h_name);
+	printf("IP Address : %s\n", inet_ntoa(*((struct in_addr *)h->h_addr)));
+	strcpy(ip, inet_ntoa(*((struct in_addr *)h->h_addr)));
 	printf("\n1. 规 积己\n");
 	printf("2. 规 涝厘\n\n");
 	printf("⒀ ");
@@ -35,6 +40,7 @@ void main()
 		getchar();
 		gets_s(roomName);
 		send(sock, roomName, sizeof(roomName), 0);
+		send(sock, ip, sizeof(ip), 0);
 		recv(sock, message, sizeof(message), 0);
 		printf("\nserver: %s\n", message);
 		NewServer(atoi(select));
@@ -57,7 +63,8 @@ void main()
 		gets_s(select);
 		send(sock, select, sizeof(select), 0);
 		recv(sock, roomIp, sizeof(roomIp), 0);
-		AccessServerClient(roomIp,atoi(roomAllNum));
+		recv(sock, ip, sizeof(ip), 0);
+		AccessServerClient(roomIp,ip,atoi(roomAllNum));
 		break;
 	default:
 		break;

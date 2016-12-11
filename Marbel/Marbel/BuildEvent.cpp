@@ -141,15 +141,8 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 			break;
 
 		case 0:   //player1의 호텔이 지어져있는경우
-			if (turn == 0) 
-			{
-				if (isServer) {
-					BuildRandmark(turn, board, playerTurn, socks, true, list);
-				}
-				else
-				{
-					BuildRandmark(turn, board, playerTurn, socks, false, list);
-				}
+			if (turn == 0){
+				BuildRandmark(turn, board, playerTurn, socks, isServer, list);
 			}
 			else 
 			{
@@ -163,20 +156,18 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 					local[board].olystate = 0;
 				}
 
-				if(turn==playerTurn)
+				if (turn == playerTurn) {
 					printf("통행료는 %d마블 입니다.", toll);
+				}
 
 				int price = toll;
-
 				/*보유한 카드가 있으면*/
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if(isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
-					if (turn == playerTurn)
+					if (turn == playerTurn) {
 						printf("통행료는 %d마블 입니다.", price);
+					}
 				}
 
 				/*보유마블이 통행료보다 적으면 파산실행(건물매각)*/
@@ -189,11 +180,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*인수할 것인지*/
 				if (isServer) {
-					Takeover(turn, board, playerTurn, socks, true, list1, list);
-				}
-				else
-				{
-					Takeover(turn, board, playerTurn, socks, false, list1, list);
+					Takeover(turn, board, playerTurn, socks, isServer, list1, list);
 				}
 				Sleep(500);
 
@@ -630,19 +617,28 @@ void BuildRandmark(int turn, int board, int playerTurn, void *socks, bool isServ
 	}
 
 	if (select1 == 1) {
-		if (turn == playerTurn) {
-			sndPlaySoundA("..\\sound\\LandMark_A01.wav", SND_ASYNC | SND_NODEFAULT);
-			gotoxytext(37, 30, "랜드마크를 건설했습니다.");
+		if (player[turn].marble >= localPrice[board][1]) {
+			if (turn == playerTurn) {
+				sndPlaySoundA("..\\sound\\LandMark_A01.wav", SND_ASYNC | SND_NODEFAULT);
+				gotoxytext(37, 30, "랜드마크를 건설했습니다.");
+			}
+			local[board].state = turn + 4;      //지역의 상태변경
+			local[board].price = localPrice[board][3];   //지역의 가격변경
+
+			player[turn].marble -= localPrice[board][1];
+			modifiNode(list, local[board].name, localPrice[board][3]);	//지역노드의 가격수정
+
+			SetDrawColor(turn);
+			gotoxytext(local[board].x, local[board].y - 2, "♣♣♣");	//랜드마크 모양으로 변경
+			GRAY
 		}
-		local[board].state = turn + 4;      //지역의 상태변경
-		local[board].price = localPrice[board][3];   //지역의 가격변경
-
-		player[turn].marble -= localPrice[board][1];
-		modifiNode(list, local[board].name, localPrice[board][3]);	//지역노드의 가격수정
-
-		SetDrawColor(turn);
-		gotoxytext(local[board].x, local[board].y - 2, "♣♣♣");	//랜드마크 모양으로 변경
-		GRAY
+		else
+		{
+			if (turn == playerTurn)
+			{
+				gotoxytext(37, 30, "건설할 돈이 없습니다.");
+			}
+		}
 	}
 }
 

@@ -29,7 +29,7 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	SOCKADDR_IN serverAddr, clientAddr;
 	int clientAddrSize;
 	HANDLE hThread, sThread, rThread;
-	
+	struct hostent *h;
 	total = totalNumber;
 	
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) //윈도우 소켓을 사용하겠다는 사실을 운영체제에 전달
@@ -76,22 +76,15 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 
 unsigned WINAPI HandleClient(void* arg) {
 	int n, tmp;
-	int num[4];// = { 0,1,2,3 };
+	int num[4] = { 0,1,2,3 };
 	char number[4][2];
 	char mastername[10];
 	char name[10];
-	//srand(time(NULL));
-	//for (int i = total - 1; i > 0; i--) {
-	//	n = rand() % total;
-	//	tmp = num[i];
-	//	num[i] = num[n];
-	//	num[n] = tmp;
-	//}
 
-	num[0] = 0;
+	/*num[0] = 0;
 	num[1] = 1;
 	num[2] = 2;
-	num[3] = 3;
+	num[3] = 3;*/
 
 	for (int i = 0; i < total; i++) {
 		printf("num[%d]=%d\t", i, num[i]);
@@ -99,9 +92,11 @@ unsigned WINAPI HandleClient(void* arg) {
 		printf("number[%d]=%s\n", i, number[i]);
 	}
 
-	printf("\n방의 인원이 다 찼어요!\n");
-	printf("\n방장의 이름을 입력하면 게임이 시작됩니다!");
-	printf("\nInput your name : ");
+	printf("\n\n┏━━━━━━━━━━━━━━━━━━━━━┓");
+	printf("\n┃방의 인원이 다 찼어요!                    ┃");
+	printf("\n┃방장의 이름을 입력하면 게임이 시작됩니다! ┃");
+	printf("\n┗━━━━━━━━━━━━━━━━━━━━━┛");
+	printf("\n\n Input your name : ");
 	gets_s(mastername); //방장의 이름 입력
 
 	if (clientSocks[total-1] != NULL) {
