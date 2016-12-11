@@ -29,40 +29,25 @@ void FortuneCard(int turn, int board, int playerTurn, void *socks, bool isServer
 	switch (n)
 	{
 	case 1:
-		if (isServer)
-			HalfAngelCard(turn, playerTurn, socks, true);
-		else
-			HalfAngelCard(turn, playerTurn, socks, false);
+		HalfAngelCard(turn, playerTurn, socks, isServer);
 		break;
 	case 2:
-		if (isServer)
-			AngelCard(turn, playerTurn, socks, true);
-		else
-			AngelCard(turn, playerTurn, socks, false);
+		AngelCard(turn, playerTurn, socks, isServer);
 		break;
 	case 3:
 		InviteTravel(turn, playerTurn);
 		break;
 	case 4:
-		if(isServer)
-			GoStart(turn, board, playerTurn, socks, true, list);
-		else
-			GoStart(turn, board, playerTurn, socks, false, list);
+		GoStart(turn, board, playerTurn, socks, isServer, list);
 		break;
 	case 5:
 		GoIsland(turn);
 		break;
 	case 6:
-		if (isServer)
-			HoldOlympic(turn, playerTurn, socks, true, list);
-		else
-			HoldOlympic(turn, playerTurn, socks, false, list);
+		HoldOlympic(turn, playerTurn, socks, isServer, list);
 		break;
 	case 7:
-		if (isServer)
-			CompelSale(turn, playerTurn, socks, true);
-		else
-			CompelSale(turn, playerTurn, socks, false);
+		CompelSale(turn, playerTurn, socks, isServer);
 		break;
 	default:
 		break;

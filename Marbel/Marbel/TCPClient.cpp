@@ -8,7 +8,7 @@
 void ErrorHandling1(char* msg);
 
 SOCKET NewTCPSocket() {
-	
+
 	char myIp[100];
 	char inputName[100];
 
@@ -16,6 +16,7 @@ SOCKET NewTCPSocket() {
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		ErrorHandling1("WSAStartup() error!");
+
 
 	/*서버 ip 입력*/
 	printf("Input TCP server IP : ");

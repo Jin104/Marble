@@ -28,9 +28,6 @@ Dice GameDice(int i) {
 			break;
 		}
 	}
-	//d.dice1 = 4;// rand() % 6 + 1;
-	//d.dice2 = 2;// rand() % 6 + 1;
-	//d.sum = d.dice1 + d.dice2;
 	if (d.dice1 == d.dice2) {
 		sndPlaySoundA("..\\sound\\Double_A01.wav", SND_ASYNC | SND_NODEFAULT);
 		d.equal = 1;
@@ -470,19 +467,75 @@ void Loading() {
 
 }
 
+void Loading2()
+{
+	system("mode con:cols=130 lines=48"); //콘솔창 크기
+	gotoxy(25, 10); DARK_SKY_BLUE printf("┏━━━━━┓");
+	gotoxy(25, 11); printf("┃ ┏━━┓ ┃");
+	gotoxy(25, 12); printf("┃ ┃    ┃ ┃");
+	gotoxy(25, 13); printf("┃ ┗━━┛ ┃");
+	gotoxy(25, 14); printf("┗━┓  ┏━┛");
+	gotoxy(25, 15); printf("    ┃  ┃  ");
+	gotoxy(25, 16); printf("    ┃  ┃  ");
+	gotoxy(25, 17); printf("┏━┛  ┗━┓");
+	gotoxy(25, 18); printf("┃          ┃");
+	gotoxy(25, 19); printf("┗━━━━━┛");
+
+	gotoxy(39, 11); printf("┏━━━━━┓");
+	gotoxy(39, 12); printf("┃  ┏━━━┛");
+	gotoxy(39, 13); printf("┃  ┃      ");
+	gotoxy(39, 14); printf("┃  ┗━━━┓");
+	gotoxy(39, 15); printf("┗━━━━━┛");
+	gotoxy(39, 16); printf("┏━━━━━┓");
+	gotoxy(39, 17); printf("┃          ┃");
+	gotoxy(39, 18); printf("┗━┓  ┏━┛");
+	gotoxy(39, 19); printf("    ┃  ┃  ");
+	gotoxy(39, 20); printf("    ┃  ┃  ");
+	gotoxy(39, 21); printf("    ┗━┛");
+
+	gotoxy(53, 12); printf("  ━━━  ┏┓");
+	gotoxy(53, 13); printf("┃┏━┓┃┃┃");
+	gotoxy(53, 14); printf("┃┗━┛┃┃┃");
+	gotoxy(53, 15); printf("  ━━━  ┃┃");
+	gotoxy(53, 16); printf("┏━━━┓┃┃");
+	gotoxy(53, 17); printf("┗━━━┛┗┛");
+
+	gotoxy(67, 10); printf("            ┏┓");
+	gotoxy(67, 11); printf("┏━━━━┓┃┃");
+	gotoxy(67, 12); printf("┃        ┃┃┃");
+	gotoxy(67, 13); printf("┃┏━━┓┃┃┃");
+	gotoxy(67, 14); printf("┃┃    ┃┃┃┗┓");
+	gotoxy(67, 15); printf("┃┃    ┃┃┃┏┛");
+	gotoxy(67, 16); printf("┃┃    ┃┃┃┃");
+	gotoxy(67, 17); printf("┃┗━━┛┃┃┃");
+	gotoxy(67, 18); printf("┃        ┃┃┃");
+	gotoxy(67, 19); printf("┗━━━━┛┃┃");
+	gotoxy(67, 20); printf("            ┗┛");
+
+	gotoxy(85, 10); printf("┏━┓    ┏━┓");;
+	gotoxy(85, 11); printf("┃  ┗━━┛  ┃");
+	gotoxy(85, 12); printf("┃  ┏━━┓  ┃");
+	gotoxy(85, 13); printf("┃  ┗━━┛  ┃");
+	gotoxy(85, 14); printf("┗━━━━━━┛");
+	gotoxy(85, 15); printf("┏━━━━━━┓");
+	gotoxy(85, 16); printf("┗━━━━━━┛");
+	gotoxy(85, 17); printf("┏━━━━━━┓");
+	gotoxy(85, 18); printf("┗━━━━━┓┃");
+	gotoxy(85, 19); printf("┏━━━━━┛┃");
+	gotoxy(85, 20); printf("┃┏━━━━━┛");
+	gotoxy(85, 21); printf("┃┗━━━━━┓");
+	gotoxy(85, 22); printf("┗━━━━━━┛");;
+	GRAY
+}
 //유나
 //게임 메뉴
 void Menu() {
 
 	clrText();
-
-	settextcolor(0x0007, 000000);
-	gotoxytext(50, 28, "☞");
-
-	settextcolor(0, 3);
-	gotoxytext(55, 28, "[1] 게임 시작");
-	settextcolor(0x0007, 000000);
-	gotoxytext(55, 30, "[2] 게임 설명");
+	
+	gotoxytext(55, 28, "[1] 게임방 생성");
+	gotoxytext(55, 30, "[2] 게임방 입장");
+	gotoxytext(55, 32, "[3] 게임 설명");
 
 }
 
@@ -490,6 +543,7 @@ void Menu() {
 //게임 설명 창
 void Explain() {
 
+	system("cls");
 	int select;
 	gotoxy(20, 5); DARK_SKY_BLUE
 		printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━┳━━┳━━┓");
@@ -497,7 +551,7 @@ void Explain() {
 		gotoxytext(20, i, "┃");
 		gotoxytext(106, i, "┃");
 	}
-	gotoxy(25, 7); printf("게임 시작은 Enter를 눌러주세요!");
+	gotoxy(25, 7); printf("뒤로가기는 Enter를 눌러주세요!");
 	gotoxy(91, 7); printf("━"); gotoxy(96, 6); printf("┏┓"); gotoxy(96, 7); printf("┗┛"); gotoxy(103, 7); printf("Ⅹ");
 	gotoxy(88, 6); printf("┃"); gotoxy(94, 6); printf("┃"); gotoxy(100, 6); printf("┃");
 	gotoxy(88, 7); printf("┃"); gotoxy(94, 7); printf("┃"); gotoxy(100, 7); printf("┃");
@@ -521,12 +575,10 @@ void Explain() {
 	gotoxy(25, 35); printf("    ☞ 트리플 독점 ─ 3가지 컬러의 모든 지역을 차지");
 	gotoxy(25, 36); printf("    ☞ 관광지 독점 ─ 5개의 관광지를 모두 차지");
 	gotoxy(25, 37); printf("    ☞ 파산 ─ 상대방의 보유마블 부족");
-
-	if (select = _getch()) { //키를 누르면 게임시작
-		system("cls");
-		//StartGame();
-	}
-
+	gotoxy(25, 39); printf("### 방장은 반드시 10201번 포트를 포트포워딩하세요!");
+	gotoxy(25, 40); printf("### 포트포워딩을 하지않으면 다른 플레이어들이 접속하지 못합니다.");
+	getch();
+	system("cls");
 }
 
 /*플레이어의 마블상태를 그려줌*/

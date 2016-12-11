@@ -1,5 +1,5 @@
 #include "Start.h"
-#include "Player.h"
+#include "Player.h"	
 #include "BuildEvent.h"
 #include "Client.h"
 
@@ -31,7 +31,7 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 
 	while (1) {
 
-		for (int turn = 0; turn < totalNumber; turn++) {		//플레이어 순서 0:player1  1:player2
+		for (int turn = 0; turn < totalNumber; turn++) {		//플레이어 순서 0:player1  1:player2  2:player3  3:player4
 
 			SetDrawColor(turn);
 			gotoxytext(1, 20, player[turn].name);
@@ -70,36 +70,41 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 				char sumData[2];
 				char equalData[2];
 				int select;
+
+
+
+				/*선택지 처리    다른 곳의 선택지 처리도 비슷해서 여기에만 주석 달았습니다*/
+				//자기의 차례일때
 				if (turn == playerTurn) {
 					d = GameDice(turn);	//주사위 굴리기
 					itoa(d.sum, sumData, 10);
 					itoa(d.equal, equalData, 10);
-					if (isServer)
+					if (isServer)	//자신이 서버면
 					{
-						SendMsg(sumData, sizeof(sumData), 0);
+						SendMsg(sumData, sizeof(sumData), 0);	//다른 클라이언트에게 결과값 보냄
 						SendMsg(equalData, sizeof(equalData), 0);
 					}
-					else
+					else  //서버가 아니면
 					{
-						send((SOCKET)socks, sumData, sizeof(sumData), 0);
+						send((SOCKET)socks, sumData, sizeof(sumData), 0);	//서버에게 결과값 보냄
 						send((SOCKET)socks, equalData, sizeof(equalData), 0);
 					}
 					select = atoi(sumData);
 					MovePlayer(select, turn);	//나온만큼 이동
 				}
-				else
+				else  //자기의 차례가 아니면
 				{
-					if (isServer)
+					if (isServer)	//자신이 서버면
 					{
 						SOCKET *sockArr = (SOCKET *)socks;
-						while (recv(sockArr[turn], sumData, sizeof(sumData), 0) <= 0);
+						while (recv(sockArr[turn], sumData, sizeof(sumData), 0) <= 0);	//결과값을 받음
 						while (recv(sockArr[turn], equalData, sizeof(equalData), 0) <= 0);
-						SendMsg(sumData, sizeof(sumData), turn);
+						SendMsg(sumData, sizeof(sumData), turn);	//받은 결과값을 다른 클라이언트에게 보냄
 						SendMsg(equalData, sizeof(equalData), turn);
 					}
-					else
+					else  //서버가 아니면
 					{
-						while (recv((SOCKET)socks, sumData, sizeof(sumData), 0) <= 0);
+						while (recv((SOCKET)socks, sumData, sizeof(sumData), 0) <= 0);	//결과값을 받음
 						while (recv((SOCKET)socks, equalData, sizeof(equalData), 0) <= 0);
 					}
 					select = atoi(sumData);
@@ -107,7 +112,7 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 				}
 			
 				/*3번이상 더블을 제외하고*/
-				if (doubleCnt < 3) {
+				if (doubleCnt < 2) {
 					BuildingEvent(turn, player[turn].board, playerTurn, socks, isServer);	//도착한지역에대한 이벤트
 				}
 				
@@ -115,8 +120,6 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 				if (atoi(equalData)==1 && player[turn].state == 0) {
 					turn--;	//턴을 바꾸지않기위해
 					doubleCnt++;
-					gotoxy(73, 10);
-					//printf("더블 %d번째", doubleCnt);
 				}
 				else {
 					gotoxy(73, 10);
@@ -124,7 +127,11 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 					doubleCnt = 0;
 				}
 			B:
+				gotoxytext(1, 20, "              ");
+				gotoxy(48, 20);
+				printf("                                     ");
 				clrDice();
+				clrCard();
 				break;
 
 			}
@@ -207,15 +214,4 @@ void MovePlayer(int i, int turn) {
 			Sleep(200);
 	}
 
-}
-
-/*플레이어 순서를 정해줌*/
-void PlayerTurn(int totalNumber) {
-
-	//for (int i = 0; i < totalNumber; i++) {
-	//	//player[i].myTurn=
-
-	//}
-
-	Sleep(800);
 }

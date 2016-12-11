@@ -21,6 +21,7 @@ void PlayerState(int tNum);	//플레이어 마블상태
 void Menu();	//메뉴
 void Explain();	//설명
 void Loading();	//로딩화면
+void Loading2();
 void clrText();	//텍스트 출력 지우기
 void clrList();	//지역리스트 출력 지우기
 void clrCard();	//카드 출력 지우기

@@ -30,7 +30,6 @@ void main()
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.26");
 	serverAddr.sin_port = htons(10200);
 
 	/*생성한 소켓 배치*/
@@ -48,8 +47,6 @@ void main()
 	SOCKADDR_IN clientAddr; //접속 요청한 클라이언트의 소켓 주소를 담을 변수
 	int clientLen = sizeof(clientAddr);   //소켓 주소 버퍼 크기
 
-										  //printf("ip: %ld\n", serverAddr.sin_addr.S_un.S_addr);
-
 	while (1) {
 
 		/*서버에게 전달된 클라이언트 소켓*/
@@ -66,6 +63,7 @@ void ErrorHandling(char* msg) {
 	exit(1);
 }
 
+//다혜
 void DoIt(void *param) {
 
 	char select[2];   //클라이언트의 선택
@@ -74,18 +72,20 @@ void DoIt(void *param) {
 	char message[256];
 	int roomCount;   //방 개수
 	char ip[20];
+
 	Node *pos, *node;
 
 	SOCKET sock = (SOCKET)param;
 	SOCKADDR_IN sockAddr;
 	int len = sizeof(sockAddr);
 
-	//플레이어가 퇴장 할때마다 예외처리
+	//유나: 플레이어가 퇴장 할때마다 예외처리
 	if (recv(sock, select, sizeof(select), 0) == -1) {
 		printf("플레이어가 퇴장하였습니다.\n");
 		client_number--;
 	}
-
+	
+	//유나: 방 꽉 차면 리스트에서 삭제
 	pos = list->head;
 	while (pos != NULL) {
 		if (atoi(pos->allNum) == pos->num) { //총인원수와 현재 인원수가 같으면
@@ -95,10 +95,11 @@ void DoIt(void *param) {
 		}
 		pos = pos->next;
 	}
-
+	
 	switch (atoi(select)) {
 	case 1:
 		getpeername(sock, (SOCKADDR*)&sockAddr, &len);
+		
 		//몇인용 방 인지 받아옴
 		if (recv(sock, select, sizeof(select), 0) == -1) {
 			printf("플레이어가 퇴장하였습니다.\n");
@@ -108,23 +109,29 @@ void DoIt(void *param) {
 
 		printf("\n%d인용 방 생성...\n", atoi(select));
 		printf("방을 만든 클라이언트의 IP [%s]\n", inet_ntoa(sockAddr.sin_addr));
+
+		//방이름 받아옴
 		if (recv(sock, roomName, sizeof(roomName), 0) == -1) {
 			printf("플레이어가 퇴장하였습니다.\n");
 			client_number--;
 			break;
 		}
-		recv(sock, ip, sizeof(ip), 0);	//내부ip
-		node = NewNode(roomName, select, 1, inet_ntoa(sockAddr.sin_addr), ip);            //현재 인원은 아직 구현x
-		HangNode(list, node);
-		printf("sockAddr : %s\n", node->ip);	//외부ip
-		sprintf(message, "방을 생성했습니다.");
-		send(sock, message, sizeof(message), 0);
 
+		//연결리스트에 방 노드 추가
+		node = NewNode(roomName, select, 1, inet_ntoa(sockAddr.sin_addr));            //현재 인원은 아직 구현x
+		HangNode(list, node);
+		sprintf(message, "방을 생성했습니다.");
+		//클라이언트에게 방 만들었다고 메세지 전송
+		send(sock, message, sizeof(message), 0);
 		break;
+
 	case 2:
+		//게임방의 개수 보내줌
 		roomCount = list->size;
 		sprintf(select, "%d", roomCount);
 		send(sock, select, sizeof(select), 0);
+
+		//게임방 리스트 보내줌
 		pos = list->head;
 		printf("\n=========== 방 목록 ===========\n");
 		while (pos != NULL) {
@@ -136,16 +143,18 @@ void DoIt(void *param) {
 			pos = pos->next;
 		}
 
+		//선택을 받아옴
 		if (recv(sock, select, sizeof(select), 0) == -1) {
 			printf("플레이어가 퇴장하였습니다.\n");
 			client_number--;
 			break;
 		}
+
+		//선택된 노드의 ip를 보내줌
 		node = FindNode(list, atoi(select));
 		send(sock, node->ip, sizeof(node->ip), 0);
-		send(sock, node->innerIp, sizeof(node->innerIp), 0);
+		//노드의 인원수 수정
 		modiNode(list, node);
-
 		break;
 	default:
 		break;

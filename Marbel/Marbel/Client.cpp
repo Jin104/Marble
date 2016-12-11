@@ -15,7 +15,7 @@ void ErrorHandling(char* msg);
 
 char msg[BUF_SIZE];
 
-void AccessServerClient(char *ip,char *innerIp, int totalNumber) {
+void AccessServerClient(char *ip, int totalNumber) {
 	WSADATA wsaData;
 	
 	SOCKADDR_IN serverAddr;
@@ -28,41 +28,51 @@ void AccessServerClient(char *ip,char *innerIp, int totalNumber) {
 	char masterName[10];
 	int turn;
 	char name[10];
-	//sprintf(myIp, "%s", ip);
-	//printf("ip: %s\n", myIp);
-	//printf("\nInput IP : ");
-	//gets_s(myIp);
 
-	printf("Input your name : ");
-	gets_s(inputName);
+
+	printf("이름을 입력하세요: ");
+	scanf("%s", inputName);
+	sprintf(name, "s", inputName);
+
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)// 윈도우 소켓을 사용한다고 운영체제에 알림
 		ErrorHandling("WSAStartup() error!");
 
-	sprintf(name, "%s", inputName);
 
 	sock = socket(PF_INET, SOCK_STREAM, 0);//소켓을 하나 생성한다.
 
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
-	serverAddr.sin_addr.s_addr = inet_addr(ip);
-	//serverAddr.sin_addr.S_un.S_addr = inet_addr("110.15.82.167");
-	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.2");
+	//서버에서 받아온 ip
+	//serverAddr.sin_addr.s_addr = inet_addr(ip);
+	serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.55.78");
 	serverAddr.sin_port = htons(10201);
-	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속한다.
+
+	if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)//서버에 접속
 	{
-		ErrorHandling("connect() error");
-		serverAddr.sin_addr.s_addr = inet_addr(innerIp);
+		printf("connect() error\n");
+		
+		//만약 서버에서 받아온 ip로 접속이 안되면, 자신이 직접 입력 (내부ip 외부ip 문제)
+		printf("\nInput IP : ");
+		getchar();
+		gets_s(myIp);		
+		serverAddr.sin_addr.s_addr = inet_addr(myIp);
 		if (connect(sock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
 		{
 			ErrorHandling("connect() error");
 		}
 	}
 
+	//클라이언트 이름 입력
+	
 	printf("대기중입니다...\n");
 	send(sock, inputName, sizeof(inputName), 0); //이름 서버로 전송
+	
+	//시작 신호를 받아옴
 	recv(sock, start, sizeof(start), 0);
 	if (atoi(start) == 9) {
+
+		//모든 플레이어의 이름, 순서를 받아옴
 		for (int i = 0; i < totalNumber; i++) {
 			recv(sock, start, sizeof(start), 0);
 			recv(sock, inputName, sizeof(inputName), 0); //서버로부터 클라이언트들의 이름 받아옴
@@ -74,9 +84,11 @@ void AccessServerClient(char *ip,char *innerIp, int totalNumber) {
 			printf("player[%d]의 turn: %d\n", i, player[i].myTurn);
 			printf("%s\n", player[i].name);
 			}
+		//자신의 순서를 받아옴
 		recv(sock, start, sizeof(start), 0);
 		turn = atoi(start);
 		printf("게임을 시작합니다.\n");
+		//게임 시작
 		StartGame(totalNumber, turn, inputName, (void *)sock, false);
 	}									  
 	closesocket(sock);//소켓을 종료한다.

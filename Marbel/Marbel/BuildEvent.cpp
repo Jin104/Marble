@@ -14,7 +14,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 	turn=> 현재 플레이어 번호		0:player1  1:player2  2:player3  3:player4
 	borad=> 플레이어가있는 지역번호
 	state=> 지역의 구매상태
-	-1: 비어있음 0:player1의 호텔 1:player2의 호텔 2:player1의 랜드마크 3:player2의 랜드마크 4:player1의 관광지 5:player2의 관광지
+	-1: 비어있음    0~3각 플레이어의 호텔     4~7각 플레이어의 랜드마크     8~11각 플레이어의 관광지
 	board=> 지역의 특수성   0시작 2보너스게임 4,9,14,18,25관광지 8무인도 12,20,28포츈카드 16올림픽 24세계여행 30국세청
 	*/
 
@@ -128,7 +128,9 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 					Node *node = NewNode(local[board].name, local[board].price, player[turn].board);   //새로운 지역노드생성
 					HangNode(list, node);   //플레이어의 리스트에 지역노드를 연결해줌
-					PrintList(list);
+					if (turn == playerTurn) {
+						PrintList(list);
+					}
 					SetDrawColor(turn);
 					gotoxytext(local[board].x, local[board].y - 2, "▲▲▲");
 					GRAY
@@ -706,7 +708,7 @@ void Takeover(int turn, int board, int playerTurn, void *socks, bool isServer, L
 			SetDrawColor(turn);
 			gotoxytext(local[board].x, local[board].y - 2, "▲▲▲");
 			GRAY
-				return;
+			return;
 		}
 	}
 	else {

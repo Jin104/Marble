@@ -15,14 +15,14 @@ unsigned WINAPI HandleClient(void* arg);//쓰레드 함수
 void ErrorHandling2(char* msg);
 
 int clientCount = 0;
-int total = 0;
+int totalNum = 0;
 char playerName[4][10];
 char inputName[10];
 char naam[4][10];
 SOCKET clientSocks[MAX_CLNT];//클라이언트 소켓 보관용 배열
 HANDLE hMutex;//뮤텍스
 SOCKET serverSock, clientSock;
-
+extern char roominnerip[20];
 void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	
 	WSADATA wsaData;
@@ -30,7 +30,7 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	int clientAddrSize;
 	HANDLE hThread, sThread, rThread;
 	struct hostent *h;
-	total = totalNumber;
+	totalNum = totalNumber;
 	
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) //윈도우 소켓을 사용하겠다는 사실을 운영체제에 전달
 		ErrorHandling2("WSAStartup() error!");
@@ -41,7 +41,6 @@ void NewServer(int totalNumber) {	//방의 인원수 받아옴~
 	memset(&serverAddr, 0, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	//serverAddr.sin_addr.S_un.S_addr = inet_addr("192.168.0.26");
 	serverAddr.sin_port = htons(10201);
 
 	if (bind(serverSock, (SOCKADDR*)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) //생성한 소켓을 배치한다.
@@ -80,16 +79,9 @@ unsigned WINAPI HandleClient(void* arg) {
 	char number[4][2];
 	char mastername[10];
 	char name[10];
-
-	/*num[0] = 0;
-	num[1] = 1;
-	num[2] = 2;
-	num[3] = 3;*/
-
-	for (int i = 0; i < total; i++) {
-		printf("num[%d]=%d\t", i, num[i]);
+	
+	for (int i = 0; i < totalNum; i++) {
 		itoa(num[i], number[i], 10);
-		printf("number[%d]=%s\n", i, number[i]);
 	}
 
 	printf("\n\n┏━━━━━━━━━━━━━━━━━━━━━┓");
@@ -99,12 +91,10 @@ unsigned WINAPI HandleClient(void* arg) {
 	printf("\n\n Input your name : ");
 	gets_s(mastername); //방장의 이름 입력
 
-	if (clientSocks[total-1] != NULL) {
-		printf("전송시작\n");
-		for (int i = 0; i < total; i++) {
-			printf("시작신호보냄\n");
+	if (clientSocks[totalNum -1] != NULL) {
+		for (int i = 0; i < totalNum; i++) {
 			send(clientSocks[i], "9", sizeof("9"), 0);	//시작메세지
-			for (int j = 0; j < total; j++) {
+			for (int j = 0; j < totalNum; j++) {
 				send(clientSocks[i], number[j], sizeof(number[j]), 0);	//순서
 				send(clientSocks[i], naam[j], sizeof(naam[j]), 0); //모든 클라이언트들한테 이름 전송
 				send(clientSocks[i], mastername, sizeof(mastername), 0); //모든 클라이언트들한테 방장 이름 전송
@@ -114,7 +104,7 @@ unsigned WINAPI HandleClient(void* arg) {
 			strcpy(player[i].name, naam[i]);
 		}
 		serverNumber = num[0];
-		StartGame(total, serverNumber, name, (void *)clientSocks, true);
+		StartGame(totalNum, serverNumber, name, (void *)clientSocks, true);
 	}
 
 	return 0;

@@ -14,14 +14,13 @@ LinkedList *NewList() {
 	return list;
 }
 
-Node *NewNode(char *name, char *allNum, int num, char *ip, char *innerIp) {
+Node *NewNode(char *name, char *allNum, int num, char *ip) {
 
 	Node *node = (Node*)malloc(sizeof(Node));
 	strcpy(node->name, name);
 	strcpy(node->allNum, allNum);
 	node->num = num;
 	strcpy(node->ip, ip);
-	strcpy(node->innerIp, innerIp);
 	node->number = count++;
 	node->next = NULL;
 	node->prev = NULL;
@@ -48,25 +47,6 @@ void HangNode(LinkedList *list, Node *node) {
 	pos->next = node;
 	node->prev = pos;
 	list->tail = node;
-
-	/*if (pos!=0) {
-	if (list->head == pos) {
-	node->next = list->head;
-	list->head->prev = node;
-	list->head = node;
-	}
-	else {
-	node->prev = pos->prev;
-	node->next = pos;
-	pos->prev->next = node;
-	pos->prev = node;
-	}
-	}
-	else {
-	list->tail->next = node;
-	node->prev = list->tail;
-	list->tail = node;
-	}*/
 	list->size++;
 
 }
