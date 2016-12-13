@@ -181,9 +181,9 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				}
 
 				/*인수할 것인지*/
-				if (isServer) {
-					Takeover(turn, board, playerTurn, socks, isServer, list1, list);
-				}
+
+				Takeover(turn, board, playerTurn, socks, isServer, list1, list);
+				
 				Sleep(500);
 
 			}
@@ -192,13 +192,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 		case 1:	//player2의 호텔이 지어져있는경우
 			if (turn == 1)
 			{
-				if (isServer) {
-					BuildRandmark(turn, board, playerTurn, socks, true, list);
-				}
-				else
-				{
-					BuildRandmark(turn, board, playerTurn, socks, false, list);
-				}
+				BuildRandmark(turn, board, playerTurn, socks, isServer, list);
 			}
 			else
 			{
@@ -219,11 +213,8 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유한 카드가 있으면*/
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
 
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
 					if (turn == playerTurn)
 						printf("통행료는 %d마블 입니다.", price);
@@ -238,13 +229,8 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				}
 
 				/*인수할 것인지*/
-				if (isServer) {
-					Takeover(turn, board, playerTurn, socks, true, list2, list);
-				}
-				else
-				{
-					Takeover(turn, board, playerTurn, socks, false, list2, list);
-				}
+				Takeover(turn, board, playerTurn, socks, isServer, list2, list);
+
 				Sleep(500);
 
 			}
@@ -253,13 +239,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 		case 2:	//player3의 호텔이 지어져있는경우
 			if (turn == 2)
 			{
-				if (isServer) {
-					BuildRandmark(turn, board, playerTurn, socks, true, list);
-				}
-				else
-				{
-					BuildRandmark(turn, board, playerTurn, socks, false, list);
-				}
+				BuildRandmark(turn, board, playerTurn, socks, isServer, list);
 			}
 			else
 			{
@@ -280,10 +260,8 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유한 카드가 있으면*/
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
+
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 
 					gotoxy(37, 31);
 					if (turn == playerTurn)
@@ -299,13 +277,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				}
 
 				/*인수할 것인지*/
-				if (isServer) {
-					Takeover(turn, board, playerTurn, socks, true, list2, list);
-				}
-				else
-				{
-					Takeover(turn, board, playerTurn, socks, false, list2, list);
-				}
+				Takeover(turn, board, playerTurn, socks, isServer, list2, list);
 				Sleep(500);
 
 			}
@@ -313,13 +285,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 		case 3:	//player4의 호텔이 지어져있는경우
 			if (turn == 3)
 			{
-				if (isServer) {
-					BuildRandmark(turn, board, playerTurn, socks, true, list);
-				}
-				else
-				{
-					BuildRandmark(turn, board, playerTurn, socks, false, list);
-				}
+				BuildRandmark(turn, board, playerTurn, socks, isServer, list);
 			}
 			else
 			{
@@ -340,11 +306,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				/*보유한 카드가 있으면*/
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
-
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
 					if (turn == playerTurn)
 						printf("통행료는 %d마블 입니다.", price);
@@ -359,13 +321,7 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				}
 
 				/*인수할 것인지*/
-				if (isServer) {
-					Takeover(turn, board, playerTurn, socks, true, list3, list);
-				}
-				else
-				{
-					Takeover(turn, board, playerTurn, socks, false, list3, list);
-				}
+				Takeover(turn, board, playerTurn, socks, isServer, list3, list);
 				Sleep(500);
 
 			}
@@ -388,15 +344,17 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				int price = toll;
 
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
 					printf("통행료는 %d마블 입니다.", price);
 				}
 
-				player[turn].marble -= price;
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -417,15 +375,17 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				int price = toll;
 
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
 					printf("통행료는 %d마블 입니다.", price);
 				}
 
-				player[turn].marble -= price;
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -446,15 +406,17 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				int price = toll;
 
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
 					printf("통행료는 %d마블 입니다.", price);
 				}
 
-				player[turn].marble -= price;
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -475,15 +437,17 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 				int price = toll;
 
 				if (player[turn].card == 1 || player[turn].card == 2) {
-					if (isServer)
-						price -= DoAngel(turn, toll, playerTurn, socks, true);
-					else
-						price -= DoAngel(turn, toll, playerTurn, socks, false);
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
 					gotoxy(37, 31);
 					printf("통행료는 %d마블 입니다.", price);
 				}
 
-				player[turn].marble -= price;
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -499,9 +463,23 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 					local[board].olystate = 0;
 				}
 
-				if(turn==playerTurn)
+				if (turn == playerTurn)
 					printf("통행료는 %d마블 입니다.", toll);
-				player[turn].marble -= toll;
+
+				int price = toll;
+
+				if (player[turn].card == 1 || player[turn].card == 2) {
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
+					gotoxy(37, 31);
+					printf("통행료는 %d마블 입니다.", price);
+				}
+
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -518,7 +496,21 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				if (turn == playerTurn)
 					printf("통행료는 %d마블 입니다.", toll);
-				player[turn].marble -= toll;
+
+				int price = toll;
+
+				if (player[turn].card == 1 || player[turn].card == 2) {
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
+					gotoxy(37, 31);
+					printf("통행료는 %d마블 입니다.", price);
+				}
+
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -535,7 +527,21 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				if (turn == playerTurn)
 					printf("통행료는 %d마블 입니다.", toll);
-				player[turn].marble -= toll;
+
+				int price = toll;
+
+				if (player[turn].card == 1 || player[turn].card == 2) {
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
+					gotoxy(37, 31);
+					printf("통행료는 %d마블 입니다.", price);
+				}
+
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;
@@ -552,7 +558,21 @@ void BuildingEvent(int turn, int board, int playerTurn, void *socks, bool isServ
 
 				if (turn == playerTurn)
 					printf("통행료는 %d마블 입니다.", toll);
-				player[turn].marble -= toll;
+
+				int price = toll;
+
+				if (player[turn].card == 1 || player[turn].card == 2) {
+					price -= DoAngel(turn, toll, playerTurn, socks, isServer);
+					gotoxy(37, 31);
+					printf("통행료는 %d마블 입니다.", price);
+				}
+
+				if (player[turn].marble < toll) {
+					Bankrupt(turn, toll, playerTurn, socks, isServer, list);
+				}
+				else {
+					player[turn].marble -= price;
+				}
 				Sleep(500);
 			}
 			break;

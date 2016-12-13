@@ -180,7 +180,7 @@ void TouristMonop(int turn, int playerTurn) {
 
 	/*지역의 상태가 관광지면 cnt증가*/
 	for (int i = 0; i < boardNum; i++) {
-		if (local[i].state == turn + 4) {
+		if (local[i].state == turn + 8) {
 			cnt++;
 		}
 	}
@@ -208,28 +208,28 @@ void ColorMonop(int turn, int playerTurn) {
 	int cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0, cnt5 = 0, cnt6 = 0, cnt7 = 0, cnt8 = 0; //컬러독점
 	int color = 0; //컬러독점 수
 
-	if ((local[1].state == turn || local[1].state == turn + 2) && (local[3].state == turn || local[3].state == turn + 2)) {
+	if ((local[1].state == turn || local[1].state == turn + 4) && (local[3].state == turn || local[3].state == turn + 4)) {
 		cnt1++; //방콕 베이징
 	}
-	if ((local[5].state == turn || local[5].state == turn + 2) && (local[6].state == turn || local[6].state == turn + 2) && (local[7].state == turn || local[7].state == turn + 2)) {
+	if ((local[5].state == turn || local[5].state == turn + 4) && (local[6].state == turn || local[6].state == turn + 4) && (local[7].state == turn || local[7].state == turn + 4)) {
 		cnt2++; //타이페이 두바이 카이로
 	}
-	if ((local[10].state == turn || local[10].state == turn + 2) && (local[11].state == turn || local[11].state == turn + 2)) {
+	if ((local[10].state == turn || local[10].state == turn + 4) && (local[11].state == turn || local[11].state == turn + 4)) {
 		cnt3++; //도쿄 시드니
 	}
-	if ((local[13].state == turn || local[13].state == turn + 2) && (local[15].state == turn || local[15].state == turn + 2)) {
+	if ((local[13].state == turn || local[13].state == turn + 4) && (local[15].state == turn || local[15].state == turn + 4)) {
 		cnt4++; //퀘백 상파울로
 	}
-	if ((local[17].state == turn || local[17].state == turn + 2) && (local[19].state == turn || local[19].state == turn + 2)) {
+	if ((local[17].state == turn || local[17].state == turn + 4) && (local[19].state == turn || local[19].state == turn + 4)) {
 		cnt5++; //프라하 베를린
 	}
-	if ((local[21].state == turn || local[21].state == turn + 2) && (local[22].state == turn || local[22].state == turn + 2) && (local[23].state == turn || local[23].state == turn + 2)) {
+	if ((local[21].state == turn || local[21].state == turn + 4) && (local[22].state == turn || local[22].state == turn + 4) && (local[23].state == turn || local[23].state == turn + 4)) {
 		cnt6++; //모스크바 제네바 로마
 	}
-	if ((local[26].state == turn || local[26].state == turn + 2) && (local[27].state == turn || local[27].state == turn + 2)) {
+	if ((local[26].state == turn || local[26].state == turn + 4) && (local[27].state == turn || local[27].state == turn + 4)) {
 		cnt7++; //런던 파리
 	}
-	if ((local[29].state == turn || local[29].state == turn + 2) && (local[31].state == turn || local[31].state == turn + 2)) {
+	if ((local[29].state == turn || local[29].state == turn + 4) && (local[31].state == turn || local[31].state == turn + 4)) {
 		cnt8++; //뉴욕 서울
 	}
 
@@ -256,25 +256,25 @@ void LineMonop(int turn, int playerTurn) {
 
 	/*라인별로 지역상태를 체크해서 카운트*/
 	for (int i = 1; i < 8; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+		if (local[i].state == turn || local[i].state == turn + 4 || local[i].state == turn + 8) {
 			cnt1++;
 		}
 	}
 
 	for (int i = 9; i < 16; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+		if (local[i].state == turn || local[i].state == turn + 4 || local[i].state == turn + 8) {
 			cnt2++;
 		}
 	}
 
 	for (int i = 17; i < 24; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+		if (local[i].state == turn || local[i].state == turn + 4 || local[i].state == turn + 8) {
 			cnt3++;
 		}
 	}
 
 	for (int i = 25; i < 32; i++) {
-		if (local[i].state == turn || local[i].state == turn + 2 || local[i].state == turn + 4) {
+		if (local[i].state == turn || local[i].state == turn + 4 || local[i].state == turn + 8) {
 			cnt4++;
 		}
 	}

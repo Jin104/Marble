@@ -147,7 +147,7 @@ void StartEvent(int turn, int board, int playerTurn, void *socks, bool isServer,
 		int cnt = 0;
 		/*보유한 호텔과 랜드마크의 수*/
 		for (int j = 0; j < boardNum; j++) {
-			if (local[j].state == turn + 4 || local[j].state == turn + 2) {
+			if (local[j].state == turn + 4 || local[j].state == turn + 8) {
 				cnt++;
 			}
 		}

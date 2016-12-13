@@ -71,8 +71,6 @@ void StartGame(int totalNumber, int playerTurn, char *name,void *socks, bool isS
 				char equalData[2];
 				int select;
 
-
-
 				/*선택지 처리    다른 곳의 선택지 처리도 비슷해서 여기에만 주석 달았습니다*/
 				//자기의 차례일때
 				if (turn == playerTurn) {

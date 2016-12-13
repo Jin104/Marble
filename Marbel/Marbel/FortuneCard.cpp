@@ -9,6 +9,8 @@ extern int tNum;
 
 void FortuneCard(int turn, int board, int playerTurn, void *socks, bool isServer, LinkedList *list) {
 
+	int random, n, select;
+	char data[2];
 	clrText();
 
 	/*카드모양 회전*/
@@ -23,8 +25,36 @@ void FortuneCard(int turn, int board, int playerTurn, void *socks, bool isServer
 
 	/*1부터 7까지 랜덤한 수 생성*/
 	srand(time(NULL));
-	int n = rand() % 7 + 1;
+	random = rand() % 7 + 1;
+	
+	if (turn == playerTurn) {
+		itoa(random, data, 10);
+		if (isServer)	//자신이 서버면
+		{
+			SendMsg(data, sizeof(data), 0);
+		}
+		else  //서버가 아니면
+		{
+			send((SOCKET)socks, data, sizeof(data), 0);
+		}
+		select = atoi(data);
+	}
+	else  //자기의 차례가 아니면
+	{
+		if (isServer)	//자신이 서버면
+		{
+			SOCKET *sockArr = (SOCKET *)socks;
+			while (recv(sockArr[turn], data, sizeof(data), 0) <= 0);
+			SendMsg(data, sizeof(data), turn);
+		}
+		else  //서버가 아니면
+		{
+			while (recv((SOCKET)socks, data, sizeof(data), 0) <= 0);
+		}
+		select = atoi(data);
+	}
 
+	n = select;
 	/*나온수에따라 이벤트발생*/
 	switch (n)
 	{

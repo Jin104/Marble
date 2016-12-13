@@ -8,7 +8,7 @@ typedef struct _Player {
 	int playerX = 19;	//위치X좌표
 	int playerY = 45;	//위치Y좌표
 	char name[10];	//이름
-	int marble = 500;	//보유마블
+	int marble = 2000;	//보유마블
 	int state = 0;	//상태 0: 기본 1:무인도 2:세계여행
 	int card = 0;	//소유카드 0: 기본 1:반천사카드 2:천사카드
 }Player;
